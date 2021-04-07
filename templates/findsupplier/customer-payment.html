@@ -1,0 +1,46 @@
+<div class="ksd-pay bg-colorform">
+	<p>Kindly pay one time Registration Fee.</p>
+	<h2>29.900 kd</h2>
+	<a href="javascript:void(0)" class="pay-now customer_payment_done">Pay Now</a>
+</div>
+
+
+<script type="text/javascript">
+//--------- Customer Payment Done start----------------
+$(document).on("click",".customer_payment_done",function(){
+
+    	// var dataString = 'serviceid='+serviceid
+         var token = '{{csrf_token}}';
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                url: "/find-supplier/customer-payment-done",
+                type: "GET",
+                dataType:"json",
+                success: function (data) {
+                	// console.log(data);
+                	$("#exampleModal").modal("hide");
+                   
+                    swal({
+			          title: 'Payment successfully done',
+			          
+			         
+			          buttons: {
+			           
+			            confirm: {
+			              text: "OK",
+			              value: true,
+			              visible: true,
+			              closeModal: true
+			            },
+			          }
+			         },
+			           function(isConfirm){ location.reload();});
+                        
+                }
+            });
+          
+       
+       
+      });
+//--------Customer Payment Done end----------------
+</script>

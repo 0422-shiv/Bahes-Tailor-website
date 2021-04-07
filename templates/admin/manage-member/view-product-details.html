@@ -1,0 +1,117 @@
+    <section class="bg-lightshow">
+        <div class="title-supplier mb-5">
+          <div class="container">
+             {% if get_product_instance.Product_subcategory %}
+                              <h3>{{get_product_instance.Product_subcategory.subcategory_name}}{% if get_product_instance.threadtype %}({{get_product_instance.threadtype}}){% endif %}</h3>
+                                 {% else %}
+                                  <h3>{{get_product_instance.product_category.category_name}}{% if get_product_instance.fabrictype %}({{get_product_instance.fabrictype}}){% endif %}</h3>
+                                {% endif %}
+            <!-- <h3>Sewing Machine</h3> -->
+          </div>
+        </div>
+        <div class="container">
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="supliers-left" style="height:auto;">
+                <img src="{{get_product_instance.image_1.url}}" style="width:100%" alt="">
+                <div class="ask-question">
+                  <a href="#" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i> Ask me question</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <div>
+                <p class="supplier_names">Supplier Name : <span style="color: #707070;">{{get_product_instance.user_id.userx.full_name}}</span> </p>
+              </div>
+              <div class="supliers-list">
+                <h3 class="mb-4">Description</h3>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p>{{get_product_instance.other_description}}</p>
+                  </div>
+                </div>
+                
+                <h3 class="mb-4">Available Colors</h3>
+                <div class="row">
+                  {% if get_color_list %}
+                  {% for item in get_color_list %}
+                  <div class="col-md-2">
+                    <div class="list-box textlimit">
+                      <div class="loction-view red height-box" >
+                        <div class="kwit" data-maxlength="15" style="color:{{item}};background:{{item}};"><!-- <span>Red</span> --></div>
+                      </div>
+                      <!-- <p><span>Color</span></p> -->
+                    </div>
+                  </div>
+                  {% endfor %}
+                  {% else %}
+                  <h6>No Color Available</h6>
+                {% endif %}
+                </div>
+                <h3 class="other_features-1">Other Features</h3>
+                <div class="row">. 
+                   {% if get_product_instance.country_origin.country_name %}
+              <div class="col-md-2">
+                <div class="list-box textlimit">
+                  <div class="loction-view height-box">
+                    <div class="kwit-5" data-maxlength="15"><span>{{get_product_instance.country_origin.country_name}}</span></div>
+                  </div>
+                  <p data-maxlength="10"><span>Country</span></p>
+                </div>
+              </div>
+              {% endif %}
+                     <div class="col-md-2">
+                <div class="list-box textlimit">
+                  <div class="loction-view height-box">
+                    <div class="kwit-5" data-maxlength="15">
+                      {% if get_product_instance.fabrictype %}
+                      <span>{{get_product_instance.fabrictype}}</span>
+                      {% elif get_product_instance.threadtype %}
+                      <span>{{get_product_instance.threadtype}}</span>
+                       {% elif get_product_instance.material_type1 %}
+                       <span>{{get_product_instance.material_type1}}</span>
+                        {% elif get_product_instance.material_type2 %}
+                          <span>{{get_product_instance.material_type2}}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <p data-maxlength="15"><span>Type</span></p>
+                </div>
+              </div>
+                   <div class="col-md-2">
+                <div class="list-box textlimit">
+                  <div class="loction-view height-box">
+                    <div class="kwit-5" data-maxlength="15"><span>{{get_product_instance.price}} KD</span></div>
+                  </div>
+                  <p data-maxlength="20"><span>Price</span></p>
+                </div>
+              </div>
+               
+                {% if get_product_instance.quantity %}
+              <div class="col-md-2">
+                <div class="list-box textlimit">
+                  <div class="loction-view height-box">
+                    <div class="kwit-5" data-maxlength="15">
+                      
+                      <span>{{get_product_instance.quantity}}</span>
+
+                    </div>
+                  </div>
+                  <p data-maxlength="20"><span>Quantity</span></p>
+                </div>
+              </div>
+              {% endif %}
+                  <!-- <div class="col-md-2">
+                    <div class="list-box textlimit">
+                      <div class="loction-view height-box">
+                        <div class="kwit" data-maxlength="15"><span>Medium</span></div>
+                      </div>
+                      <p data-maxlength="20"><span>Size</span></p>
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>

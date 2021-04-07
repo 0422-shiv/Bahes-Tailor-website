@@ -1,0 +1,115 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+  <section id="content-wrapper">
+      <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                                {% else %}
+            
+                                <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+    <div class="container-fluid">
+      <div class="row p-t-b-20">
+        <div class="col-md-12">
+          <div class="form-card no-b">
+            <div class="login-form-card">
+              <div class="add_category head-div mb-20">
+                
+                <a href="#" class="add-btn" onclick="goBack()"><i class="fa fa-arrow-left mr-5"></i>Back</a>
+              </div>
+              <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                   <div class="col-md-12">
+                    
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Page Name</label>
+                      <input type="text" name="page_name" class="form-control" value="{{get_page_instance.page_name}}" disabled="" />
+                    </div>
+                    
+                  </div>
+                   <div class="col-md-12">
+                    
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Header Image</label>
+                   <input type="file"  id="id_cms_Image" accept="image/*"   class="form-control "/>
+                        <div id="show_cropped_image" style="text-align: center;"> <img src="{{get_page_instance.header_image.url}}" style="height: 249px;width: 768px;"> </div>
+                    <input type="hidden" name="cms_image" id="profile_image" />
+                    </div>
+                    
+                  </div>
+                  <div class="col-md-12">
+                    
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Edit CMS</label>
+                      <!-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> -->
+                      <textarea id="summernote" class="form-control" name="description">{{get_page_instance.description}}</textarea>
+                    </div>
+                    
+                  </div>
+                  
+                </div>
+                <div class="row space-center">
+                  <div class="col-md-2">
+                    <a href="">
+                      <input type="submit" class="buttons-action" value="Save">
+                    </a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--image crop modal start-->
+<div id="uploadimageModal_edit" class="modal" role="dialog">
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Upload & Crop Image</h4>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      
+    </div>
+    <div class="modal-body" style="overflow-y: scroll;height: 497px;">
+      <div class="row">
+        <div class="col-md-8 text-center">
+          <div id="cms_image_edit" style="width:300px; margin-top:30px"></div>
+        </div>
+        <div class="col-md-4" style="padding-top:10px;">
+          <br />
+          <br />
+          <br/>
+          <div class="row">
+            <div class="col-md-12 set_loader"></div>
+          </div>
+          <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success crop_image">Save Image</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+<!--image crop modal end-->
+{% endblock %}

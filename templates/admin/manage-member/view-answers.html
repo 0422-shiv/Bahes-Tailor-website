@@ -1,0 +1,230 @@
+
+<style>
+  
+  .customer:hover, .customer:focus {
+    background: #353534 0% 0% no-repeat padding-box;
+    text-decoration: none;
+}
+ .customer{color: #fff ! important;}
+</style>
+<div id="demo" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+ <!--  <ul class="carousel-indicators">
+    <li data-target="#demo" data-slide-to="0" class="active"></li>
+    <li data-target="#demo" data-slide-to="1"></li>
+    <li data-target="#demo" data-slide-to="2"></li>
+     <li data-target="#demo" data-slide-to="3"></li>
+  </ul> -->
+  <div class="carousel-inner">
+    
+  {{data.answer}}</br>
+    
+    
+    
+    {% for data in get_answer %}
+    
+
+      <div class="carousel-item {% if forloop.counter == 1 %}active {% endif %}">
+        <section class="bg-form">
+          <div class="form-div">
+            <div class="container">
+              <div class="bg-colordiv">
+                <div class="row no-gutters">
+                  <div class="col-md-12">
+                    <div class="form-box">
+                      <h5 class="qusetion">Question {{forloop.counter}}</h5>
+                      <div class="form-title mb-4 mt-4">
+                          {{data.question.question}}
+                        <!-- What would you like to see more? -->
+                      </div>
+                         
+                      <div class="row">
+                       
+                       {% if data.question.option_a|lower == data.answer|lower %}
+                        <div class="col-md-6 mb-4">
+                          <a href="javascript:void(0)" class="customer" style="background: #2088CA; 0% 0% no-repeat padding-box;">
+                            <div class="chaperter">A</div>
+                            <h3>{{data.question.option_a}}</h3>
+                          </a>
+                        </div>
+                        {% else %}
+                        <div class="col-md-6 mb-4">
+                          <a href="javascript:void(0)" class="customer">
+                            <div class="chaperter">A</div>
+                            <h3>{{data.question.option_a}}</h3>
+                          </a>
+                        </div>
+                       {% endif %}
+                       {% if data.question.option_b|lower == data.answer|lower %}
+                        <div class="col-md-6 mb-4">
+                          <a href="javascript:void(0)" class="customer"  style="background: #2088CA; 0% 0% no-repeat padding-box;">
+                            <div class="chaperter">B</div>
+                            <h3>{{data.question.option_b}}</h3>
+                          </a>
+                        </div>
+                        {% else %}
+                         <div class="col-md-6 mb-4">
+                          <a href="javascript:void(0)" class="customer" >
+                            <div class="chaperter">B</div>
+                            <h3>{{data.question.option_b}}</h3>
+                          </a>
+                        </div>
+                        {% endif %}
+                        {% if data.question.option_c|lower == data.answer|lower %}
+                        <div class="col-md-6 mb-4">
+                          <a href="javascript:void(0)" class="customer"  style="background: #2088CA; 0% 0% no-repeat padding-box;">
+                            <div class="chaperter">C</div>
+                            <h3>{{data.question.option_c}}</h3>
+                          </a>
+                        </div>
+                        {% else %}
+                         <div class="col-md-6 mb-4">
+                          <a href="javascript:void(0)" class="customer" >
+                            <div class="chaperter">C</div>
+                            <h3>{{data.question.option_c}}</h3>
+                          </a>
+                        </div>
+                        {% endif %}
+                        {% if data.question.option_d|lower == data.answer|lower %}
+                        <div class="col-md-6 mb-4">
+                          <a href="javascript:void(0)" class="customer" style="background: #2088CA; 0% 0% no-repeat padding-box;">
+                            <div class="chaperter">D</div>
+                            <h3>{{data.question.option_d}}</h3>
+                          </a>
+                        </div>
+                        {% else %}
+                         <div class="col-md-6 mb-4">
+                          <a href="javascript:void(0)" class="customer" >
+                            <div class="chaperter">D</div>
+                            <h3>{{data.question.option_d}}</h3>
+                          </a>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+     
+      {% endfor %}
+    </div>
+      <!-- The slideshow -->
+      <!--   <div class="carousel-inner">
+        <div class="carousel-item active">
+          <section class="bg-form">
+            <div class="form-div">
+              <div class="container">
+                <div class="bg-colordiv">
+                  <div class="row no-gutters">
+                    <div class="col-md-12">
+                      <div class="form-box">
+                        <h2><span>Welcome to BAH'ES</span></h2>
+                        <h5 class="qusetion">Question 1</h5>
+                        <div class="form-title mb-4 mt-4">
+                          Are you a customer or Supplier?
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <a href="#" class="customer customers">
+                              <img class="mb-4" src="https://digimonk.net/bahes/images/Layer_x0020_1@2x.png" alt=""/>
+                              <h3>SUPPLIER</h3>
+                            </a>
+                          </div>
+                          <div class="col-md-6">
+                            <a href="#" class="customer">
+                              <img class="mb-4" src="https://digimonk.net/bahes/images/verified.png" alt=""/>
+                              <h3>CUSTOMER</h3>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="carousel-item">
+          <section class="bg-form">
+            <div class="form-div">
+              <div class="container">
+                <div class="bg-colordiv">
+                  <div class="row no-gutters">
+                    <div class="col-md-12">
+                      <div class="form-box">
+                        <h2><span>Welcome to BAH'ES</span></h2>
+                        <h5 class="qusetion">Question 2</h5>
+                        <div class="form-title mb-4 mt-4">
+                          Are you a customer or Supplier?
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <a href="#" class="customer customers">
+                              <img class="mb-4" src="https://digimonk.net/bahes/images/Layer_x0020_1@2x.png" alt=""/>
+                              <h3>SUPPLIER</h3>
+                            </a>
+                          </div>
+                          <div class="col-md-6">
+                            <a href="#" class="customer">
+                              <img class="mb-4" src="https://digimonk.net/bahes/images/verified.png" alt=""/>
+                              <h3>CUSTOMER</h3>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="carousel-item">
+          <section class="bg-form">
+            <div class="form-div">
+              <div class="container">
+                <div class="bg-colordiv">
+                  <div class="row no-gutters">
+                    <div class="col-md-12">
+                      <div class="form-box">
+                        <h2><span>Welcome to BAH'ES</span></h2>
+                        <h5 class="qusetion">Question 3</h5>
+                        <div class="form-title mb-4 mt-4">
+                          Are you a customer or Supplier?
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <a href="#" class="customer customers">
+                              <img class="mb-4" src="https://digimonk.net/bahes/images/Layer_x0020_1@2x.png" alt=""/>
+                              <h3>SUPPLIER</h3>
+                            </a>
+                          </div>
+                          <div class="col-md-6">
+                            <a href="#" class="customer">
+                              <img class="mb-4" src="https://digimonk.net/bahes/images/verified.png" alt=""/>
+                              <h3>CUSTOMER</h3>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div> -->
+      <!-- Left and right controls -->
+      <a class="carousel-control-prev" href="#demo" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </a>
+      <a class="carousel-control-next" href="#demo" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </a>
+    </div>

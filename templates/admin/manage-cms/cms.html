@@ -1,0 +1,107 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}<!----------------COntent start-------------->
+<section id="content-wrapper">
+  <div class="container-fluid">
+    <div class="row p-t-b-20">
+      <div class="col-md-12">
+        <div class="form-card no-b">
+          <div class="login-form-card">
+            <h3 class="add_name">Manage CMS</h3>
+            <!--  <div class="date-pickers">
+              <div class="form-group">
+                <label for="inputDate">Date</label>
+                <input type="input" class="form-control" id="inputDate-1">
+              </div>
+            </div> -->
+          <!--   <form style="text-align: -webkit-right;">
+              <label class="searchh">Search:<input type="search" class="form-control" placeholder="" aria-controls="example"></label>
+            </form> -->
+            <div class="table-responsive">
+              <table id="example-2" class="table table-striped " style="width:100%">
+                <thead>
+                  <tr>
+                 
+                    <th> Page Name</th>
+                    <th>Header Image</th>
+             
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if get_custom_pages %}
+                    {% for data in get_custom_pages %}
+                      <tr>
+                       
+                        <td>{{data.page_name}}</td>
+                        <td><img src="{{data.header_image.url}}" style="width: 100px;"></td>
+                   
+                        <td >
+                          <table class="act-button">
+                            <tr>
+                              <td ><a href="{% url 'manage_cms:EditCms' data.id %}" title="Edit" class="btn-edit"><span class="fa fa-pencil"></span></a></td>
+                             <!--  <td><a href="javascript:void(0)" id="{{data.id}}" class="btn-delete" title="Delete" data-toggle="modal" data-target="#modal-default2"><span class="fa fa-trash"></span></a></td> -->
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% endif %}
+                  
+                </tbody>
+              </table>
+            </div>
+          <!--   &nbsp;
+            <div class="dropdown">
+              <button class="btn btn-primary " type="button" aria-haspopup="true" aria-expanded="false">
+              Delete
+              </button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!------------Delete messege Modal Popup Start------->
+  <div class="modal fade in sp-map" id="modal-default2">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Confirm</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="font-size: 32px;">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="paper">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="container-fluid">
+                  <!--  <div class="login-form-content"> -->
+                  <form action="javascript:(0);">
+                    <div class="row">
+                      <p>Are you sure you want to Delete?</p>
+                      <div class="col-md-6">
+                        <button type="submit" class="buttons-action btn-block" >Yes</button>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <button type="submit" class="buttons-action btn-block" data-dismiss="modal">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--------------------Delete Message Modal Ends---------------->
+</section>
+{% endblock %}

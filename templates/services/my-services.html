@@ -1,0 +1,613 @@
+{% extends 'base_template.html' %}
+{% block content %}
+  {% load static %}
+  <div class="banner-profile">
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>Profile</span></h1>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'homepage:HomePage' %}">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'dashboard:EditProfile' %}">Supplier Profile</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Post Services</li>
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+  <section class="bg-light">
+    <div class="container">
+      
+      <div class="row">
+        <div class="col-md-3">
+          
+          <div class="profilebox">
+            {% if userprofile.image %}
+              <img src="{{userprofile.image.url }}" alt="" class="pexels-pixabay mb-2">
+            {% else %}
+              <img src="{% static 'images/dummy-image.png' %}" class="pexels-pixabay mb-2">
+            {% endif %}
+            <!-- Tabs nav -->
+            <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+              {% if flag == 'services'%}
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                  
+                Services</a>
+              {% else %}
+                <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="false">
+                  
+                Services</a>
+              {% endif %}
+              {% if flag == 'post_services' %}
+                <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">
+                  
+                Post Services</a>
+              {% else %}
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                  
+                Post Services</a>
+              {% endif %}
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="bg-lightgray">
+            
+            <div class="buttons_left">
+              <h1>{{userprofile.full_name}}</h1>
+              
+            </div>
+            <div class="custom-control custom-switch">
+              {% if userprofile.online_status %}
+                <input type="checkbox" class="custom-control-input online_status" onlinestatus="{{userprofile.online_status}}" userid="{{userprofile.id}}" id="customSwitches" checked=""
+                >
+                <label class="custom-control-label" for="customSwitches">Online</label>
+              {% else %}
+                <input type="checkbox" class="custom-control-input online_status" onlinestatus="{{userprofile.online_status}}" userid="{{userprofile.id}}" id="customSwitches" >
+                <label class="custom-control-label" for="customSwitches">Offline</label>
+              {% endif %}
+            </div>
+            <div class="padding-tops">
+              <div class="row">
+                
+                <div class="col-md-4">
+                  <div class="display_flex">
+                    <i class="fa fa-calendar" style="font-size:24px"></i>
+                    <p class="joineds">{{userprofile.user_id.date_joined}}</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="display_flex">
+                    <i class="fa fa-phone" style="font-size:24px"></i>
+                    <p class="joineds">+{{userprofile.tel_code}} {{userprofile.phone}}</p>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="display_flex">
+                    <i class="fa fa-envelope" style="font-size:24px"></i>
+                    <p class="joineds">{{userprofile.user_id.email}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12 padding-lefts">
+                
+                <div class="tabbable-panel">
+                  <div class="tabbable-line">
+                    <ul class="nav nav-tabs">
+                      <li >
+                        <a href="{% url 'dashboard:EditProfile' %}">Edit Profile</a>
+                      </li>
+                      <li>
+                        <!-- <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom">Chat</a> -->
+                         <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom">Chat
+                 {% if request.user|total_message_counter %}<span id="totalmessagecount">{{request.user|total_message_counter}}</span>{% endif %}</a>
+                        
+                      </li>
+                     {% if request.user.userx.user_type.type_name == 'supplier' %}
+                          <li >
+                            <a href="{% url 'services:Services' %}">My services</a>
+                            
+                          </li>
+                          <li>
+                            <a href="{% url 'products:product'%}">My products</a>
+                          </li>
+                          {% else %}
+                          {% endif %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Tabs content -->
+          <div class="tab-content profile-form" id="v-pills-tabContent">
+            <div>
+              {% if messages %}
+                {% for message in messages %}
+                  
+                  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                    
+                  {% else %}
+                    
+                    <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                  {% endif %}
+                  
+                {% endfor %}
+              {% endif %}
+            </div>
+            {% if flag == 'services'%}
+            <div class="tab-pane fade  show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+              
+              <div class="row">
+                {% for data in get_services %}
+                  <div class="col-md-4" style="padding: 9px;">
+                    {% if data.tailor_speci_id.img %}
+                      <div class="background-images"  style="background-image:url({{data.tailor_speci_id.img.url}})">
+                      {% endif %}
+                      <h4 class="Deshdasha">{{data.tailor_speci_id.tailor_speci}}</h4>
+                      <ul class="inlines">
+                        <li class="list_style">
+                          <a href="javascript:void(0)" class="font-sizes edit_service" data-id="{{data.id}}"><i class="fa fa-edit"></i>Edit</a>
+                        </li>
+                        <li class="list_style">
+                          <a href="javascript:void(0)" class="font-sizes delete_service" data-id="{{data.id}}"><i class="fa fa-trash"></i> Delete</a>
+                        </li>
+                        <li class="list_style">
+                          
+                          {% if data.status %}
+                            <div class="custom-control custom-switch">
+                              <input type="checkbox" class="custom-control-input approve" checked="true" id="{{data.id}}" servicestatus="{{data.status}}">
+                              <label class="custom-control-label" for="{{data.id}}">Active</label>
+                            </div>
+                          {% else %}
+                            <div class="custom-control custom-switch">
+                              <input type="checkbox" class="custom-control-input approve"
+                              id="{{data.id}}" servicestatus="{{data.status}}" >
+                              <label class="custom-control-label" for="{{data.id}}">Deactive</label>
+                            </div>
+                          {% endif %}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                {% endfor %}
+                
+              </div>
+            </div>
+            {% else %}
+             <div class="tab-pane fade" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+              
+              <div class="row">
+                {% for data in get_services %}
+                  <div class="col-md-4" style="padding: 9px;">
+                    {% if data.tailor_speci_id.img %}
+                      <div class="background-images"  style="background-image:url({{data.tailor_speci_id.img.url}})">
+                      {% endif %}
+                      <h4 class="Deshdasha">{{data.tailor_speci_id.tailor_speci}}</h4>
+                      <ul class="inlines">
+                        <li class="list_style">
+                          <a href="javascript:void(0)" class="font-sizes edit_service" data-id="{{data.id}}"><i class="fa fa-edit"></i>Edit</a>
+                        </li>
+                        <li class="list_style">
+                          <a href="javascript:void(0)" class="font-sizes delete_service" data-id="{{data.id}}"><i class="fa fa-trash"></i> Delete</a>
+                        </li>
+                        <li class="list_style">
+                          
+                          {% if data.status %}
+                            <div class="custom-control custom-switch">
+                              <input type="checkbox" class="custom-control-input approve" checked="true" id="{{data.id}}" servicestatus="{{data.status}}">
+                              <label class="custom-control-label" for="{{data.id}}">Active</label>
+                            </div>
+                          {% else %}
+                            <div class="custom-control custom-switch">
+                              <input type="checkbox" class="custom-control-input approve"
+                              id="{{data.id}}" servicestatus="{{data.status}}" >
+                              <label class="custom-control-label" for="{{data.id}}">Deactive</label>
+                            </div>
+                          {% endif %}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                {% endfor %}
+                
+              </div>
+            </div>
+            {% endif %}
+            {% if flag == 'post_services' %}
+            <div class="tab-pane fade  show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="" class="bold-font">Supplier Name</label>
+                  <input type="text" class="form-control" id="" name="full_name" value="{{userprofile.full_name}}" disabled="">
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Business Country Location</label>
+                  {{form.country_id}}
+                  <!--  <select class="form-control" id="">
+                    <option class="active">select</option>
+                    <option>Australia</option>
+                    <option>India</option>
+                    <option>Australia</option>
+                  </select> -->
+                </div>
+                
+                <div class="form-group">
+                  <label for="" class="bold-font">Tailor Specialization</label>
+                  <!-- {{form.tailor_speci_id}} -->
+                  <select class="form-control" name="tailor_spec" required="">
+                    {% if get_tailor_spec %}
+                      <option class="active"></option>
+                      {% for data in get_tailor_spec %}
+                        <option value="{{data.id}}">{{data.tailor_speci}}</option>
+                      {% endfor %}
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Tailor Experience</label>
+                  {{form.tailor_experience}}
+                  <!-- <input type="text" class="form-control" id="" name="full_name" value="{{userprofile.full_name}}"> -->
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Targeted Customer</label>
+                  {{form.targeted_customer}}
+                  <!--  <select class="form-control" id="">
+                    
+                    <option class="active">select</option>
+                    <option>Australia</option>
+                    <option>India</option>
+                    <option>Australia</option>
+                    
+                  </select> -->
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Tailor Staff Gender</label>
+                  {{form.tailor_staff_gender}}
+                  <!--  <select class="form-control" id='multiple-checkboxe' multiple="">
+                    
+                    <option>Male</option>
+                    <option>Female</option>
+                    
+                  </select> -->
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Phone Number</label>
+                  <input type="text" class="form-control set_number_only" maxlength="12" name="phone" value="{{userprofile.phone}}">
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1" class="bold-font">Full Address</label>
+                  {{form.address}}
+                  <!-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> -->
+                </div>
+                <label for="" class="bold-font">Can the store ship the product outside the country?</label>
+                <div class="form-control checkbox-div">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="yes" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                      Yes
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="no" id="flexRadioDefault2" >
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      No
+                    </label>
+                  </div>
+                </div>
+                <div class="text-right">
+                <button type="submit" class="btn btn-primary">Submit</button></div>
+              </form>
+            </div>
+            {% else %}
+             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="" class="bold-font">Supplier Name</label>
+                  <input type="text" class="form-control" id="" name="full_name" value="{{userprofile.full_name}}" disabled="">
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Business Country Location</label>
+                  {{form.country_id}}
+                  <!--  <select class="form-control" id="">
+                    <option class="active">select</option>
+                    <option>Australia</option>
+                    <option>India</option>
+                    <option>Australia</option>
+                  </select> -->
+                </div>
+                
+                <div class="form-group">
+                  <label for="" class="bold-font">Tailor Specialization</label>
+                  <!-- {{form.tailor_speci_id}} -->
+                  <select class="form-control" name="tailor_spec" required="">
+                    {% if get_tailor_spec %}
+                      <option class="active"></option>
+                      {% for data in get_tailor_spec %}
+                        <option value="{{data.id}}">{{data.tailor_speci}}</option>
+                      {% endfor %}
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Tailor Experience</label>
+                  {{form.tailor_experience}}
+                  <!-- <input type="text" class="form-control" id="" name="full_name" value="{{userprofile.full_name}}"> -->
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Targeted Customer</label>
+                  {{form.targeted_customer}}
+                  <!--  <select class="form-control" id="">
+                    
+                    <option class="active">select</option>
+                    <option>Australia</option>
+                    <option>India</option>
+                    <option>Australia</option>
+                    
+                  </select> -->
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Tailor Staff Gender</label>
+                  {{form.tailor_staff_gender}}
+                  <!--  <select class="form-control" id='multiple-checkboxe' multiple="">
+                    
+                    <option>Male</option>
+                    <option>Female</option>
+                    
+                  </select> -->
+                </div>
+                <div class="form-group">
+                  <label for="" class="bold-font">Phone Number</label>
+                  <input type="text" class="form-control set_number_only" maxlength="12" name="phone" value="{{userprofile.phone}}">
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1" class="bold-font">Full Address</label>
+                  {{form.address}}
+                  <!-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> -->
+                </div>
+                <label for="" class="bold-font">Can the store ship the product outside the country?</label>
+                <div class="form-control checkbox-div">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="yes" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                      Yes
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="no" id="flexRadioDefault2" >
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      No
+                    </label>
+                  </div>
+                </div>
+                <div class="text-right">
+                <button type="submit" class="btn btn-primary">Submit</button></div>
+              </form>
+            </div>
+            {% endif %}
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content ">
+        <span class="close-box" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+        <div class="modal-body">
+          
+        </div>
+        
+        
+        
+      </div>
+      
+    </div>
+    
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+//---------Edit User start----------------
+$(document).on("click",".edit_service",function(){
+var id = $(this).data("id");
+console.log(id)
+$.ajax({
+method:"GET",
+url :"/my-services/edit-service/"+id,
+dataType:"html",
+success:function(data)
+{
+$("#exampleModal .modal-body").html(data);
+$("#exampleModal").modal("show");
+}
+});
+});
+//---------Edit User end----------------
+//---------delete User start----------------
+$(document).ready(function(){
+$(".delete_service").click(function(){
+var delete_value = $(this).data("id");
+console.log(delete_value)
+swal({
+title: "Are you sure?",
+text: "You want to delete !",
+type: "warning",
+showCancelButton: true,
+confirmButtonClass: 'btn-danger',
+confirmButtonText: 'Yes, delete it!',
+closeOnConfirm: false,
+// closeOnCancel: false
+},
+function(isConfirm){
+if (isConfirm) {
+var token = '{{csrf_token}}';
+$.ajax({
+headers: { "X-CSRFToken": token },
+url: "/my-services/delete-service/"+delete_value,
+type: "POST",
+success: function () {
+swal("Done!","It was succesfully deleted!","success");
+location.reload();
+}
+});
+}
+else{
+swal("Cancelled", "Your imaginary file is safe :)", "error");
+}
+})
+});
+});
+//---------delete User end----------------
+//---------active and deactive status Start----------------
+$(document).on('click', ".approve", function (e) {
+var serviceid = $(e.currentTarget).attr("id");
+var servicestatus = $(e.currentTarget).attr('servicestatus');
+
+if(servicestatus == 'True'){
+varstatus = 'Deactive';
+}
+else{
+varstatus = 'Active';
+}
+swal({
+title: 'Are you sure?',
+text: varstatus+' this',
+icon: 'warning',
+buttons: {
+cancel: {
+text: "Cancel",
+value: null,
+visible: true,
+closeModal: true,
+},
+confirm: {
+text: "OK",
+value: true,
+visible: true,
+closeModal: true
+},
+}
+},
+function(isConfirm){
+if (isConfirm) {
+var dataString = 'serviceid='+serviceid+'&servicestatus='+servicestatus;
+var token = '{{csrf_token}}';
+
+$.ajax({
+method:"POST",
+headers: { "X-CSRFToken": token },
+url: "/my-services/servicestatus",
+data: dataString,
+dataType:"json",
+cache: false,
+success: function (data) {
+swal("Done!","succesfully Edited!","success");
+location.reload();
+}
+});
+}
+else{
+swal("Cancelled", "Your status is safe :)", "error");
+}
+});
+});
+//---------active and deactive service End----------------
+</script>
+<script>
+$(document).ready(function(){
+$("#id_targeted_customer").addClass('form-control');
+$('#id_targeted_customer').multiselect({
+includeSelectAllOption: true,
+});
+});
+$(document).ready(function(){
+$("#id_tailor_staff_gender").addClass('form-control');
+$("#id_tailor_staff_gender").multiselect({
+includeSelectAllOption: true,
+});
+});
+</script>
+<script type="text/javascript">
+$(".set_number_only").keydown(function (e) {
+
+if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+
+(e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+
+(e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+
+(e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+
+(e.keyCode >= 35 && e.keyCode <= 39)) {
+
+return;
+}
+
+if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+e.preventDefault();
+}
+});
+
+</script>
+<script type="text/javascript">
+//---------active and deactive status Start----------------
+$(document).on('click', ".online_status", function (e) {
+
+var onlinestatus = $(e.currentTarget).attr('onlinestatus');
+var userid = $(e.currentTarget).attr('userid');
+
+var dataString = 'onlinestatus='+onlinestatus+'&userid='+userid;
+var token = '{{csrf_token}}';
+$.ajax({
+method:"POST",
+headers: { "X-CSRFToken": token },
+url: "/dashboard/onlinestatus/",
+data: dataString,
+dataType:"json",
+cache: false,
+success: function (data) {
+
+location.reload();
+}
+});
+
+});
+//---------active and deactive service End----------------
+</script>
+{% endblock %}

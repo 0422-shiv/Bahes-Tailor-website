@@ -1,0 +1,494 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>BAH'ES</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+<link rel="stylesheet" href="{% static 'css/style.css'%}">
+<link rel='stylesheet' href="{% static 'css/slick.css'%}">
+<link rel='stylesheet' href="{% static 'css/slick-theme.css'%}">
+<link rel="shortcut icon" href="{% static 'images/fevicon.png'%}" type="image" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+ <link rel="stylesheet" href='{% static "css/croppie.css" %}'  type="text/css">
+</head>
+</head>
+<body>
+<!-- Pageloader -->
+<div class="pageloader"></div>
+<nav class="navbar navbar-expand-lg  bg-black fixed-top">
+    {% if get_system_settings %}
+        {% for data in get_system_settings %}
+  <div class="container"> <a class="navbar-brand" href="{% url 'homepage:HomePage'%}"><img src="{{data.logo.url}}" alt=""/></a>
+    {% endfor %}
+    {% endif %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"> <i class="fa fa-bars" aria-hidden="true"></i></button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ml-auto menutop">
+        <li class="nav-item {% if 'find-supplier' in request.build_absolute_uri or 'find-services' in request.build_absolute_uri or 'find-products' in request.build_absolute_uri  or 'account' in request.build_absolute_uri or 'dashboard' in request.build_absolute_uri or 'chat' in request.build_absolute_uri or 'my-services' in request.build_absolute_uri or 'my-products' in request.build_absolute_uri %} Home{% else %} active  {% endif %}"> <a class="nav-link" href="{% url 'homepage:HomePage'%}">Home</a> </li>
+        
+        <li class="nav-item {% if 'find-supplier' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link" href="{% url 'findsupplier:FindSupplier'%}">Find Suppliers</a> </li>
+        <li class="nav-item {% if 'find-services' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link" href="{% url 'findservices:FindServices'%}">Find Services</a> </li>
+        <li class="nav-item {% if 'find-products' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link" href="{% url 'findproducts:FindProducts'%}">Find Products</a> </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item dropdown {% if 'dashboard' in request.build_absolute_uri or 'chat' in request.build_absolute_uri or 'my-services' in request.build_absolute_uri or 'my-products' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if request.user.userx.full_name %}{{request.user.userx.full_name}}{% else %}{{request.user.username}}{% endif %}</a>
+          {% else %}
+           <li class="nav-item dropdown {% if 'account' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Register</a>
+            {% endif %}
+
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            {% if not request.user.is_authenticated %}
+          
+		   <a class="dropdown-item" href="{% url 'account:login' %}">Login</a>
+		  <a class="dropdown-item" href="{% url 'account:UserType' %}">Registration</a> 
+
+      {% endif %}
+      {% if  request.user.is_authenticated %}
+      {{request.user_detail.online_status}}
+      <a class="dropdown-item" href="{% url 'dashboard:EditProfile' %}">My Profile</a>
+      <a class="dropdown-item" href="{% url 'account:logout' %}">Logout </a>
+   
+      {% endif %}
+		 
+		  
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+ 
+{% block content %} 
+
+{% endblock %}
+ {% if get_system_settings %}
+        {% for data in get_system_settings %}
+<footer>
+    <div class="footer-blue">
+    <div class="container">
+    <div class="text-right footer-icon">
+     
+       
+    <a class="facebook" href="{{data.fb}}"><img src="{% static 'images/footer-icon-1.png' %}"/ alt=""></a>
+    <a class="facebook" href="{{data.twitter}}"><img src="{% static 'images/footer-icon-2.png' %}"/ alt=""></a>
+    <a class="facebook" href="{{data.linkedin}}"><img src="{% static 'images/footer-icon-3.png' %}"/ alt=""></a>
+   
+    </div>
+    </div>
+    </div>
+    
+    <div class="bg-foorer">
+    <div class="container">
+    <div class="row">
+    <div class="col-md-3">
+    <div class="footer-logo">
+    <img src="{{data.footer_logo.url}}" alt=""/>
+    </div>
+    </div>
+    
+    <div class="col-md-3">
+    <div class="footer-link">
+    <h3>Quick Links</h3>
+    <ul>
+    <li><a href="{% url 'homepage:HomePage'%}">Home </a></li>
+    <li><a href="{% url 'findsupplier:FindSupplier'%}">Suppliers </a></li>
+    <li><a href="{% url 'findservices:FindServices'%}">Services </a></li>
+    <li><a href="{% url 'findproducts:FindProducts'%}">Products</a></li> 
+    <li><a href="{% url 'account:UserType' %}">Register</a></li>
+    </ul>
+    
+    </div>
+    </div>
+    
+    
+    
+    
+    <div class="col-md-3">
+    <div class="footer-link">
+    <h3>Our Services</h3>
+    <ul>
+    <li><a href="#">Suit Resizing </a></li>
+    <li><a href="#">Custom Accessories </a></li>
+    <li><a href="#">Wedding Services </a></li>
+    
+    </ul>
+    
+    </div>
+    </div>
+    
+    <div class="col-md-3">
+    <div class="footer-link">
+    <h3>Other Pages</h3>
+    <ul>
+    <li><a href="{% url 'contactus:Contact'%}">Contact us 
+    <li><a href="{% url 'custom_app:AboutUs'%}">About us </a></li>
+    <li><a href="{% url 'custom_app:PrivacyPolicy'%}">Privacy policy </a></li>
+    <li><a href="{% url 'custom_app:TermsOfServices'%}">Terms of Services </a></li>
+    <!-- <li><a href="#">FAQ</a></li> -->
+    
+    
+    </ul>
+    
+    </div>
+    </div>
+    
+    </div>
+    </div>
+    </div>
+    </footer>
+     {% endfor %}
+    {% endif %}
+    <script src="{% static 'js/jquery.min.js' %}"></script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script> 
+    
+    <script src="{% static 'js/slick.js' %}"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    
+    <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+
+    <script src='{% static "js/croppie.js" %}'></script>
+
+    
+
+<script type="text/javascript">
+  
+
+   $(".set_number_only").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl/cmd+A
+            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+C
+            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+X
+            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+ 
+
+
+</script>
+
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $(".dropdown-menu li").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+<script type="">
+   
+    $(document).ready(function() {
+            $('#multiple-checkboxess').multiselect({
+              includeSelectAllOption: true,
+            });
+        });
+  </script>
+
+<script type="">
+   
+    $(document).ready(function() {
+            $('#multiple-checkboxe').multiselect({
+              includeSelectAllOption: true,
+            });
+        });
+  </script>
+
+
+
+
+
+<script type="">
+   
+    $(document).ready(function() {
+            $('#multiple-checkboxes').multiselect({
+              includeSelectAllOption: true,
+            });
+        });
+  </script>
+
+<script type="">
+   
+    $(document).ready(function() {
+            $('#multiple-checkboxe').multiselect({
+              includeSelectAllOption: true,
+            });
+        });
+  </script>
+
+
+
+
+
+
+
+
+<script>
+ //Init pageloader
+
+  if ($('.pageloader').length) {
+    $('.pageloader').toggleClass('is-active');
+    $(window).on('load', function () {
+      var pageloaderTimeout = setTimeout(function () {
+        $('.pageloader').toggleClass('is-active');
+        $('.infraloader').toggleClass('is-active');
+        clearTimeout(pageloaderTimeout);
+      }, 700); //Placeloaders
+
+
+ 
+    });
+  }
+$('.slick-slider').slick({
+  centerMode: true,
+  slidesToShow: 3,
+  dots: false,
+  loop:false,
+  //arrows: true,
+  swipe: true,
+//  infinite: true,
+  swipeToSlide: true,
+  centerPadding:'0px 50px ',
+  //adaptiveHeight: true,
+   prevArrow: '<button class="slide-arrow prev-arrow"><i class="fa fa-arrow-left"></i></button>',
+    nextArrow: '<button class="slide-arrow next-arrow"><i class="fa fa-arrow-right" ></i></button>',
+  responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            adaptiveHeight: true,
+          },
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+      ],
+});
+
+
+
+
+$('.suppliers-slider').slick({
+  //centerMode: true,
+  slidesToShow: 3,
+  dots: false,
+  loop:false,
+  //arrows: true,
+  swipe: true,
+//  infinite: true,
+  swipeToSlide: true,
+  centerPadding:'0px 50px ',
+  //adaptiveHeight: true,
+   prevArrow: '<button class="slide-arrow prev-arrow"><i class="fa fa-arrow-left"></i></button>',
+    nextArrow: '<button class="slide-arrow next-arrow"><i class="fa fa-arrow-right" ></i></button>',
+  responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            adaptiveHeight: true,
+          },
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+      ],
+});
+
+
+$('.product-slider').slick({
+  //centerMode: true,
+  slidesToShow: 4,
+  dots: false,
+  loop:false,
+  //arrows: true,
+  swipe: true,
+//  infinite: true,
+  swipeToSlide: true,
+  //centerPadding:'100px 100px ',
+  //adaptiveHeight: true,
+   prevArrow: '<button class="slide-arrow prev-arrow"><i class="fa fa-arrow-left"></i></button>',
+    nextArrow: '<button class="slide-arrow next-arrow"><i class="fa fa-arrow-right" ></i></button>',
+  responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            adaptiveHeight: true,
+          },
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+      ],
+});
+
+
+$('.counter').each(function() {
+  var $this = $(this),
+      countTo = $this.attr('data-count');
+  
+  $({ countNum: $this.text()}).animate({
+    countNum: countTo
+  },
+
+  {
+
+    duration: 8000,
+    easing:'linear',
+    step: function() {
+      $this.text(Math.floor(this.countNum));
+    },
+    complete: function() {
+      $this.text(this.countNum);
+      //alert('finished');
+    }
+
+  });  
+  
+  
+
+});
+/*
+$(".textlimit span").text(function(index, currentText) {
+  var maxLength = $(this).parent().attr('data-maxlength');
+  if(currentText.length >= maxLength) {
+    return currentText.substr(0, maxLength) + "...";
+  } else {
+    return currentText
+  } 
+});
+
+
+$(".name-sup, .surname").text(function(index, currentText) {
+  var maxLength = $(this).parent().attr('data-maxlength');
+  if(currentText.length >= maxLength) {
+    return currentText.substr(0, maxLength) + "...";
+  } else {
+    return currentText
+  } 
+});*/
+
+</script>
+
+<script>
+ //Init pageloader
+
+  if ($('.pageloader').length) {
+    $('.pageloader').toggleClass('is-active');
+    $(window).on('load', function () {
+      var pageloaderTimeout = setTimeout(function () {
+        $('.pageloader').toggleClass('is-active');
+        $('.infraloader').toggleClass('is-active');
+        clearTimeout(pageloaderTimeout);
+      }, 700); //Placeloaders
+
+
+ 
+    });
+  }
+
+</script>
+
+
+<script type="">
+  function readFile(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      var htmlPreview =
+        '<img width="200" src="' + e.target.result + '" />' +
+        '<p>' + input.files[0].name + '</p>';
+      var wrapperZone = $(input).parent();
+      var previewZone = $(input).parent().parent().find('.preview-zone');
+      var boxZone = $(input).parent().parent().find('.preview-zone').find('.box').find('.box-body');
+
+      wrapperZone.removeClass('dragover');
+      previewZone.removeClass('hidden');
+      boxZone.empty();
+      boxZone.append(htmlPreview);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function reset(e) {
+  e.wrap('<form>').closest('form').get(0).reset();
+  e.unwrap();
+}
+
+$(".dropzone").change(function() {
+  readFile(this);
+});
+
+$('.dropzone-wrapper').on('dragover', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  $(this).addClass('dragover');
+});
+
+$('.dropzone-wrapper').on('dragleave', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  $(this).removeClass('dragover');
+});
+
+$('.remove-preview').on('click', function() {
+  var boxZone = $(this).parents('.preview-zone').find('.box-body');
+  var previewZone = $(this).parents('.preview-zone');
+  var dropzone = $(this).parents('.form-group').find('.dropzone');
+  boxZone.empty();
+  previewZone.addClass('hidden');
+  reset(dropzone);
+});
+$(document).ready(function() {
+  $('.accordion a').click(function(){
+    $(this).toggleClass('active');
+    $(this).next('.content').slideToggle(400);
+   });
+});
+</script>
+    <script>
+                    function goBack() {
+                      window.history.back();
+                    }
+             </script>  
+     {% block script %}
+            {% endblock %}
+    </body>
+    </html>

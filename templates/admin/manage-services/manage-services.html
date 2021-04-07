@@ -1,0 +1,538 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+  <!----------------COntent start-------------->
+  <section id="content-wrapper">
+     <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                                {% else %}
+            
+                                <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+    <div class="container-fluid">
+      <div class="row p-t-b-20">
+        <div class="col-md-12">
+          <div class="form-card no-b">
+            
+            <div class="login-form-card">
+              <h3 class="add_name">Manage Services</h3>
+              <a href="add-operator.php" class="add-btn " data-toggle="modal" data-target="#exampleModal" style="position: absolute;top: 1%;right: 4%;"><i class="fa fa-plus mr-5"></i>Add</a>
+               <form method="GET">
+              <div class="row">
+
+                <div class="col-md-12">
+                  <label for="inputDate">Date</label>
+                </div>
+                
+                <div class="col-md-4">
+                <div class="form-group">
+                  
+                  <input type="text" value="{{from_date|default:''}}" class="form-control" id="inputDate" name="from_date" placeholder="From date" required="">
+                </div>
+              </div>
+                <div class="col-md-4">
+                <div class="form-group">
+                  
+                  <input type="text" value="{{to_date|default:''}}" class="form-control" id="inputDate-1" name="to_date" placeholder="To date" required="">
+                </div>
+              </div>
+              <div class="col-md-2">
+              <div class="form-group">
+                 <button type="submit" class="btn btn-primary" >search</button>
+              </div>
+            </div>
+              </div>
+             
+              </form>
+             <!--  <form style="padding: 15px 0;position: relative;top: 8px;left: 71%;">
+                <label class="searchh">Search:<input type="search" class="form-control" placeholder="" aria-controls="example"></label>
+              </form> -->
+              <div>
+                <div >
+                  <div class="table-responsive">
+                    <table id="example" class="table table-striped display " style="width:100%">
+                      <thead>
+                        <tr>
+                          <th ><div class="checkbox "><input type="checkbox" class="dt-checkboxes service_type"><label></label></div></th>
+                          <th class="question-1">&nbsp;Services</th>
+                          <th>Image</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                          
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          {% if get_services %}
+                          {% for data in get_services %}
+                          <td><div class="checkbox" ><input type="checkbox" class="dt-checkboxes service_type" 
+                            value="{{data.id}}"><label></label></div></td>
+                          
+                          <td> {{data.tailor_speci}}</td>
+                          <td><img src="{{data.img.url}}" style="width: 100px;"></td>
+                          <td>
+                            
+                              {% if data.status == True %}
+                              <button type="button" class="badge badge-gradient-info service_status" id="{{data.id}}" servicestatus="{{data.status}}">Active</button>
+                              {% else %}
+                              <button type="button" class="badge badge-gradient-info service_status"  id="{{data.id}}" servicestatus="{{data.status}}">DeActive</button>
+                              {% endif %}
+                          </td>
+                          <td>
+                           <!--  <table class="act-button">
+                             
+                                <td ><a href="javascript:void(0)" data-id="{{data.id}}" title="Edit" class="btn-edit delete_service"><span class="fa fa-pencil"></span></a></td>
+                            
+                            </table> -->
+                            <table class="act-button">
+                              <tbody><tr>
+                                <td><a href="javascript:void(0)" title="Edit" data-id="{{data.id}}" class="btn-edit edit_service"><i class="fa fa-pencil"></i></a></td>
+                                <td><a href="javascript:void(0)" data-id="{{data.id}}" class="btn-delete delete_service" title="Delete" ><span class="fa fa-trash"></span></a></td>
+                              
+                              </tr>
+                            </tbody></table>
+                          </td>
+                        </tr>
+                       {% endfor %}
+                       {% endif %}
+                       
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="row">
+                <div class="col-md-12 ">
+                  
+                  
+                  <nav>
+                    <ul class="pagination">
+                      <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-left"></i></a></li>
+                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" href="#">4</a></li>
+                      <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-right"></i></a></li>
+                    </ul>
+                  </nav>
+                  
+                </div>
+              </div>
+              &nbsp; -->
+              <button class="btn btn-primary changestatus" data-status="Activate" type="button" aria-haspopup="true" aria-expanded="false">
+              Activate All
+              </button>
+              <button class="btn btn-primary changestatus" data-status="Deactivate" type="button" aria-haspopup="true" aria-expanded="false">
+              Deactivate All
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Add services modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #2088ca;">
+          <h5 class="modal-title" id="exampleModalLabel">Add Services</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+            {% csrf_token %}
+            <label></label>
+            <input type="text" name="servicename" class="form-control" placeholder="Add Service" required="">
+            <label></label>
+            <textarea name="description" rows="10" placeholder="Add Description" class="form-control" required=""></textarea>
+            <label></label>
+            <!-- <input type="file" name="" class="form-control"> -->
+           
+            <input type="file"  id="id_Profile_Image" accept="image/*" required=""  class="form-control "/>
+              <div id="show_cropped_image" style="text-align: center;">  </div>
+            <input type="hidden" name="serviceimg" id="profile_image" />
+         
+          <br>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+         </form>
+       <!--  <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary"data-dismiss="modal">Close</button>
+          
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- edit services modal -->
+
+  <div class="modal fade" id="exampleModal-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel-1">Edit Services</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <div class="modal-body">
+     
+      </div>
+     <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+  <!--image crop modal start-->
+<div id="uploadimageModal_edit" class="modal" role="dialog">
+<div class="modal-dialog ">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Upload & Crop Image</h4>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      
+    </div>
+    <div class="modal-body" style="overflow-y: scroll;height: 497px;">
+      <div class="row">
+        <div class="col-md-8 text-center">
+          <div id="profile_image_edit" style="width:300px; margin-top:30px"></div>
+        </div>
+        <div class="col-md-4" style="padding-top:10px;">
+          <br />
+          <br />
+          <br/>
+          <div class="row">
+            <div class="col-md-12 set_loader"></div>
+          </div>
+          <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success crop_image">Save Image</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+<!--image crop modal end-->
+
+         <!--image crop modal start-->
+
+<div id="uploadserviceimageModal_edit" class="modal" role="dialog">
+<div class="modal-dialog ">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Upload & Crop Image</h4>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      
+    </div>
+    <div class="modal-body" style="overflow-y: scroll;height: 497px;">
+      <div class="row">
+        <div class="col-md-8 text-center">
+          <div id="service_image_edit" style="width:300px; margin-top:30px"></div>
+        </div>
+        <div class="col-md-4" style="padding-top:10px;">
+          <br />
+          <br />
+          <br/>
+          <div class="row">
+            <div class="col-md-12 set_loader"></div>
+          </div>
+          <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button  type="button" class="btn btn-success crop_image">Save Image</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+<!--image crop modal end-->
+
+{% endblock %}
+    
+{% block script %}
+
+<script type="text/javascript">
+  //---------Edit User start----------------
+$(document).on("click",".edit_service",function(){
+var id = $(this).data("id");
+console.log(id)
+$.ajax({
+  method:"GET",
+  url :"/admin/manage-services/edit-service/"+id,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#exampleModal-1 .modal-body").html(data);
+     $("#exampleModal-1").modal("show");
+  }
+});
+});
+//---------Edit User end----------------
+  //---------delete User start----------------
+$(document).ready(function(){
+  $(".delete_service").click(function(){
+var delete_value = $(this).data("id");
+
+
+
+     swal({
+          title: "Are you sure?",
+          text: "You want to delete !",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          confirmButtonText: 'Yes, delete it!',
+          closeOnConfirm: false,
+          // closeOnCancel: false
+          },
+          function(isConfirm){
+         if (isConfirm) {
+         var token = '{{csrf_token}}';
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                url: "/admin/manage-services/delete-service/"+delete_value,
+                type: "POST",
+                success: function () {
+                    swal("Done!","It was succesfully deleted!","success");
+                        location.reload();
+                }
+            });
+          }
+          else{
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+       })
+      });
+});
+  //---------delete User end----------------
+//---------active and deactive status Start----------------
+$(document).on('click', ".service_status", function (e) {
+      var serviceid = $(e.currentTarget).attr("id");
+      var servicestatus = $(e.currentTarget).attr('servicestatus');
+      // console.log(serviceid,servicestatus);
+      if(servicestatus == 'True'){
+      varstatus = 'Deactive';
+      }
+      else{
+      varstatus = 'Active';
+      }
+      swal({
+        title: 'Are you sure?',
+        text: varstatus+' this',
+        icon: 'warning',
+        buttons: {
+        cancel: {
+        text: "Cancel",
+        value: null,
+        visible: true,
+        closeModal: true,
+        },
+        confirm: {
+        text: "OK",
+        value: true,
+        visible: true,
+        closeModal: true
+        },
+        }
+        },
+      function(isConfirm){
+      if (isConfirm) {
+      var dataString = 'serviceid='+serviceid+'&servicestatus='+servicestatus;
+      var token = '{{csrf_token}}';
+      $.ajax({
+      method:"POST",
+      headers: { "X-CSRFToken": token },
+      url: "/admin/manage-services/servicestatus",
+      data: dataString,
+      dataType:"json",
+      cache: false,
+      success: function (data) {
+      swal("Done!","succesfully Edited!","success");
+      location.reload();
+      }
+      });
+      }
+      else{
+      swal("Cancelled", "Your status is safe :)", "error");
+      }
+      });
+      });
+//---------active and deactive question End----------------
+</script>
+<script>
+
+
+$(".changestatus").click(function(){
+var status = $(this).data("status");
+
+var service_array=[];
+$(".service_type:checked").each(function(){
+service_array.push($(this).val());
+});
+// var service_array = $('input:checkbox:checked.service_type').map(function(){
+// return this.value; }).get().join();
+// console.log(service_array);
+if (service_array.length === 0){
+  alert("Please Select at least one service to "+status);
+}
+else
+{
+ swal({
+        title: 'Are you sure?',
+        text: status+' selected services',
+        icon: 'warning',
+        buttons: {
+        cancel: {
+        text: "Cancel",
+        value: null,
+        visible: true,
+        closeModal: true,
+        },
+        confirm: {
+        text: "OK",
+        value: true,
+        visible: true,
+        closeModal: true
+        },
+        }
+        },
+      function(isConfirm){
+      if (isConfirm) {
+      var dataString = 'service_array='+service_array+'&status='+status;
+      var token = '{{csrf_token}}';
+      $.ajax({
+      method:"POST",
+      headers: { "X-CSRFToken": token },
+      url: "/admin/manage-services/change-all-service-status",
+      data: {'service_array':service_array,'status':status},
+      dataType:"json",
+      cache: false,
+      success: function (data) {
+      swal("Done!","succesfully Edited!","success");
+      location.reload();
+      }
+      });
+      }
+      else{
+      swal("Cancelled", "Your status is safe :)", "error");
+      }
+      });
+}
+
+ });
+
+$(document).ready(function () {
+$img_crop = $("#profile_image_edit").croppie({
+enableExif: false,
+viewport: {
+width: 341,
+height: 405,
+type: "square",
+},
+boundary: {
+width: 464,
+height: 464,
+},
+enableOrientation: false,
+});
+$("#id_Profile_Image").on("change", function () {
+var status = true;
+var read = new FileReader();
+var fi = document.getElementById('id_Profile_Image');
+if (fi.files.length > 0) {
+for (var i = 0; i <= fi.files.length - 1; i++) {
+
+var fsize = fi.files.item(i).size;
+// console.log(fsize)
+var file = Math.round((fsize / 1024));
+
+if (file > 3072) {
+
+alert("Image is too Big, please select a image less than 3MB size.");
+}
+else
+{
+read.onload = function (event) {
+var img = new Image();
+
+img.src = event.target.result;
+//Validate the File Height and Width.
+img.onload = function () {
+var height = this.height;
+var width = this.width;
+if (height >= 405 && width >= 341) {
+$img_crop
+.croppie("bind", {
+url: event.target.result,
+})
+.then(function () {
+console.log("jQuery bind complete");
+});
+$("#uploadimageModal_edit").modal("show");
+$("#exampleModal").modal("hide");
+} else {
+status = false;
+alert("Please select image greater than 341*405 px.");
+}
+};
+};
+
+}
+
+}
+}
+if (status) {
+read.readAsDataURL(this.files[0]);
+}
+});
+$(".crop_image").click(function (event) {
+$(".crop_image").html("Image Uploading");
+$(".crop_image").attr("disabled", true);
+$img_crop
+.croppie("result", {
+type: "canvas",
+size: "viewport",
+})
+.then(function (response) {
+$(".crop_image").html("Image Upload");
+$(".crop_image").attr("disabled", false);
+$("#profile_image").val(response);
+$("#show_cropped_image").html('<img src="' + response + '">');
+$("#uploadimageModal_edit").modal("hide");
+$("#exampleModal").modal("show");
+});
+});
+});
+
+</script>
+
+{% endblock %}

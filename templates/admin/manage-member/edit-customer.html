@@ -1,0 +1,132 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+    <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                                {% else %}
+            
+                                <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+  <div class="container-fluid">
+    <div class="row p-t-b-20">
+      <div class="col-md-12">
+        <div class="form-card no-b">
+          <div class="login-form-card">
+            <div class="add_category head-div mb-20">
+                <h3 class="add_name">Edit Customer</h3>
+                <a href="#" class="add-btn" onclick="goBack()"><i class="fa fa-arrow-left mr-5"></i>Back</a>
+            </div>
+            <form method="POST">
+              {% csrf_token %} 
+              <div class="row">
+                <div class="col-md-12">
+            
+                    
+                
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Full name</label>
+                    <input type="text" name="name" class="form-control" value="{{get_customer_instance.full_name}}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Email</label>
+                     <input type="text" class="form-control" name="email" value="{{get_customer_instance.user_id.email}}" disabled="">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Phone number </label>
+                       <input type="" class="form-control set_number_only" name="phone" value="{{get_customer_instance.phone}}" maxlength="12">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Member type</label>
+                    <!-- <input type="text" class="form-control" name="usertype" value="{{get_customer_instance.user_type.type_name}}"> -->
+                    <select class="form-control" name="usertype">
+                      {% if get_user_type %}
+                      {% for data in get_user_type %}
+                      {% if data.type_name == get_customer_instance.user_type.type_name %}
+
+                      <option value="{{data.type_name}}" selected="">{{data.type_name}}</option>
+                      {% else %}
+                      <option value="{{data.type_name}}">{{data.type_name}}</option>
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row space-center">
+                <div class="col-md-2">
+                  <a href="">
+                    <input type="submit" class="buttons-action" value="Save">
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</section>
+
+
+
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript">
+
+
+   $(".set_number_only").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl/cmd+A
+            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+C
+            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+X
+            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+ 
+
+
+</script>
+{% endblock %}

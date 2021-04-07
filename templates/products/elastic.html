@@ -1,0 +1,281 @@
+{% load static %}
+<div class="tab-pane" id="tabs-{{id}}" role="tabpanel">
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="accessories" class="accessories" value="{{get_sub_cat_instance.product_category_id.id}}">
+    <input type="hidden" name="elastic" value="{{id}}">
+    <div class="form-group">
+      <label for="" class="bold-font">Type</label>
+      <select class="form-control"  required="" name="material_type2">
+        {% if get_material_type2 %}
+          <option class="active"></option>
+          {% for data in get_material_type2 %}
+            <option value="{{data.id}}">{{data.name}}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="" class="bold-font">Country Origin</label>
+      <select class="form-control" id="" required="" name="country">
+        {% if get_countries %}
+          <option class="active"></option>
+          {% for data in get_countries %}
+            <option value="{{data.id}}">{{data.country_name}}</option>
+            
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="formControlRange" class="bold-font">Size Width</label>
+      <input type="range" class="form-control-range" name="size"id="formControlRange" required="">
+    </div>
+    <div class="form-group">
+      <label for="" class="bold-font">Price</label>
+       <div class="row">
+        <div class="col-md-2 pr-2">
+          <select class="form-control"  name="currency" required="">
+            <option class="active"></option>
+                        {% if get_currency %}
+                           {% for data in get_currency %}
+                           
+                           <!-- {% if data.symbol %}
+                            <option value="{{data.id}}">{{data.symbol}}</option>
+                            {% else %} -->
+                              <option value="{{data.currency}}">{{data.currency}}</option>
+                              {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                          </select>
+          <!-- <input type="text" class="form-control set_number_only" maxlength="12" name="price" id="" required=""> -->
+        </div>
+        <div class="col-md-10 pl-1">
+      <input type="" class="form-control set_number_only" maxlength="12" name="price" id="" required="">
+    </div>
+  </div>
+    </div>
+    <div class="form-group">
+      <label for="" class="bold-font">Roller</label>
+      
+      <input type="" class="form-control" name="roller" id="" required="">
+    
+    </div>
+    <div class="form-group">
+      <label for="" class="bold-font">Available Colors</label>
+      <div class="picker">
+        <input type="color" value="#FFB61A" style="height: 40px;width: 50px;" id="1000000">
+        <input type="text" autocomplete="off" spellcheck="false" id="2000000" name="color">
+      </div>
+      <fieldset>
+        <!-- Text input-->
+        <div id="items" class="form-group">
+          <div class="col-md-12 margin-bottom">
+          </div>
+        </div>
+      </fieldset>
+      <button id="add" class="btn btn-primary add-more button-yellow uppercase" type="button">+ Add </button> <button type="button" id="remove3" class="btn btn-danger delete btn button-white uppercase" style="display: none;">- Remove </button>
+    </div>
+    
+    
+    <div class="form-group">
+      <label for="" class="bold-font">Other Description</label>
+      <textarea class="form-control" rows="10" name="description" required=""></textarea>
+    </div>
+    <h4 class="bold-font">Upload Image</h4>
+    <div class="row">
+      <div class="col-md-6" style="text-align: -webkit-center;position: relative;left:22px;">
+          <div class="dropzone-wrapper">
+            <div class="dropzone-desc"> <i class="glyphicon glyphicon-download-alt"></i>
+              <p>Choose an image file</p>
+            </div>
+             <div id="show_cropped_image">  </div>
+            <input type="file"  id="id_Profile_Image" accept="image/*"/>
+            
+        
+        </div>
+      </div>
+      
+      
+       <div class="col-md-6" style="text-align: -webkit-center;position: relative;right:22px;">
+        
+        
+          <div class="dropzone-wrapper">
+            <div class="dropzone-desc"> <i class="glyphicon glyphicon-download-alt"></i>
+              <p>Choose an image file</p>
+            </div>
+            <div id="show_cropped_fabric_image2"></div>
+            <input type="file"   id="fabric_product2" class="dropzone">
+            
+          
+        </div>
+      </div>
+    </div> &nbsp;
+    
+    <input type="hidden" name="profilepic" id="profile_image"/>
+    <input type="hidden" name="fabric_product2" id="fabric_image2">
+    <div class="text-right">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+<!--image crop modal start-->
+<div id="uploadimageModal_edit" class="modal" role="dialog">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Upload & Crop Image</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-8 text-center">
+            <div id="profile_image_edit" style="width:300px; margin-top:30px"></div>
+          </div>
+          <div class="col-md-4" style="padding-top:10px;">
+            <br />
+            <br />
+            <br/>
+            <div class="row">
+              <div class="col-md-12 set_loader"></div>
+            </div>
+            <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success crop_image">Save Image</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--image crop modal end-->
+<!--image crop modal start-->
+<div id="uploadfabricimageModal2" class="modal" role="dialog">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Upload & Crop Image</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-8 text-center">
+            <div id="fabric_product_image2" style="width:300px; margin-top:30px"></div>
+          </div>
+          <div class="col-md-4" style="padding-top:10px;">
+            <br />
+            <br />
+            <br/>
+            <div class="row">
+              <div class="col-md-12 set_loader"></div>
+            </div>
+            <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success crop_image_edit">Save Image</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src='{% static "js/product_img_crop_1.js" %}'></script>
+<script src='{% static "js/product_img_crop_2.js" %}'></script>
+<!--image crop modal end-->
+<!-- script for color picker -->
+<script type="">
+$(document).ready(function() {
+const valueInputelastic =  document.getElementById('2000000');
+const colorInputelastic =  document.getElementById('1000000');
+// Sync the color from the picker
+const syncColorFromPickerelastic = () => {
+valueInputelastic.value = colorInputelastic.value;
+};
+// Sync the color from the field
+const syncColorFromTextelastic = () => {
+colorInputelastic.value = valueInputelastic.value;
+};
+// Bind events to callbacks
+colorInputelastic.addEventListener("input", syncColorFromPickerelastic, false);
+valueInputelastic.addEventListener("input", syncColorFromTextelastic, false);
+// Optional: Trigger the picker when the text field is focused
+valueInputelastic.addEventListener("focus", () => colorInputelastic.click(), false);
+// Refresh the text field
+syncColorFromPickerelastic();
+});
+</script>
+<script type="">
+$(document).ready(function() {
+$(".delete").hide();
+//when the Add Field button is clicked
+$("#add").click(function(e) {
+$(".delete").fadeIn("1500");
+//Append a new row of code to the "#items" div
+var elastictext_id = $('input[type="text"]:last').attr('id');
+var elasticcolor_id = $('input[type="color"]:last').attr('id');
+elastictext_id++;
+elasticcolor_id++;
+$("#items").append(
+'<div class="picker next-referral"><input type="color" value="#FFB61A" style="height: 40px;width: 50px;padding: 0px" class="form-control input-md fabriccolor" id="'+elasticcolor_id+'"><input type="text" class="" autocomplete="off" spellcheck="false" class="fabrictext" name="color" id="'+elastictext_id+'"></div>'
+
+);
+var valueInputelastic1 = document.getElementById(elastictext_id);
+var colorInputelastic1 =  document.getElementById(elasticcolor_id);
+var syncColorFromPickerelastic1 = () => {
+
+valueInputelastic1.value= colorInputelastic1.value;
+};
+const syncColorFromTextelastic1 = () => {
+colorInputelastic1.value = valueInputelastic1.value;
+// console.log(colorInputfabric.value);
+};
+// Bind events to callbacks
+colorInputelastic1.addEventListener("input", syncColorFromPickerelastic1, false);
+valueInputelastic1.addEventListener("input", syncColorFromTextelastic1, false);
+// Optional: Trigger the picker when the text field is focused
+valueInputelastic1.addEventListener("focus", () => colorInputelastic1.click(), false);
+syncColorFromPickerelastic1();
+});
+
+$(document).on("click", "#remove3", function() {
+  console.log("elastic");
+$(".next-referral").last().remove();
+
+});
+});
+</script>
+
+
+
+
+<script type="text/javascript">
+  
+
+   $(".set_number_only").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl/cmd+A
+            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+C
+            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+X
+            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+ 
+
+
+</script>

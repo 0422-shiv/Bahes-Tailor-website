@@ -1,0 +1,43 @@
+
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+<div class="banner-profile" style="background: url({{get_termsofservices.header_image.url}}) no-repeat center top;">
+<div class="profile-overlay">
+<div class="container">
+<div class="heading-title supplies text-center">
+      <h1 style="font-size: 27px;">
+      <div class="left-cricle"></div>
+      <div class="right-cricle"></div>
+      <span>{{get_termsofservices.page_name}}</span></h1>
+    </div>
+</div>
+</div>
+</div>
+<div class="breadcr4eam">
+<div class="container">
+<nav class="breadcrumb-new">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">{{get_termsofservices.page_name}}</a></li>
+    
+  </ol>
+</nav>
+       
+</div>
+</div>
+
+<section class="bg-lightshow">
+<div class="container">
+<div class="row">
+<!-- <div class="col-md-12"><h1 class="about-us mb-4">{{get_termsofservices.page_name}}</h1></div> -->
+
+<div class="col-md-12">
+	{{get_termsofservices.description|safe}}
+</div>
+
+</div>
+</div>
+</section>
+
+
+{% endblock %}

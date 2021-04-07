@@ -1,0 +1,229 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+  <div class="banner-profile">
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>Products</span></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'findproducts:FindProducts'%}">Products</a></li>
+          
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+  <section class="bg-lightshow">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="supliers-left">
+            <h3>Filter</h3>
+            <div class="filter-menu">
+              <div class="accordion" id="faq">
+                <div class="card">
+                  <div class="card-header" id="faqhead1">
+                    <a href="#" class="btn-header-link" data-toggle="collapse" data-target="#faq1"
+                    aria-expanded="true" aria-controls="faq1">Products</a>
+                  </div>
+                  <div id="faq1" class="collapse show" aria-labelledby="faqhead1" data-parent="#faq" style="border-bottom:0px;">
+                    <div class="card-body">
+                      <ul class="filters">
+                        {% if get_products_subcat %}
+                          {% for data in get_products_subcat %}
+                            {% if data in get_filter_products_subcat %}
+                            
+                            <li><a href="javascript:void(0)">{{data.subcategory_name}} <span><input type="checkbox"  value="product={{data.subcategory_name}}" class="product_type" checked="" /></span></a></li>
+                            {% else %}
+                             <li><a href="javascript:void(0)">{{data.subcategory_name}} <span><input type="checkbox"  value="product={{data.subcategory_name}}" class="product_type" /></span></a></li>
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                        {% if get_filter_fabric_product %}
+                        <li><a href="javascript:void(0)">{{get_fabric_product.category_name}} <span><input type="checkbox"  value="product={{get_fabric_product.category_name}}" class="product_type" checked="" /></span></a></li>
+                        {% else %}
+                         <li><a href="javascript:void(0)">{{get_fabric_product.category_name}} <span><input type="checkbox"  value="product={{get_fabric_product.category_name}}" class="product_type"/></span></a></li>
+                         {% endif %}
+                        <!--  <li><a href="#">Fabrics <span><input type="checkbox"/></span></a></li>
+                        <li><a href="#">Zippers <span><input type="checkbox"/></span></a></li>
+                        <li><a href="#">Tape <span><input type="checkbox"/></span></a></li>
+                        <li><a href="#">Trim Elastic <span><input type="checkbox"/></span></a></li>
+                        <li><a href="#">Closures <span><input type="checkbox"/></span></a></li> -->
+                        
+                      </ul>
+                      
+                    </div>
+                  </div>
+                </div>
+                
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="supplier_colorbox">
+            <h3 class="mb-4">Products
+            <div class="supplier_count"><span>{{get_products|length}}</span>
+          </div>
+          </h3>
+          <div class="supplier_counts">
+            <p class="sortby">Sort By :</p>
+            <div class="dropdown">
+              
+              <select class="form-control" id="short_by">
+                <option value="">sort</option>
+                
+                {% for data in q_list %}
+                
+                {% if data == q_sort_by %}
+                <option  value="sort-by={{data}} " selected="">{{data}}</option> 
+              
+                
+                {% else %}
+                <option value="sort-by={{data}}">{{data}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="supliers-list">
+          <!-- <h3 class="mb-4">Products</h3> -->
+          <div class="row">
+            {% if get_products %}
+            {% for data in get_products %}
+           
+            <div class="col-md-4 mb-4">
+              <div class="product-box textlimit">
+               <a href="{% url 'findproducts:ProductDetail' data.id %}"> 
+                
+                {% if data.image_1 %}
+                <img src="{{data.image_1.url}}">
+                {% elif data.image_2%}
+                <img src="{{data.image_2.url}}">
+                {% else %}
+                <img src="{% static 'images/no-image.jpg' %}">
+                {% endif %}
+
+              </a>
+                <a href="{% url 'findproducts:ProductDetail' data.id %}"><h4 >
+                  {% if data.Product_subcategory %}
+                  <span>{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</span>
+                  {% else %}
+                  <span>{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</span>
+                  {% endif %}
+                </h4></a>
+                <a href="{% url 'findproducts:ProductDetail' data.id %}" > <p data-maxlength="15"><span>{{data.user_id.userx.full_name}}</span></p></a>
+                <div class="text-right">
+                  <a href="{% url 'findproducts:ProductDetail' data.id %}" tabindex="0" class="kw">{{data.price}} {{data.currency}}</a>
+                </div>
+              </div>
+            </div>
+
+            {% endfor %}
+            {% endif %}
+          </div>
+          <nav aria-label="Page navigation " class="supplier-pagination mt-4">
+            {% if get_products.has_other_pages %}
+              <ul class="pagination justify-content-center">
+                {% if get_products.has_previous %}
+                  <li class="page-item"><a class="page-link" href="?{% if q_sort_by %}sort-by={{q_sort_by}}&{% endif %}{% if get_filter_products_subcat %}{% for data in get_filter_products_subcat %}product={{data.subcategory_name}}&{% endfor %}{% endif %}{% if get_filter_fabric_product %}{% for item in get_filter_fabric_product%}product={{item.category_name}}&{% endfor %}{% endif %}page={{ get_products.previous_page_number }}">Previous</a></li>
+                {% else %}
+                  <li class="disabled page-item"></li>
+                {% endif %}
+                {% for i in get_products.paginator.page_range %}
+                  {% if get_products.number == i %}
+                    <!-- <li class="active page-item"><span>{{ i }} <span class="sr-only">(current)</span></span></li> -->
+                    <li class="page-item active"><a class="page-link" href="?{% if q_sort_by %}sort-by={{q_sort_by}}&{% endif %}{% if get_filter_products_subcat %}{% for data in get_filter_products_subcat %}product={{data.subcategory_name}}&{% endfor %}{% endif %}{% if get_filter_fabric_product %}{% for item in get_filter_fabric_product%}product={{item.category_name}}&{% endfor %}{% endif %}page={{ i }}">{{ i }}</a></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link" href="?{% if q_sort_by %}sort-by={{q_sort_by}}&{% endif %}{% if get_filter_products_subcat %}{% for data in get_filter_products_subcat %}product={{data.subcategory_name}}&{% endfor %}{% endif %}{% if get_filter_fabric_product %}{% for item in get_filter_fabric_product%}product={{item.category_name}}&{% endfor %}{% endif %}page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if get_products.has_next %}
+                  <li class="page-item"><a class="page-link" href="?{% if q_sort_by %}sort-by={{q_sort_by}}&{% endif %}{% if get_filter_products_subcat %}{% for data in get_filter_products_subcat %}product={{data.subcategory_name}}&{% endfor %}{% endif %}{% if get_filter_fabric_product %}{% for item in get_filter_fabric_product%}product={{item.category_name}}&{% endfor %}{% endif %}page={{ get_products.next_page_number }}">Next</a></li>
+                {% else %}
+                  <li class="disabled page-item"></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="view-profile-div">
+    <div class="ksd">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+          <span class="close-box" data-dismiss="modal" aria-label="Close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </span>
+          <div class="modal-body padding-ksd">
+            <div class="ksd-pay bg-colorform">
+              <p>Kindly pay one time Registration Fee.</p>
+              <h2>29.900 kd</h2>
+              <a href="#" class="pay-now">Pay Now</a>
+            </div>
+            
+            
+            
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+$(document).on('change',"#short_by",function(){
+var short_by = $(this).val();
+// alert(short_by);
+window.location.href = short_by;
+set_short_filter(short_by);
+
+});
+
+$(document).on("change",".filters",function(){
+  // alert('hello');
+set_short_filter();
+});
+
+
+function set_short_filter(set_filter="")
+{ 
+// $(".filters :checkbox").click(function() {
+var product_type = "";
+$(".product_type:checked").each(function(){
+product_type = product_type+"&"+$(this).val();
+console.log(product_type);
+
+});
+var setfilterURL = "";
+
+if(product_type){setfilterURL = setfilterURL+product_type};
+  if(set_filter){ setfilterURL = setfilterURL+"&"+set_filter; }
+
+window.location.href = "?"+setfilterURL;
+// });
+}
+</script>
+{% endblock %}

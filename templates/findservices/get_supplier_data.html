@@ -1,0 +1,10 @@
+{% load static %}
+{% if get_supplier_data %}
+{% for data in get_supplier_data|slice:":3" %}
+
+
+<li class="{% if forloop.counter == 3 %}overcount{% endif %}"><a href="{% if forloop.counter == 3 %}{% url 'findsupplier:FindSupplier'%}{% else %}{% url 'findsupplier:SupplierView' data.user_id.id %}{% endif %}">
+	{% if data.user_id.userx.image %}<img src="{{data.user_id.userx.image.url}}" alt=""/>{% else %}<img src="{% static 'images/user-(1).png'%}" alt=""/>{% endif %}
+{% if forloop.counter == 3 %}<span>{{get_supplier_count|add:'-3'}} +</span>{% endif %}</a></li>
+{% endfor %}
+{% endif %}

@@ -1,0 +1,217 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+  <div class="banner-profile">
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>Services</span></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'findservices:FindServices'%}">Services</a></li>
+          
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+  <section class="bg-lightshow">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="supliers-left">
+            <h3>Filter</h3>
+            <div class="filter-menu">
+              <div class="accordion" id="faq">
+                
+                <div class="card" >
+                  <div class="card-header" id="faqhead2">
+                    <a href="#" class="btn-header-link collapsed" data-toggle="collapse" data-target="#faq2"
+                    aria-expanded="true" aria-controls="faq2">Services</a>
+                  </div>
+                  <div id="faq2" class="collapse show" aria-labelledby="faqhead2" data-parent="#faq" style="border-bottom:0px;">
+                    <div class="card-body">
+                      <ul id="filters">
+                       <!--  {% if get_tailor_specilization %}
+                          {% for data in get_tailor_specilization %}
+                            <li ><a href="javascript:void(0)" class="get_service" data-id="{{data.id}}" data-name="{{data.id}}">{{data.tailor_speci}} <span><input type="checkbox" value="{{data.tailor_speci|slice:3}}" id="check{{data.id}}" style="opacity:0; position:absolute; left:9999px;" /></span></a></li>
+                          {% endfor %}
+                        {% endif %} -->
+                         {% if get_tailor_specilization %}
+                          {% for data in get_tailor_specilization %}
+                          {% if data in get_tailor_spec %}
+                          
+                                  <li ><a href="javascript:void(0)" >{{data.tailor_speci}} <span><input type="checkbox" value="service={{data.tailor_speci}}"class="service_type" checked/></span></a></li>
+                                
+                          {% else %}
+                                  <li ><a href="javascript:void(0)" >{{data.tailor_speci}} <span><input type="checkbox"  value="service={{data.tailor_speci}}" class="service_type" /></span></a></li>
+                                 {% endif %}
+                                
+
+                          {% endfor %}
+                        {% endif %}
+                        
+                      </ul>
+                      
+                      
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="supplier_colorbox">
+            <h3 class="mb-4">Services
+            <div class="supplier_count-1"><span>{{get_tailor|length}}</span>
+          </div>
+          </h3>
+          <div class="supplier_counts">
+            <p class="sortby">Sort By :</p>
+            <div class="dropdown">
+             
+             <div class="dropdown">
+            <select class="form-control" id="short_by">
+                <option value="">sort</option>
+                
+               
+                
+                {% if 'Name' == q_sort_by %}
+                <option  value="sort-by=Name" selected="">Name</option> 
+              
+                
+                {% else %}
+                <option value="sort-by=Name">Name</option>
+                {% endif %}
+              
+              </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="supliers-list" id="demo">
+          <!-- <h3 class="mb-4">Services</h3> -->
+          {% if get_tailor %}
+          {% for data in get_tailor %}
+          <div class="mb-4 border-bottom pb-4 {{data.tailor_speci|slice:3}} hide">
+            <div class="row ">
+              <div class="col-md-4">
+                <div class="services-box shadow">
+                  <img src="{{data.img.url}}" alt="">
+                  <h4>{{data.tailor_speci|upper}}</h4>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="subit">
+                  <h3>{{data.tailor_speci|upper}}</h3>
+                  <p>{{data.description}}</p>
+                  <div class="profile-div">
+
+                    <ul>
+                      {{data|get_supplier}}
+                     
+                       </ul>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% endif %}
+          <nav aria-label="Page navigation " class="supplier-pagination">
+          
+{% if get_tailor.has_other_pages %}
+<ul class="pagination justify-content-center">
+    {% if get_tailor.has_previous %}
+      <li class="page-item"><a class="page-link" href="?{% if get_tailor_spec %}{% for data in get_tailor_spec %}service={{data.tailor_speci}}&{% endfor %}{% endif %}{% if q_sort_by %}sort-by={{q_sort_by}}&{% endif %}page={{ get_tailor.previous_page_number }}">Previous</a></li>
+    {% else %}
+      <li class="disabled page-item"></li>
+    {% endif %}
+    {% for i in get_tailor.paginator.page_range %}
+      {% if get_tailor.number == i %}
+        <!-- <li class="active page-item"><span>{{ i }} <span class="sr-only">(current)</span></span></li> -->
+        <li class="page-item active"><a class="page-link" href="?{% if get_tailor_spec %}{% for data in get_tailor_spec %}service={{data.tailor_speci}}&{% endfor %}{% endif %}{% if q_sort_by %}sort-by={{q_sort_by}}&{% endif %}page={{ i }}">{{ i }}</a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?{% if get_tailor_spec %}{% for data in get_tailor_spec %}service={{data.tailor_speci}}&{% endfor %}{% endif %}{% if q_sort_by %}sort-by={{q_sort_by}}&{% endif %}page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if get_tailor.has_next %}
+      <li class="page-item"><a class="page-link" href="?{% if get_tailor_spec %}{% for data in get_tailor_spec %}service={{data.tailor_speci}}&{% endfor %}{% endif %}{% if q_sort_by %}sort-by={{q_sort_by}}&{% endif %}page={{ get_tailor.next_page_number }}">Next</a></li>
+    {% else %}
+      <li class="disabled page-item"></li>
+    {% endif %}
+  </ul>
+{% endif %}
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+$(document).on('change',"#short_by",function(){
+var short_by = $(this).val();
+// alert(short_by);
+window.location.href = short_by;
+set_short_filter(short_by);
+
+});
+
+$(document).on("change","#filters",function(){
+  // alert('hello');
+set_short_filter();
+});
+
+
+function set_short_filter(set_filter="")
+{ 
+// $("#filters :checkbox").click(function() {
+var service_type = "";
+$(".service_type:checked").each(function(){
+    service_type = service_type+"&"+$(this).val();
+  
+  
+       });
+ var setfilterURL = "";
+ if(service_type){setfilterURL = setfilterURL+service_type};
+  if(set_filter){ setfilterURL = setfilterURL+"&"+set_filter; }
+
+window.location.href = "?"+setfilterURL;
+// });
+}
+</script>
+<!-- <script type="text/javascript">
+$( document ).ready(function() {
+    var x=0;
+    {% if get_tailor %}
+          {% for data in get_tailor %}
+           {% if get_services %}
+                      {% for item in get_services  %}
+                      {% if data.tailor_speci == item.tailor_speci_id.tailor_speci %}
+                      x++;
+                      break;
+                      {% endif %}
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+          console.log(x);
+
+});
+</script> -->
+{% endblock %}

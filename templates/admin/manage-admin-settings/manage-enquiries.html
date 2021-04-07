@@ -1,0 +1,274 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                                {% else %}
+            
+                                <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+   <div class="container-fluid">
+      <div class="row p-t-b-20">
+         <div class="col-md-12">
+            <div class="form-card no-b">
+               <div class="login-form-card">
+                  <h3 class="add_name">Manage Help Enquiries</h3>
+                        <form method="GET">
+              <div class="row">
+
+                <div class="col-md-12">
+                  <label for="inputDate">Date</label>
+                </div>
+                
+                <div class="col-md-4">
+                <div class="form-group">
+                  
+                  <input type="text" value="{{from_date|default:''}}" class="form-control" id="inputDate" name="from_date" placeholder="From date" required="">
+                </div>
+              </div>
+                <div class="col-md-4">
+                <div class="form-group">
+                  
+                  <input type="text" value="{{to_date|default:''}}" class="form-control" id="inputDate-1" name="to_date" placeholder="To date" required="">
+                </div>
+              </div>
+              <div class="col-md-2">
+              <div class="form-group">
+                 <button type="submit" class="btn btn-primary" >search</button>
+              </div>
+            </div>
+              </div>
+             
+              </form>
+             <!-- <form style="padding: 15px 0;position: relative;top: 8px;left: 71%;">
+                <label class="searchh">Search:<input type="search" class="form-control" placeholder="" aria-controls="example"></label>
+             </form> -->
+                  <div class="table-responsive">
+                     <table id="example" class="table table-striped " style="width:100%">
+                        <thead>
+                           <tr>
+                             <th ><div class="checkbox "><input type="checkbox" class="dt-checkboxes enquiries"><label></label></div></th>
+                              <th> Posted On</th>
+                              <th>Posted By</th>
+                              <th>Message</th>
+                              <th>Email</th>
+            
+                              <th>Action</th>
+                        
+                           </tr>
+                        </thead>
+                        <tbody>
+                          {% if get_enquiries %}
+                          {% for data in get_enquiries %}
+                           <tr>
+                               <td><div class="checkbox" ><input type="checkbox" class="dt-checkboxes enquiries" 
+                            value="{{data.id}}"><label></label></div></td>
+                              <td>{{data.created_date|date:'d/m/y'}}</td>
+                              <td>{{data.name}}</td>
+                              <td>{{data.message|slice:'0:15'}}</td>
+                              <td>{{data.email}}</td> 
+                    
+                              <td >
+                                 <table class="act-button">
+                                    <tr>
+                                     
+                                      <!--  <td><button type="button" data-id="{{data.id}}" class="btn btn-gradient-info btn-fw reply_enquiry"  data-toggle="modal" data-target="#exampleModal">Reply</button></td> -->
+                                      {% if data.reply_status == False %}
+
+                                       <td><button type="button" data-id="{{data.id}}" class="btn btn-gradient-info btn-fw reply_enquiry" >Reply</button></td>
+                                       {% else %}
+                                       <td><button type="button" data-id="{{data.id}}" class="btn btn-gradient-info btn-fw"  data-toggle="modal" data-target="#exampleModal-12">Replied</button></td>
+                                     {% endif %}
+                                    </tr>
+                                 </table>
+                              </td>
+                           </tr>
+                             {% endfor %}
+                             {% endif %}
+                        </tbody>
+                     </table>
+                  </div>
+                   <!--  <div class="row">
+                <div class="col-md-12 ">
+               
+                    
+                    <nav>
+
+                      <ul class="pagination text">
+                        <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-left"></i></a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-right"></i></a></li>
+                      </ul>
+                    </nav>
+                  
+              </div>
+              </div> -->
+                  &nbsp;
+      <div>           
+  <button class="btn btn-primary delete_enquiries" type="button"  aria-haspopup="true" aria-expanded="false">
+    Delete 
+  </button>
+</div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>Message</h3>
+        <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</p>
+        <form>
+          <label>Email</label>
+          <input type="text" name="" class="form-control" placeholder="Email">
+          <br>
+          <label>Subject</label>
+          <input type="text" name="" class="form-control" placeholder="Subject">
+          <br>
+          <label>Description</label>
+          <textarea rows="4" cols="50" name="comment" form="usrform" class="form-control">
+</textarea>
+        </form>
+        <br>
+        <button class="btn btn-primary">Submit</button>
+      </div>
+     <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="exampleModal-12" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-12" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <p>You Have Already Replied</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Submit</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+</section>
+{% endblock %}
+
+    
+{% block script %}
+
+<script type="text/javascript">
+  //---------reply User start----------------
+$(document).on("click",".reply_enquiry",function(){
+var id = $(this).data("id");
+
+$.ajax({
+  method:"GET",
+  url :"/admin/manage-admin-settings/reply/"+id,
+  dataType:"html",
+
+  success:function(data)
+  {
+ 
+     $("#exampleModal .modal-body").html(data);
+     $("#exampleModal").modal("show");
+  }
+});
+});
+//---------reply User end----------------
+</script>
+<!-- multiple delete start -->
+<script type="text/javascript">
+
+
+
+$(".delete_enquiries").click(function(){
+
+
+var enquiries_array=[];
+$(".enquiries:checked").each(function(){
+enquiries_array.push($(this).val());
+});
+// console.log(enquiries_array);
+if (enquiries_array.length === 0){
+  alert("Please Select at least one enquiry ");
+}
+else
+{
+
+     swal({
+          title: "Are you sure?",
+          text: "You want to delete !",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          confirmButtonText: 'Yes, delete it!',
+          closeOnConfirm: false,
+          // closeOnCancel: false
+          },
+          function(isConfirm){
+         if (isConfirm) {
+         var token = '{{csrf_token}}';
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                url: "/admin/manage-admin-settings/delete-enquiries/",
+                type: "POST",
+                data:{'enquiries_array':enquiries_array},
+                success: function () {
+                
+                    swal("Done!","It was succesfully deleted!","success");
+                        location.reload();
+                }
+            });
+          }
+          else{
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+       })
+}
+});
+</script>
+<!-- multiple delete end -->
+{% endblock%}

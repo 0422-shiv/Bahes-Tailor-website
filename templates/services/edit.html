@@ -1,0 +1,155 @@
+ 
+
+<form method="POST" action="/my-services/edit-service/{{service_instance.id}}">
+    {% csrf_token %}
+  <div class="form-group">
+    <label for="" class="bold-font">Supplier Name</label>
+    <input type="text" class="form-control" id="" name="full_name" value="{{userprofile.full_name}}" disabled="">
+  </div>
+ <div class="form-group">
+    <label for="" class="bold-font">Business Country Location</label>
+    {{form.country_id}}
+   <!--  <select class="form-control" id="">
+      <option class="active">select</option>
+      <option>Australia</option>
+       <option>India</option>
+      <option>Australia</option>
+    </select> -->
+  </div>
+
+ <div class="form-group">
+    <label for="" class="bold-font">Tailor Specialization</label>
+     <!-- {{form.tailor_speci_id}} -->
+   <select class="form-control" name="tailor_spec" >
+      {% if get_tailor_spec %}
+      <option class="active">select</option>
+      {% for data in get_tailor_spec %}
+      {% if data.id == service_instance.tailor_speci_id.id %}
+      <option value="{{service_instance.tailor_speci_id.id}}" selected="">{{service_instance.tailor_speci_id.tailor_speci}}</option>
+      {% else %}
+      <option value="{{data.id}}">{{data.tailor_speci}}</option>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+    </select>
+  </div>
+   <div class="form-group">
+    <label for="" class="bold-font">Tailor Experience</label>
+    {{form.tailor_experience}}
+    <!-- <input type="text" class="form-control" id="" name="full_name" value="{{userprofile.full_name}}"> -->
+  </div>
+ <div class="form-group">
+    <label for="" class="bold-font">Targeted Customer</label>
+     {{form.targeted_customer}}
+   <!--  <select class="form-control" id="">
+      <option class="active">select</option>
+      <option>Australia</option>
+       <option>India</option>
+      <option>Australia</option>
+    </select> -->
+  </div>
+   <div class="form-group">
+    <label for="" class="bold-font">Tailor Staff Gender</label>
+     {{form.tailor_staff_gender}}
+   <!--  <select class="form-control" id="">
+      <option class="active">select</option>
+      <option>Male</option>
+       <option>Female</option>
+      
+    </select> -->
+  </div>
+  <div class="form-group">
+    <label for="" class="bold-font">Phone Number</label>
+    <input type="" class="form-control" id="" name="phone" value="{{userprofile.phone}}">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1" class="bold-font">Full Address</label>
+     {{form.address}}
+    <!-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> -->
+  </div>
+
+   <label for="" class="bold-font">Can the store ship the product outside the country?</label>
+  <div class="form-control checkbox-div">
+  {% if service_instance.ship_outside_country %}
+  <div class="form-check">
+
+  <input class="form-check-input" type="radio" name="flexRadioDefault" value="yes" id="flexRadioDefault1" checked>
+  <label class="form-check-label" for="flexRadioDefault1">
+    Yes
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="flexRadioDefault" value="No" id="flexRadioDefault2" >
+  <label class="form-check-label" for="flexRadioDefault2">
+    No
+  </label>
+</div>
+{% else %}
+<div class="form-check">
+
+  <input class="form-check-input" type="radio" name="flexRadioDefault" value="yes" id="flexRadioDefault1" >
+  <label class="form-check-label" for="flexRadioDefault1">
+    Yes
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="flexRadioDefault" value="No" id="flexRadioDefault2" checked>
+  <label class="form-check-label" for="flexRadioDefault2">
+    No
+  </label>
+</div>
+{% endif %}
+  </div>
+ <div class="text-right">  <button type="submit" class="btn btn-primary">Submit</button></div>
+ 
+</form>
+
+<script type="text/javascript">
+
+
+
+$(document).ready(function(){
+  $("select").each(function(){
+    if($(this).prop('multiple'))
+    {
+        $(this).multiselect({
+            includeSelectAllOption: true,
+
+          // selectAllJustVisible: true,
+    // enableFiltering: true,
+    //filterPlaceholder: 'Suchen...',
+    // enableCaseInsensitiveFiltering: true,
+          });  
+    }
+
+  });
+
+  
+});
+</script>
+<script type="text/javascript">
+
+
+   $(".set_number_only").keydown(function (e) {
+       
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+         
+            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+        
+            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+       
+            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+       
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+               
+                 return;
+        }
+       
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+ 
+
+
+</script>

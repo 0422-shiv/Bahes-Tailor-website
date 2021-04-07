@@ -1,0 +1,276 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bahes Admin</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="icon" href="{% static 'images/favicon.png'%}" type="image/x-icon"> -->
+    <link rel="shortcut icon" href="{% static 'images/fevicon.png'%}" type="image" />
+     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'bahes_admin/css/admin.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" type="text/css" href="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.9/css/dataTables.checkboxes.css">
+    <link rel="stylesheet" href="{% static 'bahes_admin/css/bootstrap-multiselect.css'%}">
+    <link href="{% static 'bahes_admin/css/select2.min.css'%}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="{% static 'bahes_admin/css/intlTelInput.css'%}" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" href='{% static "css/croppie.css" %}'  type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+  </head>
+  <div id="wrapper">
+    <aside id="sidebar-wrapper" class="shadow1">
+      <div class="sidebar-brand">
+        <a href="{% url 'admin_dashboard:AdminDashboard' %}">
+        <img src="{% static 'bahes_admin/images/logo-bahes.png'%}" class="desktop-logo"></a>
+      </div>
+      <ul class="sidebar-nav">
+        <li>
+          <a href="{% url 'admin_dashboard:AdminDashboard' %}"><i class="fa fa-dashboard"></i>Dashboard</a>
+        </li>
+        
+        <li><div class="dropdown show">
+          <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-file-text"></i>&nbsp; Manage member
+          </a>
+          <div class="collapse" id="collapseExample">
+            <a class="dropdown-item" href="{% url 'manage_member:ManageCustomer' %}">Manage Customer</a>
+            <a class="dropdown-item" href="{% url 'manage_member:ManageSupplier' %}">Manage Supplier</a>
+          </div>
+        </div></li>
+        <li>
+          <a href="{% url 'manage_cms:ManageCms'%}"><i class="fa fa-book"></i>Manage CMS Pages</a>
+        </li>
+        
+        <li>
+          <a href="{% url 'manage_questions:ManageQuestions' %}"><i class="fa fa-user"></i>Manage Questions</a>
+        </li>
+        <li>
+          <a href="{% url 'manage_services:ManageServices'%}"><i class="fa fa-list-alt"></i>Manage Services</a>
+        </li>
+        <li>
+          <a href="{% url 'manage_products:ManageProducts'%}"><i class="fa fa-support"></i>Manage Product</a>
+        </li>
+        <li>
+          
+        </li>
+         <li><div >
+          <a  href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-3" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-id-card"></i> Manage Payments
+          </a>
+     
+        </div></li>
+       <!--  <li><div class="dropdown show">
+          <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-3" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-id-card"></i> Manage Payments
+          </a>
+          <div class="collapse" id="collapseExample-3">
+            <a class="dropdown-item" href="{% url 'manage_payments:ManageCost'%}">Manage Reg. Cost</a>
+            <a class="dropdown-item" href="{% url 'manage_payments:ManageOrder'%}">Manage Orders</a>
+          </div>
+        </div></li> -->
+        
+        <li><div class="dropdown show">
+          <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-2" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog"></i>&nbsp; Manage Admin Setting
+          </a>
+          <div class="collapse" id="collapseExample-2">
+            <a class="dropdown-item" href="{% url 'manage_admin_settings:ChangePassword'%}">Change Password</a>
+            <a class="dropdown-item" href="{% url 'manage_admin_settings:EmailSettings'%}">Email Setting</a>
+            <a class="dropdown-item" href="{% url 'manage_admin_settings:ManageEnquiries'%}">Manage Help Enquiries</a>
+          </div>
+        </div></li>
+        
+      </ul>
+    </aside>
+    <div id="navbar-wrapper">
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="header-cont d-flex justify-content-between">
+            <div class="navbar-header">
+              <a href="#" class="navbar-brand" id="sidebar-toggle"><i class="fa fa-bars"></i>
+              <img src="{% static 'bahes_admin/images/icons/logo.png' %}" class="mobile-logo"></a>
+              <!-- <a href="dashboard.php  ">
+              </a> -->
+            </div>
+            <div class="head-right">
+              <ul>
+                <li>
+                  <i class="fa fa-user-circle" style="color: #2088ca;font-size: 25px; position: relative;top: 3px;"></i><span style="color: #2088ca;font-size: 20px;padding: 9px 2px 9px 15px;font-weight: 600;">{{request.user}}</span>
+                </li>
+                <li><a href="{% url 'logout' %}"><button class="btn btn-outline-primary">Log Out</button></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <!-- header end -->
+    {% block content %}
+    {% endblock %}
+    <!-- footer start -->
+    <script src="{% static 'bahes_admin/js/jquery.min.js'%}"></script>
+    <script src="{% static 'bahes_admin/js/popper.min.js'%}"></script>
+    <script src="{% static 'bahes_admin/js/bootstrap.min.js'%}"></script>
+    <script src="{% static 'bahes_admin/js/bootstrap-multiselect.js'%}"></script>
+    <!--  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script> -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'bahes_admin/js/select2.min.js'%}"></script>
+    <!--    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script> -->
+   
+    <script type="text/javascript" src="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.9/js/dataTables.checkboxes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src='{% static "js/croppie.js" %}'></script>
+    <!-- <script src='{% static "js/crop_service.js" %}'></script> -->
+    <script src='{% static "js/crop_cms_header.js" %}'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+     <script>
+                 $(document).ready(function(){
+   var table = $('#example').DataTable({
+     // 'ajax': 'https://gyrocode.github.io/files/jquery-datatables/arrays_id.json',
+      'columnDefs': [
+         {
+            'targets': 0,
+            'render': function(data, type, row, meta){
+             
+               return data;
+            },
+            'checkboxes': {
+               'selectRow': true,
+              
+            }
+         }
+      ],
+      'select': 'multi',
+      'order': [[1, 'asc']]
+   });
+    var table = $('#example-2').DataTable({
+     // 'ajax': 'https://gyrocode.github.io/files/jquery-datatables/arrays_id.json',
+      'columnDefs': [
+         {
+            'targets': 0,
+            'render': function(data, type, row, meta){
+             
+               return data;
+            },
+            // 'checkboxes': {
+            //    'selectRow': true,
+              
+            // }
+         }
+      ],
+      'select': 'multi',
+      'order': [[1, 'asc']]
+   });
+});         
+           </script> 
+                             <script>
+                            
+                        $('textarea#summernote').summernote({
+
+                        placeholder: 'Description',
+                        tabsize: 2,
+                        height: 100,
+                        toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'italic', 'underline', 'clear']],
+                        // ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+                        //['fontname', ['fontname']],
+                        // ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                        ['table', ['table']],
+                        ['insert', ['link', 'picture', 'hr']],
+                        ['view', ['fullscreen', 'codeview']],
+                        ['help', ['help']]
+                        ],
+                        });
+                        </script>
+    <script type="">
+    $(".pushme2").click(function(){
+    $(this).text(function(i, v){
+    return v === 'PAID' ? 'UNPAID' : 'UNPAID'
+    });
+    });
+    </script>
+    <script type="">
+    $('#inputDate').datepicker({
+        dateFormat: 'dd-mm-yy'
+    });
+    </script>
+    <script type="">
+    $('#inputDate-1').datepicker({
+    });
+    </script>
+    
+    <script>
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+    for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var dropdownContent = this.nextElementSibling;
+    if (dropdownContent.style.display === "block") {
+    dropdownContent.style.display = "none";
+    } else {
+    dropdownContent.style.display = "block";
+    }
+    });
+    }
+    </script>
+    <!-- <script>
+    $('#wrapper').click(function(e){
+    e.stopPropagation();
+    $('#wrapper').toggleClass('toogled');
+    });
+    $('#wrapper').click(function(e){
+    e.stopPropagation();
+    });
+    $('body,html').click(function(e){
+    $('#wrapper').removeClass('toogled');
+    });
+    </script> -->
+    <script>
+    $("#single").select2({
+    placeholder: "Destination",
+    allowClear: true
+    });
+    $("#single2").select2({
+    placeholder: "Lisiting",
+    allowClear: true
+    });
+    </script>
+    <script>
+    // $(document).ready(function() {
+    // $('#example').DataTable();
+    // } );
+    </script>
+    <script>
+    function goBack() {
+    window.history.back();
+    }
+    </script>
+    
+    <script>    $(document).ready(function() {
+    $('#multiple-checkboxes').multiselect({
+    includeSelectAllOption: true,
+    });
+    });</script>
+    <script>
+    const $button  = document.querySelector('#sidebar-toggle');
+    const $wrapper = document.querySelector('#wrapper');
+    $button.addEventListener('click', (e) => {
+    e.preventDefault();
+    $wrapper.classList.toggle('toggled');
+    });
+    </script>
+    {% block script %}
+    {% endblock %}
+  </body>
+</html>

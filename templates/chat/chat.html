@@ -1,0 +1,430 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+  <div class="banner-profile" >
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>Profile</span></h1>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'homepage:HomePage' %}">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'dashboard:EditProfile' %}">Supplier Profile</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Chat</li>
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+  <section class="bg-light">
+    <div class="container">
+      
+      <div class="row">
+        <div class="col-md-3">
+          
+          <div class="profilebox chartlist">
+            {% if userprofile.image %}
+              <img src="{{userprofile.image.url}}" class="pexels-pixabay mb-2">
+            {% else %}
+              <img src="{% static 'images/dummy-image.png' %}" class="pexels-pixabay mb-2">
+              
+            {% endif %}
+            <!-- Tabs nav -->
+            <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+              
+            <!--   {% if request.user.userx.user_type.type_name == 'supplier'%}
+              {% if get_chat_customer %}
+              {% for data in get_chat_customer %}
+              <a href="javascript:void(0)" class="nav-link active user_room" userid="{{data.id}}">{{data.full_name}} {% if data|message_counter:request.user %}<span id="bahes{{data.user_id.id}}">{{data|message_counter:request.user}}</span>{% endif %}</a>
+              {% endfor %}
+              {% endif %}
+              {% else %}
+              {% if get_chat_supplier %}
+              {% for data in get_chat_supplier %}
+              <a href="javascript:void(0)" class="nav-link active user_room" userid="{{data.id}}" >{{data.full_name}} {% if data|message_counter:request.user %}<span id="bahes{{data.user_id.id}}">{{data|message_counter:request.user}}</span>{% endif %}</a>
+              {% endfor %}
+              {% endif %}
+              {% endif %} -->
+         
+             
+              {% if get_chat_user %}
+              {% for data in get_chat_user %}
+              {% if not request.user == data  %}
+              
+                 
+               <a href="javascript:void(0)" class="nav-link active"  onclick="mychatFunction('{{data.userx.id}}')">
+               {{data.userx.full_name}} {% if data|message_counter:request.user %}<span id="bahes{{data.id}}">{{data|message_counter:request.user}}</span>{% endif %}</a>
+
+           
+               {% endif %}
+              
+              
+              {% endfor %}
+            
+              {% endif %}
+           
+           
+             <!--    {% if get_chat_user %}
+              {% for data in get_chat_user %}
+              {% if request.user == data.sender_id  %}
+                
+               <a href="javascript:void(0)" class="nav-link active"  onclick="mychatFunction('{{data.receiver_id.userx.id}}')">
+               {{data.receiver_id.userx.full_name}} </a>
+              {% else %}
+               <a href="javascript:void(0)" class="nav-link active"  onclick="mychatFunction('{{data.sender_id.userx.id}}')">
+               {{data.sender_id.userx.full_name}} </a>
+               {% endif %}
+              
+              
+              {% endfor %}
+            
+              {% endif %}
+
+   -->
+ 
+      <!--  <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><span>T</span>John Smith<div class="two"></div></a>
+              <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                
+                <span>T</span> Test User</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                  
+                  <span>T</span> Test User</a> -->
+                  
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <div class="bg-lightgray">
+                
+                <div class="buttons_left">
+                  <h1>{{userprofile.full_name}}</h1>
+                  
+                </div>
+                <div class="custom-control custom-switch">
+                  {% if userprofile.online_status %}
+                    <input type="checkbox" class="custom-control-input online_status" onlinestatus="{{userprofile.online_status}}" userid="{{userprofile.id}}" id="customSwitches" checked=""
+                    >
+                    <label class="custom-control-label" for="customSwitches">Online</label>
+                  {% else %}
+                    <input type="checkbox" class="custom-control-input online_status" onlinestatus="{{userprofile.online_status}}" userid="{{userprofile.id}}" id="customSwitches" >
+                    <label class="custom-control-label" for="customSwitches">Offline</label>
+                  {% endif %}
+                  
+                </div>
+                <div class="padding-tops">
+                  <div class="row">
+                    
+                    <div class="col-md-4">
+                      <div class="display_flex">
+                        <i class="fa fa-calendar" style="font-size:24px"></i>
+                        <p class="joineds">{{userprofile.user_id.date_joined}}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="display_flex">
+                        <i class="fa fa-phone" style="font-size:24px"></i>
+                        <p class="joineds">+{{userprofile.tel_code}} {{userprofile.phone}}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-5">
+                      <div class="display_flex">
+                        <i class="fa fa-envelope" style="font-size:24px"></i>
+                        <p class="joineds">{{userprofile.user_id.email}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12 padding-lefts">
+                    
+                    <div class="tabbable-panel">
+                      <div class="tabbable-line">
+                        <ul class="nav nav-tabs">
+                          <li style="
+                      {% if request.user.userx.user_type.type_name == 'customer' %}width: 50%{% endif%}">
+                            <a href="{% url 'dashboard:EditProfile' %}">Edit Profile</a>
+                          </li>
+                          <li class="active" style="
+                      {% if request.user.userx.user_type.type_name == 'customer' %}width: 50%{% endif%}">
+                <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom">Chat
+                 {% if request.user|total_message_counter %}<span id="totalmessagecount">{{request.user|total_message_counter}}</span>{% endif %}</a>
+                            
+                          </li>
+                          {% if request.user.userx.user_type.type_name == 'supplier' %}
+                          <li >
+                            <a href="{% url 'services:Services' %}">My services</a>
+                            
+                          </li>
+                          <li>
+                            <a href="{% url 'products:product'%}">My products</a>
+                          </li>
+                          {% else %}
+                          {% endif %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Tabs content -->
+              <div class="tab-content profile-form" id="v-pills-tabContent">
+                <!-- <div id="roompage"></div> -->
+              
+                
+                 <div id="username"></div><input type="hidden" name="receiver_id" id="userval" />
+                  <div class="row">
+                    <div class="defultdiv">
+                      <img src="http://digimonk.net:6262/media/logo_images/logo.png"/>
+                      <h3>Keep your website connected</h3>
+                      <p>Here is the platform where customer or supplier can easily contact and can get services and products that is provided by suppliers</p>
+                      </div>
+                    <div id="chat_saved_data" style="display: none;" >
+            					
+          					
+          					</div>
+                  
+                   </div>
+                  <div class="round-input_1 texta" style="display: none;">
+                  <input type="text" class="form-control round-input"  placeholder="Write your message" id="chat-message-input">
+                 
+                    <button id="chat-message-submit" type="button" class="fa fa-telegram chatmessagesubmit" style="font-size:24px; color: #2088CA;margin-left: -53px;margin-top: -9px;"></button>
+          
+                  </div>
+
+                  {{ chatbahesroom|json_script:"room-name" }}
+          
+            </div>
+          </div>
+        </div>
+      </section>
+      
+    {% endblock %}
+    {% block script %}
+      <script type="text/javascript">
+         // $(document).on('click', ".user_room", function (e) {
+    
+      // var userid = $(e.currentTarget).attr('userid');
+       function mychatFunction(userid)
+       {
+        console.log(userid);
+      $.ajax({
+      method:"GET",
+     
+      url: "/chat/user/"+userid,
+      
+      dataType:"json",
+     
+      success: function (data) {
+   
+       $("#chat_saved_data").empty();
+       $(".defultdiv").hide();
+       $(".texta").fadeIn("1500");
+       $("#chat_saved_data").fadeIn("1500");
+       $("#bahes"+data.get_id+"").hide();
+         var user_message_count = $("#bahes"+data.get_id+"").text();
+        var totalmessagecount = $("#totalmessagecount").text();
+
+        var a = parseInt(totalmessagecount) - parseInt(user_message_count); 
+       if(a>0){
+       $("#totalmessagecount").html(''+a+'');
+     }
+     else
+     {
+      $("#totalmessagecount").hide();
+     }
+     // console.log(data.chat_data.length);
+     for(var i=0;i<data.chat_data.length;i++)
+  
+     {
+
+    if(data.chat_data[i].sender_id == '{{request.user.id}}')
+    {
+      $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat-2"><p class="text_lorem">'+data.chat_data[i].message_text+'</p></div></div></div>');
+    }
+    else{
+        $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat_1"><p class="text_lorem">'+data.chat_data[i].message_text+'</p></div></div></div>');
+        }
+
+
+     }
+    
+     $("#userval").val(data.get_id);
+      // $(".unread_mess_count").html('<span>'+data.unread_mess_count+'</span>');
+    $("#username").html( '<h4 class="user_1"><span>'+(data.get_name).charAt(0)+'</span>'+data.get_name+'<br><p class="Online">'+(data.get_status == true ? 'Online': 'offline')+'</p></h4>');
+     $("#chat_saved_data").animate({
+              scrollTop: $("#chat_saved_data").get(0).scrollHeight
+          }, 1);
+      }
+      });
+      
+      }
+    
+      //---------active and deactive status Start----------------
+      $(document).on('click', ".online_status", function (e) {
+      
+      var onlinestatus = $(e.currentTarget).attr('onlinestatus');
+      var userid = $(e.currentTarget).attr('userid');
+      
+      var dataString = 'onlinestatus='+onlinestatus+'&userid='+userid;
+      var token = '{{csrf_token}}';
+      $.ajax({
+      method:"POST",
+      headers: { "X-CSRFToken": token },
+      url: "/dashboard/onlinestatus/",
+      data: dataString,
+      dataType:"json",
+      cache: false,
+      success: function (data) {
+      
+      location.reload();
+      }
+      });
+      
+      });
+      //---------active and deactive service End----------------
+      </script>
+       <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+        const chatSocket = new WebSocket('ws://'+window.location.host+'/ws/chat/'+ roomName+'/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            $("#chat_saved_data").animate({
+              scrollTop: $("#chat_saved_data").get(0).scrollHeight
+          }, 1);
+            console.log($('#userval').val());
+      if(((data.message.sender == '{{request.user.id}}') & (data.message.reciever == $('#userval').val())) |((data.message.reciever == '{{request.user.id}}') & (data.message.sender == $('#userval').val())))
+            {
+            if(data.message.sender == '{{request.user.id}}')
+            {
+              $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat-2"><p class="text_lorem">'+data.message.message+'</p></div></div></div>');
+            }
+            else{
+         $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat_1"><p class="text_lorem">'+data.message.message+'</p></div></div></div>');
+            }
+          }
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': {"message":message ,"sender":"{{request.user.id}}","reciever":document.querySelector('#userval').value}
+            }));
+            messageInputDom.value = '';
+             var sender = '{{request.user.id}}'
+      var reciever = $('#userval').val();
+    
+      var dataString = 'message='+message+'&sender='+sender+'&reciever='+reciever;
+     
+      var token = '{{csrf_token}}';
+      $.ajax({
+      method:"POST",
+      headers: { "X-CSRFToken": token },
+      url: "/chat/user/messagesubmit/",
+      data: dataString,
+      dataType:"json",
+      cache: false,
+      success: function (data) {
+      
+      // location.reload();
+      }
+      });
+        };
+    </script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $('button[type="button"]').attr('disabled', true);
+    $('input[type="text"]').on('keyup', function () {
+        var textarea_value = $("#chat-message-input").val();
+        
+        if (textarea_value != '') {
+            $('button[type="button"]').attr('disabled', false);
+            $("#chat_saved_data").animate({
+              scrollTop: $("#chat_saved_data").get(0).scrollHeight
+          }, 1);
+        } else {
+            $('button[type="button"]').attr('disabled', true);
+        }
+    });
+});
+</script>
+
+
+
+
+<script type="text/javascript">
+ 
+window.onload = function()    
+{
+  
+      var userid = '{{id_of_user}}';
+       
+      mychatFunction(userid)
+
+
+
+  var array1 = [];
+  var array2 = [];
+  {% for data in get_chat %}
+      array1.push('{{data.sender_id.id}}');
+      array2.push('{{data.receiver_id.id}}');
+  {% endfor %}
+  // console.log(array1,array2)
+  var array = array1.concat(array2);
+    // Defining function to get unique values from an array
+    function getUnique(array){
+        var uniqueArray = [];
+        
+        // Loop through array values
+        for(i=0; i < array.length; i++){
+            if(uniqueArray.indexOf(array[i]) === -1) {
+                uniqueArray.push(array[i]);
+            }
+        }
+       
+        return uniqueArray;
+    }
+    
+    var names = array;
+    var uniqueNames = getUnique(names);
+    // console.log(uniqueNames);
+    for(i=0; i < uniqueNames.length; i++){
+        // console.log(uniqueNames[i]);
+        var data=uniqueNames[i];
+        // console.log('{{data|show_last_chat_user}}');
+        //  $("#get_no_of_user").append('{{data|show_last_chat_user}}');
+    }
+   
+ }   
+</script>
+    {% endblock %}

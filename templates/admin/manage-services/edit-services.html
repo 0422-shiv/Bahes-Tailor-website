@@ -1,0 +1,26 @@
+  {% load static%}
+ 
+  <form method="POST" action="/admin/manage-services/edit-service/{{service_instance.id}}">
+    {% csrf_token %}
+         <label></label>
+         <input type="text" name="servicename" class="form-control" placeholder="Add Service" value="{{service_instance.tailor_speci}}">
+       
+        
+         <label></label>
+
+         <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" name="description">{{service_instance.description}}</textarea>
+          <label></label>
+      
+          <input type="file"  id="id_edit_service_Image" accept="image/*"class="form-control "/>
+              <div id="show_cropped_image_service" style="text-align: center;"> <img src="{{service_instance.img.url}}">> </div>
+            <input type="hidden" name="serviceimg" id="service_image" />
+      
+       <br>
+       <button type="submit" class="btn btn-primary">Edit</button>
+
+        </form>
+
+<script src='{% static "js/crop_edit_service.js" %}'></script>
+
+<!-- <script src='{% static "js/croppie.js" %}'></script> -->
+

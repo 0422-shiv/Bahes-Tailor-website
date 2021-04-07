@@ -1,0 +1,213 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div class="container-fluid">
+      <div class="row p-t-b-20">
+         <div class="col-md-12">
+            <div class="form-card no-b">
+               <div class="login-form-card">
+                  <h3 class="add_name">Manage Product</h3>
+                        <form method="GET">
+              <div class="row">
+
+                <div class="col-md-12">
+                  <label for="inputDate">Date</label>
+                </div>
+                
+                <div class="col-md-4">
+                <div class="form-group">
+                  
+                  <input type="text" class="form-control" id="inputDate" name="from_date" placeholder="From date" required="" value="{{from_date|default:''}}">
+                </div>
+              </div>
+                <div class="col-md-4">
+                <div class="form-group">
+                  
+                  <input type="text" class="form-control" id="inputDate-1" name="to_date" placeholder="To date" required="" value="{{to_date|default:''}}">
+                </div>
+              </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                 <button type="submit" class="btn btn-primary" >search</button>
+              </div>
+            </div>
+              </div>
+             
+              </form>
+           <!--   <form style="padding: 15px 0;position: relative;top: 8px;left: 71%;">
+                <label class="searchh">Search:<input type="search" class="form-control" placeholder="" aria-controls="example"></label>
+             </form> -->
+             <div style="position: relative;bottom: 36px;">
+                 <div class="div-table">
+                  <div class="table-responsive">
+                     <table id="example" class="table table-striped " style="width:100%">
+                        <thead>
+                           <tr>
+                             <th ><div class="checkbox "><input type="checkbox" class="dt-checkboxes product_type"><label></label></div></th>
+                              <th class="question-1">Image</th>
+                              <!-- <th>Product Name</th> -->
+                              <th>Product Category</th>
+                              <th>Added By</th>
+                              <th>View Product</th>
+                             <!--  <th>Action</th>
+                              <th>Status</th> -->
+                        
+                           </tr>
+                        </thead>
+                        <tbody>
+                          {% if get_products %}
+                          {% for data in get_products %}
+                           <tr>
+                             <td><div class="checkbox" ><input type="checkbox" class="dt-checkboxes product_type" 
+                            value="{{data.id}}"><label></label></div></td>
+                              <td ><img src="{{data.image_1.url}}" style="width: 100px;"></td>
+                              {% if data.Product_subcategory %}
+                              <td>{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</td>
+                                 {% else %}
+                                  <td>{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</td>
+                                {% endif %}
+                             <!--  <td>Machine</td> -->
+                              <td>{{data.user_id.userx.full_name}}</td>
+
+                              <td><button class="btn btn-primary view_products_details" data-id="{{data.id}}"> View </button></td>
+                    
+                           </tr>
+                             
+                          {% endfor %}
+                          {% endif %}
+                              
+                        </tbody>
+                     </table>
+                  </div>
+                </div>
+              </div>
+                   <!--   <div class="row">
+                <div class="col-md-12 ">
+               
+                    
+                    <nav>
+
+                      <ul class="pagination text">
+                        <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-left"></i></a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-right"></i></a></li>
+                      </ul>
+                    </nav>
+                  
+              </div>
+              </div>
+                  &nbsp; -->
+                   <div class="dropdown">
+  <button class="btn btn-primary delete_product" type="button" aria-haspopup="true" aria-expanded="false">
+    Delete 
+  </button>
+</div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+
+</section>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #2088ca;">
+        <h5 class="modal-title" id="exampleModalLabel">Add Services</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+    
+      </div>
+     <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary"data-dismiss="modal">Close</button>
+        
+      </div> -->
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+
+<!-- supplier view start -->
+<script type="text/javascript">
+
+$(document).on("click",".view_products_details",function(){
+var id = $(this).data("id");
+console.log(id);
+$.ajax({
+  method:"GET",
+  url :"/admin/manage-member/view-product-details/"+id,
+  dataType:"html",
+
+  success:function(data)
+
+  {
+     $("#exampleModal .modal-body").html(data);
+     $("#exampleModal").modal("show");
+  }
+});
+});
+</script>
+<script type="text/javascript">
+
+
+
+$(".delete_product").click(function(){
+
+
+var product_array=[];
+$(".product_type:checked").each(function(){
+product_array.push($(this).val());
+});
+if (product_array.length === 0){
+  alert("Please Select at least one product ");
+}
+else
+{
+
+     swal({
+          title: "Are you sure?",
+          text: "You want to delete !",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          confirmButtonText: 'Yes, delete it!',
+          closeOnConfirm: false,
+          // closeOnCancel: false
+          },
+          function(isConfirm){
+         if (isConfirm) {
+         var token = '{{csrf_token}}';
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                url: "/admin/manage-products/delete-product/",
+                type: "POST",
+                data:{'product_array':product_array},
+                success: function () {
+                    swal("Done!","It was succesfully deleted!","success");
+                        location.reload();
+                }
+            });
+          }
+          else{
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+       })
+}
+});
+</script>
+{% endblock %}

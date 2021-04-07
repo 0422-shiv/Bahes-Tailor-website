@@ -1,0 +1,93 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="main-dive">
+<div class="container">
+	 <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                                {% else %}
+            
+                                <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+	<div class="row">
+		<div class="col-md-12">
+      <div class="form-card no-b">
+		<!-- 	<form style="padding: 26px 0;">
+        <h3 class="add_name" style="position: relative;bottom: 12px;">Email Setting</h3>
+  <div class="form-group">
+ 
+    <input type="Password" class="form-control"  placeholder="SMTP Host">
+    
+  </div>
+  <div class="form-group">
+  
+    <input type="password" class="form-control"  placeholder="SMTP Username">
+  </div>
+
+  <div class="form-group">
+  
+    <input type="password" class="form-control"  placeholder="SMTP Password">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save</button>
+</form> -->
+ <form action="#"  enctype="multipart/form-data" onsubmit="show_loader()"  method="POST" >
+            {% csrf_token %}
+             <h3 class="add_name" style="position: relative;bottom: 12px;">Email Setting</h3>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>SMTP Host</label>
+                    {{email_setting_form.smtp_host}}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>SMTP Port</label>
+                    {{email_setting_form.smtp_port}}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>SMTP Username</label>
+                    {{email_setting_form.smtp_username}}
+                  </div>
+                </div>
+                 <div class="col-md-6">
+                  <div class="form-group">
+                    <label>SMTP Password</label>
+                    {{email_setting_form.smtp_password}}
+                  </div>
+                </div>
+                </div>
+              <div class="row space-center">
+                <div class="col-md-2">
+                  <button type="submit" class="buttons-action">Update</button>
+
+                </div>
+              </div>
+            </form>
+		</div>
+	</div>
+</div>
+
+</div>
+
+{% endblock %}

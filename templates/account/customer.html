@@ -1,0 +1,100 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+
+<style type="text/css">
+	
+	color: #2088CA;
+</style>>
+<section class="bg-form">
+<div class="form-div">
+
+<div class="container">
+<div class="bg-colordiv">
+<div class="row no-gutters">
+<div class="col-md-8">
+<div class="form-box">
+<h2><span>Welcome to BAH'ES</span></h2>
+<div class="form-title mb-4 mt-4">
+Are you a customer or Supplier?
+</div>
+
+
+
+<div class="row">
+	{% for data in get_usertypes %}
+<div class="col-md-6" >
+<a href="javascript:void(0)" class="customer user custr"  data-type="{{data.type_name}}">
+<img class="mb-4" src="{{data.image.url}}" alt=""/>
+<h3>{{data.type_name|upper}}</h3>
+</a>
+</div>
+{% endfor %}
+
+</div>
+
+<input type="hidden" id="type" required />
+
+
+<div class="form-group mt-5 text-right">
+<button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+					<a href="javascript:void(0)" id="next" class="btn btn-primary next">NEXT</a>
+					
+					
+				</div>
+
+
+</div>
+</div>
+
+<div class="col-md-4">
+<img  class="logo-form-shadow" src="{% static 'images/form-logo.jpg' %}" alt=""/>
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+
+	$(document).on('click',".customer",function(){
+       $(".customer").each(function(){
+       if($(this).hasClass("user_type"))
+       {
+       	$(this).removeClass("user_type");
+       }
+       });
+       $(this).addClass("user_type");
+	});
+
+$(document).on("click",".user",function(){
+var usertype = $(this).data("type");
+
+$("#type").val(usertype);
+
+});
+
+
+
+$(document).on("click",".next",function(){
+var usertype = $("#type").val();
+if(usertype){
+window.location.href="{% url 'account:CreateUserView'%}?type="+usertype+""
+}
+else
+{
+	alert('please select user type');
+}
+
+});
+</script>
+
+{% endblock %}
+

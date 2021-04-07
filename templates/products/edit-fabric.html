@@ -1,0 +1,310 @@
+{% load static %}
+<form method="POST" action="/my-products/edit-product/{{product_instance.id}}">
+  {% csrf_token %}
+  <input type="hidden" name="fabric" value="{{product_instance.product_category.id}}">
+  <div class="form-group">
+    <label for="" class="bold-font">Country Origin</label>
+    <select class="form-control" id="" name="country" required="">
+      {% if get_countries %}
+        <option class="active">select</option>
+        {% for data in get_countries %}
+          {% if data.id == product_instance.country_origin.id %}
+            <option value="{{data.id}}" selected="">{{data.country_name}}</option>
+          {% else %}
+            <option value="{{data.id}}">{{data.country_name}}</option>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="" class="bold-font">Fabric Type</label>
+    <select class="form-control" name="fabric_type" required="">
+      {% if get_fabric_type %}
+        <option class="active">select</option>
+        {% for data in get_fabric_type%}
+          {% if data.id == product_instance.fabrictype.id%}
+            <option value="{{data.id}}" selected>{{data.name}}</option>
+          {% else %}
+            <option value="{{data.id}}">{{data.name}}</option>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label for="" class="bold-font">Fabric Price</label>
+     <div class="row">
+        <div class="col-md-2 pr-2">
+          <select class="form-control"  name="currency" required="">
+            <option class="active"></option>
+                        {% if get_currency %}
+                           {% for data in get_currency %}
+                           
+                           {% if data.currency == product_instance.currency %}
+                            <option value="{{data.currency}}" selected="">{{data.currency}}</option>
+                            {% else %}
+                              <option value="{{data.currency}}">{{data.currency}}</option>
+                              {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                          </select>
+          <!-- <input type="text" class="form-control set_number_only" maxlength="12" name="price" id="" required=""> -->
+        </div>
+        <div class="col-md-10 pl-1">
+    <input type="text" class="form-control set_number_only" maxlength="12" name="price"  required="" value="{{product_instance.price}}">
+  </div>
+</div>
+  </div>
+  <div class="form-group">
+    <label for="" class="bold-font">Fabric Available Quantity</label>
+    <input type="text" class="form-control set_number_only" maxlength="12" name="quantity"  required="" value="{{product_instance.quantity}}">
+  </div>
+  <div class="form-group">
+    <label for="formControlRange" class="bold-font">Size Width</label>
+    <input type="range" class="form-control-range" name="size" id="formControlRange" required="" value="{{product_instance.width_size}}">
+  </div>
+  
+  
+  <div class="form-group">
+    <label for="" class="bold-font">Color Picker</label>
+    
+     {% if get_color_list %}
+      {% for data in get_color_list %}
+        
+        <div class="picker {% if forloop.counter == 1 %} {% else %} next-referral {% endif %}">
+          <input type="color" value="{{data}}" style="height: 40px;width: 50px;" id="2000000{{forloop.counter}}">
+          <input type="text" autocomplete="off" spellcheck="false" name="color" value="{{data}}" id="3000000{{forloop.counter}}">  
+        </div>
+        
+        
+      {% endfor %}
+    {% endif %}
+    
+    <fieldset>
+          <!-- Text input-->
+          <div id="items" class="form-group">
+            <div class="col-md-12 margin-bottom">
+            </div>
+          </div>
+        </fieldset>
+        <button id="add" class="btn btn-primary add-more button-yellow uppercase" type="button">+ Add </button> <button type="button" class="btn btn-danger delete btn button-white uppercase" style="">- Remove </button>
+      </div>
+  <label for="formControlRange" class="bold-font">Washing Method</label>
+  <div class="img-check">
+    
+    
+    <ul class="checkboxes">
+      {% if get_washing_method %}
+        {% for data in get_washing_method %}
+          <li class="checkss">
+            
+            {% if data in washing_method %}
+              <input type="checkbox" id="myCheckbox{{data.id}}" name="washing" value="{{data.id}}" checked="" />
+              
+            {% else %}
+              <input type="checkbox" id="myCheckbox{{data.id}}" name="washing" value="{{data.id}}" />
+              
+            {% endif %}
+            <label class="pull" for="myCheckbox{{data.id}}" >
+              <img src="{{data.image.url}}" />
+            </label>
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+    
+  </div>
+  
+  <div class="form-group">
+    <label for="" class="bold-font">Fabric Season</label>
+    <select id="multiple-checkboxesses" multiple="multiple" class="forms_field-input" name="season" required="">
+      {% if get_season %}
+        {% for data in get_season %}
+          
+          {% if data in season %}
+            <option value="{{data.id}}" selected="">{{data.season_name}}</option>
+          {% else %}
+            <option value="{{data.id}}" >{{data.season_name}}</option>
+          {% endif %}
+          <!--  <option value="javascript">Hotel</option>
+          <option value="java">Home Stay</option>
+          <option value="sql">Event Organizer</option> -->
+        {% endfor %}
+      {% endif %}
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label for="" class="bold-font">Other Description</label>
+    <textarea class="form-control"  rows="10" name="description" required="" value="">{{product_instance.other_description}}</textarea>
+  </div>
+  <h4 class="bold-font">Upload Image</h4>
+  <div class="row">
+    <div class="col-md-6" style="text-align: -webkit-center;position: relative;left: 22px;">
+      
+     
+        <div class="dropzone-wrapper">
+          <div class="dropzone-desc"> <i class="glyphicon glyphicon-download-alt"></i>
+            <p>Choose an image file</p>
+          </div>
+          <div id="show_cropped_image">
+            
+            
+            {% if product_instance.image_1 %}
+            <img src="{{product_instance.image_1.url}}">
+           
+            {% else %}
+            <img src="{% static 'images/no-image.jpg' %}">
+            {% endif %}
+          </div>
+          <input type="file"  id="id_Profile_Image" accept="image/*" />
+           <input type="hidden" name="profilepic" id="profile_image"  />
+          
+        </div>
+      </div>
+      
+      
+      <div class="col-md-6" style="text-align: -webkit-center;position: relative;right: 22px;">
+        <div class="dropzone-wrapper">
+          <div class="dropzone-desc"> <i class="glyphicon glyphicon-download-alt"></i>
+            <p>Choose an image file</p>
+          </div>
+          <div id="show_cropped_fabric_image2"> 
+       
+             {% if product_instance.image_2 %}
+                <img src="{{product_instance.image_2.url}}">
+               
+                {% else %}
+                <img src="{% static 'images/no-image.jpg' %}">
+                {% endif %}
+             </div>
+          <input type="file"   id="fabric_product2" class="dropzone">
+          <input type="hidden" name="fabric_product2" id="fabric_image2" >
+          
+        </div>
+      </div>
+    </div> &nbsp;
+    
+   
+    
+    <div class="text-right">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+
+
+<script src='{% static "js/edit_product_img_crop_1.js" %}'></script>
+<script src='{% static "js/edit_product_img_crop_2.js" %}'></script>
+<script>
+
+$(document).ready(function() {
+$('#multiple-checkboxesses').multiselect({
+includeSelectAllOption: true,
+});
+});
+</script>
+<!-- script for color picker -->
+<script type="">
+$(document).ready(function() {
+
+    {% if get_color_list %}
+      {% for data in get_color_list %}
+      
+const valueInputfabric{{forloop.counter}} = document.getElementById('3000000{{forloop.counter}}');
+const colorInputfabric{{forloop.counter}} =  document.getElementById('2000000{{forloop.counter}}');
+// console.log(valueInputfabric{{forloop.counter}});
+// console.log(colorInputfabric);
+// Sync the color from the picker
+
+// Bind events to callbacks
+colorInputfabric{{forloop.counter}}.addEventListener("input", function(){
+
+  valueInputfabric{{forloop.counter}}.value = colorInputfabric{{forloop.counter}}.value;
+
+}, false);
+valueInputfabric{{forloop.counter}}.addEventListener("input", function(){
+
+  colorInputfabric{{forloop.counter}}.value = valueInputfabric{{forloop.counter}}.value;
+
+}, false);
+// Optional: Trigger the picker when the text field is focused
+// valueInputfabric.addEventListener("focus", () => colorInputfabric.click(), false);
+// Refresh the text field
+// syncColorFromPickerfabric();
+
+{% endfor %}
+{% endif %}
+});
+</script>
+<script type="">
+$(document).ready(function() {
+// $(".delete").hide();
+
+//when the Add Field button is clicked
+$("#add").click(function(e) {
+$(".delete").fadeIn("1500");
+//Append a new row of code to the "#items" div
+var text_id = $('input[type="text"]:last').attr('id');
+var color_id = $('input[type="color"]:last').attr('id');
+text_id++;
+color_id++;
+$("#items").append(
+'<div class="picker next-referral"><input type="color" value="#FFB61A" style="height: 40px;width: 50px;padding: 0px" class="form-control input-md fabriccolor" id="'+color_id+'"><input type="text" class="" autocomplete="off" spellcheck="false" class="fabrictext" name="color" id="'+text_id+'"></div>'
+
+);
+var valueInputfabric = document.getElementById(text_id);
+var colorInputfabric =  document.getElementById(color_id);
+
+var syncColorFromPickerfabric = () => {
+
+valueInputfabric.value= colorInputfabric.value;
+};
+const syncColorFromTextfabric = () => {
+colorInputfabric.value = valueInputfabric.value;
+// console.log(colorInputfabric.value);
+};
+// Bind events to callbacks
+colorInputfabric.addEventListener("input", syncColorFromPickerfabric, false);
+valueInputfabric.addEventListener("input", syncColorFromTextfabric, false);
+// Optional: Trigger the picker when the text field is focused
+valueInputfabric.addEventListener("focus", () => colorInputfabric.click(), false);
+syncColorFromPickerfabric();
+});
+$(document).on("click", ".delete", function() {
+$(".next-referral").last().remove();
+
+});
+});
+</script>
+
+
+
+
+<script type="text/javascript">
+  
+
+   $(".set_number_only").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl/cmd+A
+            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+C
+            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+X
+            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+ 
+
+
+</script>

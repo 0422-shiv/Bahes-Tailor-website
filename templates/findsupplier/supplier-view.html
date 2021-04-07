@@ -1,0 +1,379 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+	<div class="banner-profile">
+		<div class="profile-overlay">
+			<div class="container">
+				<div class="heading-title supplies text-center">
+					<h1>
+					<div class="left-cricle"></div>
+					<div class="right-cricle"></div>
+					<span>Suppliers</span></h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="breadcr4eam">
+		<div class="container">
+			<nav class="breadcrumb-new">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="{% url 'findsupplier:FindSupplier' %}">Find Suppliers</a></li>
+					<li class="breadcrumb-item active">{{get_profile.full_name}}</li>
+					
+				</ol>
+			</nav>
+			
+		</div>
+	</div>
+	<section class="bg-lightshow">
+		<div class="title-supplier mb-5">
+			<div class="container">
+				<h3>Supplier</h3>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<div>
+						<div class="supliers-left" style="height:auto;">
+							{% if get_profile.image %}
+								<img src="{{get_profile.image.url}}" alt=""/>
+							{% else %}
+								<img src="{% static 'images/dummy-image.png'%}" alt=""/>
+							{% endif %}
+							<div class="ask-question">
+								{% if get_payment.payment_status == True %}
+								
+								<a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom{% if get_profile.user_id.id == request.user.id %}{% else %}&id={{get_profile.id}}{% endif %}" class="btn btn-primary btn-block"><i class="fa fa-comments-o" ></i> Ask Question</a>
+							
+								<a href=""  data-toggle="modal" data-target="#exampleModal-1" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i>View Contact Details</a>
+								{% else %}
+								<a href="javascript:void(0)" class="btn btn-primary btn-block customer_payment"><i class="fa fa-comments-o"></i> Ask Question</a>
+							
+								<a href="javascript:void(0)" class="btn btn-primary btn-block customer_payment"><i class="fa fa-comments-o"></i>View Contact Details</a>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<div class="heading_raza">
+						<p class="color_p">{{get_profile.full_name}}
+							{% if get_profile.online_status %}
+								<span class="online_span">Online</span>
+							{% else %}
+								<span class="online_span">Offline</span>
+							{% endif %}
+						</p>
+					</div>
+					<div class="supliers-list">
+						<h2 class="mb-4">Services</h2>
+						<div class="row">
+							{% if get_services %}
+								{% for data in get_services %}
+									<div class="col-md-4">
+										<div class="background-images" style="background-image: linear-gradient(rgb(40 150 228 / 78%), rgb(49 128 152 / 70%)),url({{data.tailor_speci_id.img.url}});">
+											<h4 class="Deshdasha">{{data.tailor_speci_id}}</h4>
+										</div>
+										<div class="card-body background-colors" style=" margin-bottom: 19px;">
+											<div class="name_card">
+												<div class="name-sup">Location </div>
+												<div class="surname">{{data.country_id.country_name}}</div>
+											</div>
+											<div class="name_card">
+												<div class="name-sup">Specialization</div>
+												<div class="surname">{{data.tailor_speci_id.tailor_speci|slice:":10"}}</div>
+											</div>
+											<div class="name_card">
+												<div class="name-sup">Experience</div>
+												<div class="surname">{{data.tailor_experience}}</div>
+											</div>
+											<div class="name_card">
+												<div class="name-sup">Multinational Shopping</div>
+												{% if data.ship_outside_country == True %}
+													<div class="surname">Yes</div>
+												{% else %}
+													<div class="surname">No</div>
+												{% endif %}
+											</div>
+											<div class="name_card">
+												<div class="name-sup">Targeted Customer</div>
+												
+												<div class="surname">	{% if data.targeted_customer %}
+												{% for data in data.targeted_customer.all %}{{data}},{% endfor %}
+											{% endif %}</div>
+											
+											
+										</div>
+										<div class="name_card">
+											<div class="name-sup">Gender</div>
+											
+											<div class="surname">{% if data.tailor_staff_gender %}
+											{% for data in data.tailor_staff_gender.all %}{{data}}, {% endfor %}
+										{% endif %}</div>
+										
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					{% else %}
+						<h4 style="padding-left: 321px;">No services to display</h4>
+					{% endif %}
+				</div>
+				<h2 class="mb-4 mt-4">Products</h2>
+				<div class="row">
+					{% if get_product %}
+						{% for data in get_product|slice:':4' %}
+							{% if forloop.counter == 4 %}
+
+								<div class="col-md-3 hide">
+									
+									<div class="productboxl" >
+										
+										 {% if data.image_1 %}
+										      <img src="{{data.image_1.url}}">
+										      {% elif data.image_2%}
+										      <img src="{{data.image_2.url}}">
+										      {% else %}
+										      <img src="{% static 'images/no-image.jpg' %}">
+										      {% endif %}
+
+										<div class="overlay-faf expandContent"><a href="javascript:void(0)">{{get_product|length|add:"-3" }} <i class="fa fa-plus" aria-hidden="true"></i></a></div>
+									</div>
+								</div>
+							{% else %}
+							<div class="col-md-3">
+								<div class="product-box textlimit" style="margin-bottom: 15px;">
+									<a  href="{% url 'findproducts:ProductDetail' data.id %}">
+									 {% if data.image_1 %}
+										      <img src="{{data.image_1.url}}">
+										      {% elif data.image_2%}
+										      <img src="{{data.image_2.url}}">
+										      {% else %}
+										      <img src="{% static 'images/no-image.jpg' %}">
+										      {% endif %}
+
+									<!-- <h4 data-maxlength="15"><span>{{data.}</span></h4> -->
+									{% if data.Product_subcategory %}
+										<h3 data-maxlength="15"><span>{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</span></h3>
+									{% else %}
+										<h3 data-maxlength="15"><span>{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</span></h3>
+									{% endif %}
+									<p data-maxlength="15"><span>{{data.user_id.userx.full_name}}</span></p>
+									</a>
+									<div class="text-right">
+										<a class="kw" href="{% url 'findproducts:ProductDetail' data.id %}" tabindex="0">{{data.price}} {{data.currency}}</a>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+						
+					{% endfor %}
+				{% else %}
+					<h4 style="padding-left: 321px;">No products to display</h4>
+				{% endif %}
+				
+				{% if get_product %}
+					{% for data in get_product|slice:'3:' %}
+						{% if forloop.counter == 3 %}
+							<div class=" showMe col-md-3" style="display:none">
+							
+								<div class=" product-box textlimit" style="margin-bottom: 15px;">
+									<a  href="{% url 'findproducts:ProductDetail' data.id %}">
+									 {% if data.image_1 %}
+										      <img src="{{data.image_1.url}}">
+										      {% elif data.image_2%}
+										      <img src="{{data.image_2.url}}">
+										      {% else %}
+										      <img src="{% static 'images/no-image.jpg' %}">
+										      {% endif %}
+									<!-- <h4 data-maxlength="15"><span>{{data.}</span></h4> -->
+									{% if data.Product_subcategory %}
+										<h3 data-maxlength="15"><span>{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</span></h3>
+									{% else %}
+										<h3 data-maxlength="15"><span>{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</span></h3>
+									{% endif %}
+									<p data-maxlength="15"><span>{{data.user_id.userx.full_name}}</span></p>
+								</a>
+									<div class="text-right">
+										<a class="kw" href="{% url 'findproducts:ProductDetail' data.id %}" tabindex="0">{{data.price}} {{data.currency}}</a>
+									</div>
+								</div>
+							</div>
+						{% else %}
+							<div class=" showMe col-md-3" style="display:none">
+						
+								<div class="product-box textlimit" style="margin-bottom: 15px;">
+									<a  href="{% url 'findproducts:ProductDetail' data.id %}">
+									 {% if data.image_1 %}
+										      <img src="{{data.image_1.url}}">
+										      {% elif data.image_2%}
+										      <img src="{{data.image_2.url}}">
+										      {% else %}
+										      <img src="{% static 'images/no-image.jpg' %}">
+										      {% endif %}
+									<!-- <h4 data-maxlength="15"><span>{{data.}</span></h4> -->
+									{% if data.Product_subcategory %}
+										<h3 data-maxlength="15"><span>{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</span></h3>
+									{% else %}
+										<h3 data-maxlength="15"><span>{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</span></h3>
+									{% endif %}
+									<p data-maxlength="15"><span>{{data.user_id.userx.full_name}}</span></p>
+								</a>
+									<div class="text-right">
+										<a class="kw" href="{% url 'findproducts:ProductDetail' data.id %}" tabindex="0">{{data.price}} {{data.currency}}</a>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+					
+				{% endif %}
+				
+			</div>
+			{% if get_product|length > 4 %}
+			<div style="padding-top: 21px;">
+				<div class="text-right expandContent hide">
+					<a href="javascript:void(0)">View More...</a>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+</div>
+</section>
+<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="view-profile-div">
+			<div class="ksd">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content ">
+						<span class="close-box" data-dismiss="modal" aria-label="Close">
+							<i class="fa fa-times" aria-hidden="true"></i>
+						</span>
+						<div class="modal-body padding-ksd">
+
+					</div>		
+						
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+
+	  <div class="modal fade" id="exampleModal-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #2088ca;">
+          <h5 class="modal-title" id="exampleModalLabel">Contact Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        
+      
+           <div class="row">
+           		<div class="col-md-4">
+           			<label>Name</label>
+           		</div>
+           		<div class="col-md-1">
+           			<label>:</label>
+           		</div>
+           		<div class="col-md-7">
+           			<label>{{get_profile.full_name}}</label>
+           		</div>
+           		<div class="col-md-4">
+           			<label>Email</label>
+           		</div>
+           		<div class="col-md-1">
+           			<label>:</label>
+           		</div>
+           		<div class="col-md-7">
+           			<label>{{get_profile.user_id.email}}</label>
+           		</div>
+           		<div class="col-md-4">
+           			<label>Contact  number</label>
+           		</div>
+           		<div class="col-md-1">
+           			<label>:</label>
+           		</div>
+           		<div class="col-md-7">
+           			<label>+{{get_profile.tel_code}}</label>
+           			<label>{{get_profile.phone}}</label>
+           		</div>
+           		<div class="col-md-4">
+           			<label>Country</label>
+           		</div>
+           		<div class="col-md-1">
+           			<label>:</label>
+           		</div>
+           		<div class="col-md-7">
+           			<label>{{get_profile.country.country_name}}</label>
+           		</div>
+           		
+           </div>
+           
+          
+          
+        </div>
+     
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+$('.expandContent').click(function(){
+$('.showMe').slideToggle('slow');
+$('.hide').hide();
+});
+</script>
+
+<script type="text/javascript">
+
+
+//--------- Customer Payment start----------------
+$(document).on("click",".customer_payment",function(){
+// var id = $(this).data("id");
+
+$.ajax({
+  method:"GET",
+  url :"/find-supplier/customer-payment/",
+  dataType:"html",
+
+  success:function(data)
+  {
+  // console.log(data)	
+  if(data == 'login'){
+  	 swal({
+			          title: 'Please Login or Register first',
+			          type: "warning", 
+			         
+			          buttons: {
+			           
+			            confirm: {
+			              text: "OK",
+			              value: true,
+			              visible: true,
+			              closeModal: true
+			            },
+			          }
+			         },
+			           function(isConfirm){ });
+  }
+  	else{
+ $("#exampleModal .modal-body").html(data);
+     $("#exampleModal").modal("show");
+		
+  }
+}
+});
+});
+//--------Customer Payment end----------------
+	</script>
+{% endblock %}

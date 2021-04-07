@@ -1,0 +1,139 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+
+<section class="bg-form">
+<div class="form-div">
+<div class="container">
+<div class="bg-colordiv">
+<div class="row no-gutters">
+<div class="col-md-8">
+<div class="form-box">
+<h2><span>Welcome to BAH'ES</span></h2>
+
+{% for data in get_questions %}
+
+<div class="form-title mb-4 mt-4">
+	{{data.question}}
+<!-- What would you like to see more? -->
+</div>
+
+
+
+<div class="row">
+<div class="col-md-6 mb-4">
+<a href="javascript:void(0)" class="customer answer custr" data-option="{{data.option_a}}">
+<div class="chaperter">A</div>
+<h3>{{data.option_a}}</h3>
+</a>
+</div>
+<div class="col-md-6 mb-4">
+<a href="javascript:void(0)" class="customer answer custr" data-option="{{data.option_b}}">
+<div class="chaperter">B</div>
+<h3>{{data.option_b}}</h3>
+</a>
+</div>
+<div class="col-md-6 mb-4">
+<a href="javascript:void(0)" class="customer answer custr" data-option="{{data.option_c}}">
+<div class="chaperter">C</div>
+<h3>{{data.option_c}}</h3>
+</a>
+</div>
+<div class="col-md-6 mb-4">
+<a href="javascript:void(0)" class="customer answer custr" data-option="{{data.option_d}}">
+<div class="chaperter">D</div>
+<h3>{{data.option_d}}</h3>
+</a>
+</div>
+</div>
+
+<form method="POST">
+	{% csrf_token %}
+<input type="hidden" value="{{data.question}}" name="que" />	
+<input type="hidden" id="type" name="ans"/>
+
+<div class="form-group mt-5 text-right">
+{% if not current_ques == '1' %}
+<button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+{% endif %}
+{% if next_ques %}
+   
+ {% if show_submit %}
+<button type="submit" class="btn btn-primary next" name="submit" value="{{data.priority_type}}" data-priority="{{data.priority_type}}">Submit
+</button>
+ {% else %}
+
+ <button type="submit" class="btn btn-primary next" name="next" value="{{data.priority_type}}" data-priority="{{data.priority_type}}">NEXT
+</button>
+  {% endif %}
+{% endif %}
+					
+				</div>
+
+{% endfor %}
+</form>
+</div>
+</div>
+
+<div class="col-md-4">
+<img  class="logo-form-shadow" src="{% static 'images/form-logo.jpg' %}" alt=""/>
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+
+	$(document).on('click',".customer",function(){
+       $(".customer").each(function(){
+       if($(this).hasClass("user_type"))
+       {
+       	$(this).removeClass("user_type");
+       }
+       });
+       $(this).addClass("user_type");
+	});
+</script>
+
+<script type="text/javascript">
+$(document).on("click",".answer",function(){
+var ans = $(this).data("option");
+
+$("#type").val(ans);
+
+});
+
+
+$(document).on("click",".next",function(){
+var ans = $("#type").val();
+
+if(ans){
+$("#type").val(ans);
+}
+else
+{
+	alert('please select option');
+}
+
+});
+
+// $(document).on("click",".next",function(){
+
+// var a = parseInt($(this).data("priority"));
+// var b=a+1;
+// console.log(b);
+// window.location.href="{% url 'survey:Questions' id %}?q="+b+""	
+// {% for data in get_questions %}
+// console.log('{{data.id}}');
+// {% endfor %}
+// });
+</script>
+{% endblock %}

@@ -1,0 +1,50 @@
+      <div class="container-fluid">
+          <div class="row p-t-b-20">
+            <div class="col-md-12">
+              <div class="form-card no-b" style="overflow-y: scroll;">
+                <div class="login-form-card">
+                  <h3 class="add_name">Manage Services</h3>
+                  
+                   {% if get_supplier_services %}
+                  
+                  <div style="position: relative;bottom: 36px;">
+                    <div class="div-table">
+                      <div class="table-responsive">
+                       
+                        <table id="example" class="table table-striped " style="width:100%">
+                          <thead>
+                            <tr>
+                              <th class="question-1">&nbsp;Services</th>
+                              <th>Image</th>
+                              
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% if get_supplier_services %}
+                            {% for data in get_supplier_services %}
+                            <tr>
+                              
+                              <td > {{data.tailor_speci_id}}</td>
+                              <td><img src="{{data.tailor_speci_id.img.url}}" style="width: 100px;"></td>
+                              
+                            </tr>
+                           {% endfor %}
+                           {% endif %}
+                              
+                            </tr>
+                          
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+                  </div>
+                   {% else %}
+                        <h6>No services Found</h6>
+                        {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>

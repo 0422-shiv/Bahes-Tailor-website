@@ -1,0 +1,332 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+  <div class="banner-profile">
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>Products</span></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'findproducts:FindProducts'%}">Products</a></li>
+          {% if get_product_instance.Product_subcategory %}
+          <li class="breadcrumb-item active">{{get_product_instance.Product_subcategory.subcategory_name}}</li>
+          {% else %}
+          <li class="breadcrumb-item active">{{get_product_instance.product_category.category_name}}</li>
+          {% endif %}
+          
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+  <section class="bg-lightshow">
+    <div class="title-supplier mb-5">
+      <div class="container">
+      
+         {% if get_product_instance.Product_subcategory %}
+          <h3>{{get_product_instance.Product_subcategory.subcategory_name}}</h3>
+          {% else %}
+          <h3>{{get_product_instance.product_category.category_name}}</h3>
+          {% endif %}
+      </div>
+    </div>
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <div class="supliers-left" style="height:auto;">
+           
+             {% if get_product_instance.image_1 %}
+                <img src="{{get_product_instance.image_1.url}}" style="width:100%" alt=""/>
+                {% elif get_product_instance.image_2 %}
+                <img src="{{get_product_instance.image_2.url}}" style="width:100%" alt=""/>
+                {% else %}
+                <img src="{% static 'images/no-image.jpg' %}" style="width:100%" alt=""/>
+                {% endif %}
+
+            <div class="ask-question">
+              <!-- <a href="#" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i> Ask me question</a> -->
+              {% if get_payment.payment_status == True %}
+             
+                <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom{% if get_product_instance.user_id.id == request.user.id %}{% else %}&id={{get_product_instance.user_id.userx.id}}{% endif %}" class="btn btn-primary btn-block"><i class="fa fa-comments-o" ></i> Ask Question</a>
+              
+                <a href=""  data-toggle="modal" data-target="#exampleModal-1" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i>View Contact Details</a>
+                {% else %}
+                <a href="javascript:void(0)" class="btn btn-primary btn-block customer_payment"><i class="fa fa-comments-o"></i> Ask Question</a>
+              
+                <a href="javascript:void(0)" class="btn btn-primary btn-block customer_payment"><i class="fa fa-comments-o"></i>View Contact Details</a>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div>
+            <p class="supplier_names">Supplier Name : <span style="color: #707070;">{{get_product_instance.user_id.userx.full_name}}</span> </p>
+          </div>
+          <div class="supliers-list">
+            <h3 class="mb-4">Description</h3>
+            <div class="row">
+              <div class="col-md-12">
+                <p>{{get_product_instance.other_description}}</p>
+              </div>
+            </div>
+            <h3 class="mb-4">Available Colors</h3>
+            <div class="row">
+              {% if get_color_list %}
+              {% for data in get_color_list %}
+             
+              <div class="col-md-2">
+                <div class="list-box textlimit">
+                  <div class="loction-view red height-box">
+                    <div class="kwit-3" style="color:{{data}};background:{{data}};"><!-- <span>Red</span> --></div>
+                  </div>
+                  <!-- <p><span>Color</span></p> -->
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <h4 style="padding-left: 321px;">No color to display</h4>
+              {% endif %}
+              
+             
+             
+            
+            
+            </div>
+            <h3 class="other_features-1">Other Features</h3>
+            <div class="row">
+              {% if get_product_instance.country_origin.country_name %}
+              <div class="col-md-2">
+                <div class="list-box textlimit">
+                  <div class="loction-view height-box">
+                    <div class="kwit-5" data-maxlength="15"><span>{{get_product_instance.country_origin.country_name}}</span></div>
+                  </div>
+                  <p data-maxlength="10"><span>Country</span></p>
+                </div>
+              </div>
+              {% endif %}
+              <div class="col-md-2">
+                <div class="list-box textlimit">
+                  <div class="loction-view height-box">
+                    <div class="kwit-5" data-maxlength="15">
+                      {% if get_product_instance.fabrictype %}
+                      <span>{{get_product_instance.fabrictype}}</span>
+                      {% elif get_product_instance.threadtype %}
+                      <span>{{get_product_instance.threadtype}}</span>
+                       {% elif get_product_instance.material_type1 %}
+                       <span>{{get_product_instance.material_type1}}</span>
+                        {% elif get_product_instance.material_type2 %}
+                          <span>{{get_product_instance.material_type2}}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <p data-maxlength="15"><span>Type</span></p>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="list-box textlimit">
+                  <div class="loction-view height-box">
+                    <div class="kwit-5" data-maxlength="15"><span>{{get_product_instance.price}} {{get_product_instance.currency}}</span></div>
+                  </div>
+                  <p data-maxlength="20"><span>Price</span></p>
+                </div>
+              </div>
+                {% if get_product_instance.quantity %}
+              <div class="col-md-2">
+                <div class="list-box textlimit">
+                  <div class="loction-view height-box">
+                    <div class="kwit-5" data-maxlength="15">
+                      
+                      <span>{{get_product_instance.quantity}}</span>
+
+                    </div>
+                  </div>
+                  <p data-maxlength="20"><span>Quantity</span></p>
+                </div>
+              </div>
+              {% endif %}
+               {% if get_product_instance.washing_method.all %}
+              <div class="col-md-2" data-toggle="modal" data-target="#washing_method_modal" >
+           
+                <div class="list-box textlimit">
+                  <div class="loction-view height-box">
+                    <div class="kwit-5" data-maxlength="15">
+                     
+                      <span>Washing Method</span>
+                     
+                    </div>
+                  </div>
+                  <p data-maxlength="20"><span>Washing Method</span></p>
+                </div>
+           
+              </div>
+              {% endif %}
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="view-profile-div">
+      <div class="ksd">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content ">
+            <span class="close-box" data-dismiss="modal" aria-label="Close">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+            <div class="modal-body padding-ksd">
+
+          </div>    
+            
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+    <div class="modal fade" id="exampleModal-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #2088ca;">
+          <h5 class="modal-title" id="exampleModalLabel">Contact Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        
+      
+           <div class="row">
+              <div class="col-md-4">
+                <label>Name</label>
+              </div>
+              <div class="col-md-1">
+                <label>:</label>
+              </div>
+              <div class="col-md-7">
+                <label>{{get_product_instance.user_id.userx.full_name}}</label>
+              </div>
+              <div class="col-md-4">
+                <label>Email</label>
+              </div>
+              <div class="col-md-1">
+                <label>:</label>
+              </div>
+              <div class="col-md-7">
+                <label>{{get_product_instance.user_id.email}}</label>
+              </div>
+              <div class="col-md-4">
+                <label>Contact  number</label>
+              </div>
+              <div class="col-md-1">
+                <label>:</label>
+              </div>
+              <div class="col-md-7">
+                <label>+{{get_product_instance.user_id.userx.tel_code}}</label>
+                <label>{{get_product_instance.user_id.userx.phone}}</label>
+              </div>
+              <div class="col-md-4">
+                <label>Country</label>
+              </div>
+              <div class="col-md-1">
+                <label>:</label>
+              </div>
+              <div class="col-md-7">
+                <label>{{get_product_instance.user_id.userx.country.country_name}}</label>
+              </div>
+              
+           </div>
+           
+          
+          
+        </div>
+     
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="washing_method_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #2088ca;">
+          <h5 class="modal-title" id="exampleModalLabel">Washing Methods</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         {% if get_product_instance.washing_method.all %}
+          {% for data in get_product_instance.washing_method.all %}
+            
+                <img src="{{data.image.url}}" />
+          
+              {% endfor %}
+         {% endif %}
+      
+      
+          
+        </div>
+     
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+
+
+<script type="text/javascript">
+
+
+//--------- Customer Payment start----------------
+$(document).on("click",".customer_payment",function(){
+// var id = $(this).data("id");
+
+$.ajax({
+  method:"GET",
+  url :"/find-supplier/customer-payment/",
+  dataType:"html",
+
+  success:function(data)
+  {
+    if(data == 'login'){
+     swal({
+                title: 'Please Login or Register first',
+                type: "warning", 
+               
+                buttons: {
+                 
+                  confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    closeModal: true
+                  },
+                }
+               },
+                 function(isConfirm){ });
+  }
+  else{ 
+ $("#exampleModal .modal-body").html(data);
+     $("#exampleModal").modal("show");
+    
+  }
+}
+});
+});
+//--------Customer Payment end----------------
+  </script>
+{% endblock %}

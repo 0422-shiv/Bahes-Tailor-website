@@ -1,0 +1,331 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+	{% if get_system_settings %}
+		{% for data in get_system_settings %}
+			{% if data.header_bg_img %}
+				<div class="banner" style="background: url({{data.header_bg_img.url}}) no-repeat center top;">
+				{% endif %}
+				
+				<div class="banner-overlay">
+					<div class="container">
+						<div class="row ">
+							<div class="col-md-8 mx-auto">
+								<div class="row justify-content-between">
+									<div class="col-md-5 mb-3">
+										{% if data.service_icon %}
+											<div class="banner-services active-bg"> <img src="{{data.header_service_icon.url}}"/>
+												{% if get_services %}
+													
+													<h5>{{get_services|length}}+</h5>
+													
+												{% endif %}
+												
+												<h4>Services</h4>
+											</div>
+										{% endif %}
+									</div>
+									<div class="col-md-5 ">
+										{% if data.supplier_icon %}
+											<div class="banner-services"> <img src="{{data.header_supplier_icon.url}}"/>
+												{% if get_supplier_count %}
+													
+													<h5>{{get_supplier_count}}+</h5>
+													
+												{% endif %}
+												<h4>Supplier</h4>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	{% endif %}
+	<div class="banner-slider">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="slick-slider slider-1">
+						{% if get_product_subcat %}
+							{% for data in get_product_subcat %}
+								<div class="{% if forloop.counter == 1 %} red {% endif %}{% if forloop.counter == 2 %} green {% endif %}{% if forloop.counter == 3 %} paple {% endif %} padding-30"> <img src="{{data.image.url}}" alt="" style="width: auto;height: 75px;"/>
+								<h4>{{data.subcategory_name}}</h4>
+							</div>
+						{% endfor %}
+					{% endif %}
+					{% if get_product_cat %}
+						<div class="orange padding-30"> <img src="{{get_product_cat.image.url}}" alt="" style="width: auto;height: 75px;"/>
+							<h4>{{get_product_cat.category_name}}</h4>
+						{% endif %}
+					<!--  </div>
+					<div class="green padding-30"> <img src="{% static 'images/icon/icon-8.png' %}" alt=""/>
+						<h4>scarves and gloves</h4>
+					</div>
+					<div class="paple padding-30"> <img src="{% static 'images/icon/icon-7.png' %}" alt=""/>
+						<h4>casual clothes</h4>
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<section>
+	<div class="container">
+		<div class="heading-title text-center mb-5">
+			<h1>
+			<div class="left-cricle"></div>
+			<div class="right-cricle"></div>
+			<span>OUR Services</span></h1>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12">
+				<div class="slick-slider slider-2">
+					
+					
+					{% if get_services %}
+						{% for data in get_services %}
+							<div class="borderbox">
+								<div class="services-box">
+									{% if data.img %}
+										<img src="{{data.img.url}}" alt=""/>
+									{% else %}
+										<img src="{% static 'images/service-2-1170x658.png' %}" alt=""/>
+									{% endif %}
+									
+								</div>
+								<div class="servicestext">
+									<h3>{{data.tailor_speci|upper}}</h3>
+								</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+				
+			</div>
+		</div>
+		
+		
+	</div>
+</section>
+{% if get_system_settings %}
+	{% for data in get_system_settings %}
+		<section class="gray">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="counter-box">
+							{% if data.supplier_icon %}
+								<img src="{{data.supplier_icon.url}}"/>
+							{% endif %}
+							{% if get_supplier_count %}
+								<div class="counter" data-count="{{get_supplier_count}}">0</div>
+								
+							{% endif %}
+							<p>Suppliers</p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="counter-box">
+							{% if data.service_icon %}
+								<img src="{{data.service_icon.url}}"/>
+							{% endif %}
+							
+								<div class="counter" data-count="{{get_services|length}}">0</div>
+						
+							<p>Services</p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="counter-box">
+							<img src="{% static 'images/icon/icon-6.png' %}" alt=""/>
+							<div class="counter" data-count="{{get_products|length}}">0</div>
+							<p>Products</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	{% endfor %}
+{% endif %}
+<section class="blue">
+	<div class="container">
+		<div class="heading-title supplies text-center mb-5">
+			<h1>
+			<div class="left-cricle"></div>
+			<div class="right-cricle"></div>
+			<span>OUR Suppliers</span></h1>
+		</div>
+		<div class="row">
+			
+			
+			<div class="col-md-12">
+				<div class="suppliers-slider">
+					{% if get_supplier %}
+						{% for data in get_supplier %}
+							
+							{% if data.user_id.userx.image %}
+								
+								<div class="suppliers-box-slider" style="background-image:url({{data.user_id.userx.image.url}})">
+									
+								{% else %}
+									<div class="suppliers-box-slider" style="background-image:url({% static 'images/dummy-image.png' %})">
+									{% endif %}
+									<div class="overlay-sup">
+										<div class="sup-div mb-4" data-maxlength="15">
+											<div class="Name-raza">{{data.user_id.userx.full_name|upper}}</div>
+											<!--   <div class="name-sup">Name</div>
+											<div class="surname">{{data.user_id.userx.full_name}}</div> -->
+										</div>
+										
+										<div class="sup-div mb-4" data-maxlength="15">
+											<div class="name-sup">Location</div>
+											<div class="surname">{{data.country_id.country_name}}</div>
+										</div>
+										
+										
+										
+										<div class="sup-div mb-4" data-maxlength="15">
+											<div class="name-sup">Specialization</div>
+											<div class="surname">{{data.tailor_speci_id}}</div>
+										</div>
+										
+										<div class="sup-div mb-4" data-maxlength="15">
+											<div class="name-sup">Experience</div>
+											<div class="surname">{{data.tailor_experience}}</div>
+										</div>
+										<div class="sup-div mb-4" data-maxlength="15">
+											<div class="name-sup">Multinational Shipping</div>
+											{% if data.ship_outside_country == True %}
+												<div class="surname">Yes</div>
+											{% else %}
+												<div class="surname">No</div>
+											{% endif %}
+										</div>
+										
+										<div class="sup-div mb-4" data-maxlength="15">
+											<div class="name-sup">Targeted Customer</div>
+											{% if data.targeted_customer %}
+												<div class="surname">{% for data in data.targeted_customer.all %}{{data}} {% endfor %}</div>
+											{% endif %}
+										</div>
+										
+										<div class="sup-div mb-4" data-maxlength="15">
+											<div class="name-sup"> Gender</div>
+											
+											<div class="surname">{% if data.tailor_staff_gender %}
+											{% for data in data.tailor_staff_gender.all %}{{data}} {% endfor %}
+										{% endif %}</div>
+									</div>
+									
+								</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+					
+					
+					
+					
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section>
+	<div class="container">
+		<div class="heading-title text-center mb-4">
+			<h1>
+			<div class="left-cricle"></div>
+			<div class="right-cricle"></div>
+			<span>OUR Products</span></h1>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="product-slider">
+					{% if get_products %}
+					{% for data in get_products %}
+					<a  href="{% url 'findproducts:ProductDetail' data.id %}">
+						<div class="product-box" data-maxlength="15">
+						 {% if data.image_1 %}
+					      <img src="{{data.image_1.url}}">
+					      {% elif data.image_2%}
+					      <img src="{{data.image_2.url}}">
+					      {% else %}
+					      <img src="{% static 'images/no-image.jpg' %}">
+					      {% endif %}
+						{% if data.Product_subcategory %}
+						<h3 >{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</h3>
+						{% else %}
+						<h3>{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</h3>
+						{% endif %}
+						<p>{{data.user_id.userx.full_name}}</p>
+						<div class="text-right">
+							<p class="kw" >{{data.price}} {{data.currency}}</p>
+						</div>
+					</div>
+				</a>
+					{% endfor %}
+					{% endif %}					
+				</div>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="text-right col-md-11 pr-0">
+				<a href="{% url 'findproducts:FindProducts'%}" class="viewmore">View More...</a>
+			</div>
+		</div>
+	</div>
+</section>
+{% if get_system_settings %}
+	{% for data in get_system_settings %}
+		<section style="background:url({{data.about_image.url}}) no-repeat center top; background-size:cover">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="logo-s">
+							<img src="{{data.logo.url}}" class="mb-4" alt=""/>
+							<h2>{{data.about_title}}</h2>
+							<p>{{data.about_description}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	{% endfor %}
+{% endif %}
+<section>
+	<div class="container">
+		<div class="heading-title text-center mb-5">
+			<h1>
+			<div class="left-cricle"></div>
+			<div class="right-cricle"></div>
+			<span>How it works</span></h1>
+		</div>
+		
+		<div class="how-it-work">
+			{% for data in get_how_it_works %}
+				<div class="work-box">
+					<div class="imagebox mb-4">
+						<img src="{{data.image.url}}" alt="">
+					</div>
+					<h3>{{data.title}}</h3>
+					<p>{{data.description}}</p>
+				</div>
+				{% if data.line_image %}
+					<div class="line">
+						<img src="{{data.line_image.url}}" alt=""/>
+					</div>
+				{% endif %}
+			{% endfor %}
+			
+			
+			
+		</div>
+	</div>
+</section>
+{% endblock %}

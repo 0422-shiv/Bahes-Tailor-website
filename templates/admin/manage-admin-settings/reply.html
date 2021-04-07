@@ -1,0 +1,17 @@
+ <h3>Message</h3>
+        <p>{{get_instance.message}}</p>
+        <form method="POST" action="/admin/manage-admin-settings/reply/{{get_instance.id}}">
+          {% csrf_token %}
+          <label>Email</label>
+          <input type="text" class="form-control" placeholder="Email" value="{{get_instance.email}}" disabled="">
+          <br>
+          <label>Subject</label>
+          <input type="text" name="subject" class="form-control" placeholder="Subject" required="">
+          <br>
+          <label>Description</label>
+          <textarea name="description"  rows="4" cols="50" class="form-control" required="">
+</textarea>
+ <br>
+        <button type="Submit" class="btn btn-primary">Submit</button>
+        </form>
+       

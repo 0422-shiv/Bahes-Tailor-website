@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bahes</title>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="{% static 'images/fevicon.png'%}" type="image" />
+    <!-- <link rel="icon" href="images/favicon.png" type="image/x-icon"> -->
+   <!--  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="{% static 'bahes_admin/css/dataTables.bootstrap4.min.css'%}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'bahes_admin/css/admin.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'bahes_admin/css/font-awesome.min.css'%}">
+     <link rel="stylesheet" href="{% static 'bahes_admin/css/bootstrap-multiselect.css'%}">
+     <link href="{% static 'bahes_admin/css/select2.min.css'%}" rel="stylesheet" />
+     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+     <link href="{% static 'bahes_admin/css/intlTelInput.css'%}" rel="stylesheet" media="screen">
+</head>
+
+<body style="background-color: #fff;">
+
+
+
+<!-- Header Section-->
+<section>
+  <div class="container">
+    <div class="login-form-div">
+
+      <div class="col-md-5">
+         <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important"></a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                               
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                         {% if form.errors %}
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <div class="alert alert-danger">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                  {% endif %}
+                    </div>
+       <form action="" method="post">
+        {% csrf_token %}
+        <div style="text-align: center;">
+        <img src="https://digimonk.net/bahes/images/logo.png" class="bahes-logo"></div>
+        <h2>Login</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Username</label>
+                        {{form.username}}
+                        <!-- <input type="text" name="" class="form-control"> -->
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Password</label>
+                        {{form.password}}
+                        <!-- <input type="password" name="" class="form-control"> -->
+                    </div>
+                </div>
+               
+                
+                         </div>
+            
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-md-12 text-center">
+                   <button type="submit" class="View-btn btn-block">Login</button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="{% static 'bahes_admin/js/jquery.min.js'%}"></script>
+<script>
+$(document).ready(function(){
+
+$("#id_username").addClass('form-control');
+$("#id_username").attr("placeholder", "username");
+});
+
+$(document).ready(function(){
+
+$("#id_password").addClass('form-control');
+$("#id_password").attr("placeholder", "password");
+});
+
+</script>

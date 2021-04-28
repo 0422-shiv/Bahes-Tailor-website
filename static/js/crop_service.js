@@ -24,7 +24,7 @@ var fsize = fi.files.item(i).size;
 // console.log(fsize)
 var file = Math.round((fsize / 1024));
 
-if (file > 1024) {
+if (file > 2048) {
 
 swal("Image is too Big, please select a image less than 2MB size.");
 }

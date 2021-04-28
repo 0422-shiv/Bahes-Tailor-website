@@ -1,0 +1,88 @@
+    {% load static %}
+    <div class="container-fluid">
+          <div class="row p-t-b-20">
+            <div class="col-md-12">
+              <div class="form-card no-b" style="    overflow-y: scroll;">
+                <div class="login-form-card">
+                  
+                  
+                  <div style="position: relative;bottom: 36px;">
+                    <div class="div-table">
+                      <div class="table-responsive">
+                        <table id="example" class="table table-striped " style="width:100%">
+                          <thead>
+                            <tr>
+                              <th class="question-1">Image</th>
+                        <!--       <th>Product Name</th> -->
+                              <th>Product Category</th>
+                              <!-- <th>Added By</th> -->
+                              <th>View Product</th>
+                              <!--  <th>Action</th>
+                              <th>Status</th> -->
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% if get_supplier_products %}
+                            {% for data in get_supplier_products %}
+                            <tr>
+                              
+                              <td >{% if data.image_1 %}
+                                    <img src="{{data.image_1.url}}"  style="width: 100px;">
+                                    {% elif data.image_2%}
+                                    <img src="{{data.image_2.url}}"  style="width: 100px;">
+                                    {% else %}
+                                    <img src="{% static 'images/no-image.jpg' %}"  style="width: 100px;">
+                                    {% endif %}
+                                  </td>
+                           <!--    <td>Sewing Machine</td> -->
+                             {% if data.Product_subcategory %}
+                              <td>{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</td>
+                                 {% else %}
+                                  <td>{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</td>
+                                {% endif %}
+                              <!-- <td>Customer</td> -->
+                              <td><button class="btn btn-primary view_products_details" data-id="{{data.id}}"> View </button></td>
+                            
+                            </tr>
+                           {% endfor %}
+                           {% endif %}
+                          
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  &nbsp;
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+
+<!-- supplier view start -->
+<script type="text/javascript">
+
+$(document).on("click",".view_products_details",function(){
+var id = $(this).data("id");
+console.log(id);
+$.ajax({
+  method:"GET",
+  url :"/admin/manage-member/view-product-details/"+id,
+  dataType:"html",
+
+  success:function(data)
+
+  {
+     $("#exampleModal-14 .modal-body").html(data);
+     $("#exampleModal-14 ").modal("show");
+      
+    
+  }
+});
+});
+</script>

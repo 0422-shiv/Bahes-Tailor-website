@@ -20,9 +20,9 @@
  <div class="form-group">
     <label for="" class="bold-font">Tailor Specialization</label>
      <!-- {{form.tailor_speci_id}} -->
-   <select class="form-control" name="tailor_spec" >
+   <select class="form-control" name="tailor_spec" required="">
       {% if get_tailor_spec %}
-      <option class="active">select</option>
+      <option class="active"></option>
       {% for data in get_tailor_spec %}
       {% if data.id == service_instance.tailor_speci_id.id %}
       <option value="{{service_instance.tailor_speci_id.id}}" selected="">{{service_instance.tailor_speci_id.tailor_speci}}</option>

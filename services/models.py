@@ -8,7 +8,7 @@ from account.models import Countries
 class TailorSpecification(models.Model):
     tailor_speci=models.CharField(max_length=50, null=True, blank=True)
     img=models.ImageField(upload_to='services_images',null=True, blank=True)
-    description=models.TextField(max_length=300, null=True, blank=True)
+    description=models.TextField(null=True, blank=True)
     status=models.BooleanField(default=True)
     created_dt = models.DateTimeField(default=django.utils.timezone.now)
     created_by = models.ForeignKey(User, related_name='tailor_speci_created_by', on_delete=models.CASCADE)

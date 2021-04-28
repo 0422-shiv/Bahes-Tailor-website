@@ -24,8 +24,14 @@
   
   outline: 0;
   }
+
   </style>
-</nav><div class="banner-profile">
+</nav>{% if request.user.userx.user_type.type_name == 'supplier' %}
+  <div class="banner-profile" style="background: url({{'supplierdashboard'|get_banner_img}}) no-repeat center top;">
+    {% else %}
+     <div class="banner-profile" style="background: url({{'customerdashboard'|get_banner_img}}) no-repeat center top;">
+ {% endif %}
+ 
 <div class="profile-overlay">
   <div class="container">
     <div class="heading-title supplies text-center">
@@ -55,17 +61,19 @@
 <div class="row">
 <div class="col-md-3">
   <div class="profilebox">
-    
+      <div class="iconbox">
     {% if userprofile.image %}
       <img src="{{userprofile.image.url}}" class="pexels-pixabay mb-2">
     {% else%}
       <img src="{% static 'images/dummy-image.png' %}" class="pexels-pixabay mb-2">
       
     {% endif%}
+     <input type="file"  id="user_Image" class="fa fa-edit pencils" accept="image/*" />
+           </div>
     <!-- Tabs nav -->
     <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist" aria-orientation="vertical"> <a class="nav-link active" onclick="location.reload(true)" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
       
-      Products <div class="three">{{get_products|length}}</div></a>
+      My Products <span>{{get_products|length}}</span></a>
       <a class="nav-link"  id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
         
       Post Product</a>
@@ -92,7 +100,7 @@
       <div class="row">
         <div class="col-md-4">
           <div class="display_flex"> <i class="fa fa-calendar" style="font-size:24px"></i>
-            <p class="joineds">{{userprofile.user_id.date_joined}}</p>
+            <p class="joineds">{{userprofile.user_id.last_login}}</p>
           </div>
         </div>
         <div class="col-md-3">
@@ -123,11 +131,11 @@
           </li>
            {% if request.user.userx.user_type.type_name == 'supplier' %}
                           <li >
-                            <a href="{% url 'services:Services' %}">My services</a>
+                            <a href="{% url 'services:Services' %}">My services<span style="color:#2088ca;">{{request.user|total_myservices_counter}}</span></a>
                             
                           </li>
-                          <li>
-                            <a href="{% url 'products:product'%}">My products</a>
+                          <li class="active">
+                            <a href="{% url 'products:product'%}">My products<span style="color:#2088ca;">{{request.user|total_myproducts_counter}}</span></a>
                           </li>
                           {% else %}
                           {% endif %}
@@ -164,6 +172,7 @@
 <div class="row">
 {% for data in get_products %}
   <div class="col-md-4">
+    <a  href="{% url 'findproducts:ProductDetail' data.id %}" style="text-decoration: none">
     <div class="product-boxe">
       <!-- <img src="https://digimonk.net/bahes/images/pexels-fox-1.png" alt="" /> -->
       {% if data.image_1 %}
@@ -178,8 +187,12 @@
       {% else %}
         <h3 class="sewing">{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</h3>
       {% endif %}
-      <p>{{data.user_id.userx.full_name}}<span class="kw"><a class="kw" href="{% url 'findproducts:ProductDetail' data.id %}">{{data.price}} {{data.currency}}</a></span>
+      <p class="owner">{{data.user_id.userx.full_name}}
     </p>
+    <!-- <span class="kw"><a class="kw" href="{% url 'findproducts:ProductDetail' data.id %}">{{data.price}} {{data.currency}}</a></span> -->
+   
+              <p class="kw text-right">{{data.price}} {{data.currency}}</p>
+     </a> 
     <ul class="inlienes">
       <li class="inline-list">
         <a href="javascript:void(0)" data-id="{{data.id}}" class="font-sizes edit_product"><i class="fa fa-edit"></i>Edit</a>
@@ -203,6 +216,7 @@
       </li>
     </ul>
   </div>
+
 </div>
 {% endfor %}
 </div>
@@ -240,7 +254,7 @@
 <ul id="tabs" class="nav nav-tabs tabsss">
   {% if get_product_cate %}
     {% for data in get_product_cate %}
-      <li class="nav-item"><a href="javascript:void(0)" class="nav-link small text-uppercase blues active cate" data-id="{{data.id}}" onclick="localStorage.clear()">{{data.category_name}}</a>
+      <li class="nav-item "><a href="javascript:void(0)" class="nav-link small text-uppercase blues cate active" data-id="{{data.id}}" onclick="localStorage.clear()">{{data.category_name}}</a>
     </li>
     <!--  <li class="nav-item"><a href="" data-target="#messages1" data-toggle="tab" class="nav-link small text-uppercase gray sewing">Sewing, yarn and <br>accessories</a> -->
   {% endfor %}
@@ -345,11 +359,64 @@
   </div>
 </div>
 <!--image crop modal end-->
+
+
+        <!--image crop modal start-->
+  <div id="uploaduserimageModal" class="modal" role="dialog">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Upload & Crop Image</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-8 text-center">
+              <div id="user_profile_image" style="width:300px; margin-top:30px"></div>
+            </div>
+            <div class="col-md-4" style="padding-top:10px;">
+              <br />
+              <br />
+              <br/>
+              <div class="row">
+                <div class="col-md-12 set_loader"></div>
+              </div>
+              <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+            </div>
+          </div>
+        </div>
+        
+        <form method="POST" action="/dashboard/profile-change/">
+          {% csrf_token %}
+          
+          <input type="hidden" name="save_profile_image" id="save_profile_image" />
+          <input type="hidden" name="pagename" value="product" />
+          <div class="modal-footer">
+            <button class="btn btn-success crop_image_edit">Upload Image</button>
+          </form>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--image crop modal end-->
 {% endblock %}
 {% block script %}
 
 <script type="text/javascript">
 
+
+$(document).on('click',".cate",function(){
+       $(".cate").each(function(){
+       if($(this).hasClass("product_cate"))
+       {
+        $(this).removeClass("product_cate");
+       }
+       });
+       $(this).addClass("product_cate");
+  });
 
 $(document).on("click",".cate",function(){
 var id = $(this).data("id");

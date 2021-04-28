@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'bahes_admin/css/admin.css'%}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
    <link rel="stylesheet" type="text/css" href="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.9/css/dataTables.checkboxes.css">
     <link rel="stylesheet" href="{% static 'bahes_admin/css/bootstrap-multiselect.css'%}">
@@ -20,6 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link rel="stylesheet" href='{% static "css/croppie.css" %}'  type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+    <style type="text/css">.acive{background-color: #000000;}.acive_dsp{background-color: #133644;}</style>
   </head>
   <div id="wrapper">
     <aside id="sidebar-wrapper" class="shadow1">
@@ -28,59 +30,78 @@
         <img src="{% static 'bahes_admin/images/logo-bahes.png'%}" class="desktop-logo"></a>
       </div>
       <ul class="sidebar-nav">
-        <li>
+        <li class="{% if 'dashboard' in request.build_absolute_uri %} acive  {% endif %}">
           <a href="{% url 'admin_dashboard:AdminDashboard' %}"><i class="fa fa-dashboard"></i>Dashboard</a>
         </li>
         
-        <li><div class="dropdown show">
-          <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-file-text"></i>&nbsp; Manage member
+        <li class=><div class="dropdown show">
+          <a class=" dropdown-toggle {% if 'manage-member' in request.build_absolute_uri %} acive  {% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-file-text"></i>&nbsp; Manage members
           </a>
-          <div class="collapse" id="collapseExample">
-            <a class="dropdown-item" href="{% url 'manage_member:ManageCustomer' %}">Manage Customer</a>
-            <a class="dropdown-item" href="{% url 'manage_member:ManageSupplier' %}">Manage Supplier</a>
+          <div class="collapse  {% if 'manage-member' in request.build_absolute_uri or 'manage-supplier' in request.build_absolute_uri %} show  {% endif %}" id="collapseExample" >
+            <a class="dropdown-item  {% if 'manage-member' in request.build_absolute_uri and 'manage-supplier' not in request.build_absolute_uri  and 'edit-supplier' not in request.build_absolute_uri and 'view-services' not in request.build_absolute_uri  and 'view-products' not in request.build_absolute_uri  %} acive_dsp  {% endif %}" href="{% url 'manage_member:ManageCustomer' %}">Manage Customers</a>
+            <a class="dropdown-item {% if 'manage-supplier' in request.build_absolute_uri  or 'edit-supplier' in request.build_absolute_uri or 'view-services' in request.build_absolute_uri or 'view-products' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_member:ManageSupplier' %}">Manage Suppliers</a>
           </div>
         </div></li>
-        <li>
+         
+
+
+          <li><div class="dropdown show">
+          <a class=" dropdown-toggle {% if 'manage-user-answers' in request.build_absolute_uri %} acive  {% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-6" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-id-card"></i> Manage User Answers
+          </a>
+          <div class="collapse {% if 'manage-user-answers' in request.build_absolute_uri or 'manage-supplier' in request.build_absolute_uri %} show  {% endif %}" id="collapseExample-6">
+            <a class="dropdown-item {% if 'manage-user-answers' in request.build_absolute_uri and 'customer-answers' not in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_user_answers:SupplierAnswer' %}" >Suppliers Answers</a>
+            <a class="dropdown-item {% if 'customer-answers' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_user_answers:CustomerAnswer' %}">Customers Answers</a>
+          </div>
+        </div></li>
+       
+
+       
+
+        <li class="{% if 'manage-cms' in request.build_absolute_uri %} acive  {% endif %}">
           <a href="{% url 'manage_cms:ManageCms'%}"><i class="fa fa-book"></i>Manage CMS Pages</a>
         </li>
         
-        <li>
+        <li class="{% if 'manage-questions' in request.build_absolute_uri %} acive  {% endif %}">
           <a href="{% url 'manage_questions:ManageQuestions' %}"><i class="fa fa-user"></i>Manage Questions</a>
-        </li>
-        <li>
+        </li >
+        <li class="{% if 'manage-services' in request.build_absolute_uri %} acive  {% endif %}">
           <a href="{% url 'manage_services:ManageServices'%}"><i class="fa fa-list-alt"></i>Manage Services</a>
         </li>
-        <li>
-          <a href="{% url 'manage_products:ManageProducts'%}"><i class="fa fa-support"></i>Manage Product</a>
+        <li class="{% if 'manage-products' in request.build_absolute_uri %} acive  {% endif %}">
+          <a href="{% url 'manage_products:ManageProducts'%}"><i class="fa fa-support"></i>Manage Products</a>
         </li>
-        <li>
-          
-        </li>
-         <li><div >
+        <li class="{% if 'manage-chat' in request.build_absolute_uri %} acive  {% endif %}">
+            <a href="{% url 'manage_chat:ManageChat' %}"><i class="fa fa-list-alt"></i>Manage Chat</a>
+         </li>
+      <!--    <li><div >
           <a  href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-3" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-id-card"></i> Manage Payments
           </a>
      
-        </div></li>
-       <!--  <li><div class="dropdown show">
-          <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-3" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+        </div></li> -->
+        <li><div class="dropdown show">
+          <a class=" dropdown-toggle {% if 'manage-payments/cost' in request.build_absolute_uri or 'manage-payments/order' in request.build_absolute_uri%} acive  {% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-3" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-id-card"></i> Manage Payments
           </a>
-          <div class="collapse" id="collapseExample-3">
-            <a class="dropdown-item" href="{% url 'manage_payments:ManageCost'%}">Manage Reg. Cost</a>
-            <a class="dropdown-item" href="{% url 'manage_payments:ManageOrder'%}">Manage Orders</a>
+          <div class="collapse {% if 'manage-payments/cost' in request.build_absolute_uri or 'order' in request.build_absolute_uri%} show  {% endif %}" id="collapseExample-3">
+            <a class="dropdown-item {% if 'manage-payments/cost' in request.build_absolute_uri and 'order' not in request.build_absolute_uri%} acive_dsp  {% endif %}" href="{% url 'manage_payments:ManageCost'%}">Manage Reg. Cost</a>
+            <a class="dropdown-item {% if 'order' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_payments:ManageOrder'%}">Manage Orders</a>
           </div>
-        </div></li> -->
+        </div></li>
         
         <li><div class="dropdown show">
-          <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-2" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+          <a class=" dropdown-toggle {% if 'manage-admin-settings' in request.build_absolute_uri %} acive  {% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-2" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-cog"></i>&nbsp; Manage Admin Setting
           </a>
-          <div class="collapse" id="collapseExample-2">
-            <a class="dropdown-item" href="{% url 'manage_admin_settings:ChangePassword'%}">Change Password</a>
-            <a class="dropdown-item" href="{% url 'manage_admin_settings:EmailSettings'%}">Email Setting</a>
-            <a class="dropdown-item" href="{% url 'manage_admin_settings:ManageEnquiries'%}">Manage Help Enquiries</a>
+          <div class="collapse {% if 'manage-admin-settings' in request.build_absolute_uri or 'email-settings' in request.build_absolute_uri or 'enquiries'  in request.build_absolute_uri %} show  {% endif %}" id="collapseExample-2">
+           
+            <a class="dropdown-item {% if 'manage-admin-settings' in request.build_absolute_uri and 'email-settings' not in request.build_absolute_uri and 'enquiries' not in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_admin_settings:ChangePassword'%}">Change Password</a>
+
+      
+            <a class="dropdown-item {% if 'email-settings' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_admin_settings:EmailSettings'%}">Email Setting</a>
+            <a class="dropdown-item {% if 'enquiries' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_admin_settings:ManageEnquiries'%}">Manage Help Enquiries</a>
           </div>
         </div></li>
         
@@ -261,7 +282,8 @@
     $('#multiple-checkboxes').multiselect({
     includeSelectAllOption: true,
     });
-    });</script>
+    });
+  </script>
     <script>
     const $button  = document.querySelector('#sidebar-toggle');
     const $wrapper = document.querySelector('#wrapper');

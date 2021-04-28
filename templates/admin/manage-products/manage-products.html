@@ -62,7 +62,15 @@
                            <tr>
                              <td><div class="checkbox" ><input type="checkbox" class="dt-checkboxes product_type" 
                             value="{{data.id}}"><label></label></div></td>
-                              <td ><img src="{{data.image_1.url}}" style="width: 100px;"></td>
+                              <td >{% if data.image_1 %}
+                                    <img src="{{data.image_1.url}}"  style="width: 100px;">
+                                    {% elif data.image_2%}
+                                    <img src="{{data.image_2.url}}"  style="width: 100px;">
+                                    {% else %}
+                                    <img src="{% static 'images/no-image.jpg' %}"  style="width: 100px;">
+                                    {% endif %}
+                                   
+                                  </td>
                               {% if data.Product_subcategory %}
                               <td>{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</td>
                                  {% else %}
@@ -122,7 +130,7 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header" style="background: #2088ca;">
-        <h5 class="modal-title" id="exampleModalLabel">Add Services</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>

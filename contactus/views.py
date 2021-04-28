@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 import requests
 from bahes import settings
+from manage_admin_settings.models import *
 # Create your views here.
 class Contact(generic.TemplateView):
 	template_name = "contactus/contact-us.html"
@@ -33,11 +34,19 @@ class Contact(generic.TemplateView):
 			email_content = 'email_template/contact-us-email.html'
 
 			email_template = get_template(email_content).render(data_content)
-			reciver_email = 'gaurav@digimonk.net'
+			# reciver_email = 'shiveshbhardwaj149@gmail.com'
 
-			Subject = 'BAHES'
-			email_msg = EmailMessage(Subject, email_template, settings.EMAIL_HOST_USER, [reciver_email],
-			                             reply_to=[settings.EMAIL_HOST_USER])
+			Subject = "You've got a new user query"
+			
+			if Email_Setting.objects.filter(status=True).exists():
+				email_data = Email_Setting.objects.filter(status=True)
+				for data in email_data:
+					EMAIL_HOST = data.smtp_host
+					EMAIL_PORT = data.smtp_port
+					EMAIL_HOST_USER = data.smtp_username
+					EMAIL_HOST_PASSWORD = data.smtp_password
+			email_msg = EmailMessage(Subject, email_template, EMAIL_HOST_USER, [EMAIL_HOST_USER],
+									 reply_to=[EMAIL_HOST_USER])
 			email_msg.content_subtype = 'html'
 			email_msg.send(fail_silently=False)
 			contactusdata=ContactUs(name=name,email=email,message=message)

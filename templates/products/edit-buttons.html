@@ -9,7 +9,7 @@
       <select class="form-control" id="" name="material_type1" required="">
         
         {% if get_material_type1 %}
-          <option class="active">select</option>
+          <option class="active"></option>
           {% for data in get_material_type1 %}
             {% if data.id == product_instance.material_type1.id %}
             <option value="{{data.id}}" selected="">{{data.name}}</option>
@@ -28,7 +28,7 @@
       <label for="" class="bold-font">Country Origin</label>
       <select class="form-control" name="country" required="">
          {% if get_countries %}
-        <option class="active">select</option>
+        <option class="active"></option>
         {% for data in get_countries %}
           {% if data.id == product_instance.country_origin.id %}
             <option value="{{data.id}}" selected="">{{data.country_name}}</option>

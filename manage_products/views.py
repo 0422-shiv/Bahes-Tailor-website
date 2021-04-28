@@ -24,18 +24,22 @@ class ManageProducts(generic.TemplateView):
 
 
 	def get(self, request,*args, **kwargs):
-		from_date=None
-		to_date=None
-		if 'from_date' in request.GET and 'to_date' in request.GET :
-			from_date = request.GET['from_date']
-			to_date = request.GET['to_date']
-			
-			from_date_format = datetime.strptime(from_date,"%m/%d/%Y")
-			to_date_format = datetime.strptime(to_date,"%m/%d/%Y")
-			get_products=SupplierProduct.objects.filter(created_dt__range=[from_date_format, to_date_format])
+		if request.user.is_superuser:
+			from_date=None
+			to_date=None
+			if 'from_date' in request.GET and 'to_date' in request.GET :
+				from_date = request.GET['from_date']
+				to_date = request.GET['to_date']
+				
+				from_date_format = datetime.strptime(from_date,"%m/%d/%Y")
+				to_date_format = datetime.strptime(to_date,"%m/%d/%Y")
+				get_products=SupplierProduct.objects.filter(created_dt__range=[from_date_format, to_date_format])
+			else:
+				get_products=SupplierProduct.objects.all()
+			return render(request, self.template_name,{'get_products':get_products,'from_date':from_date,'to_date':to_date})
 		else:
-			get_products=SupplierProduct.objects.all()
-		return render(request, self.template_name,{'get_products':get_products,'from_date':from_date,'to_date':to_date})
+			messages.error(request,"Please enter valid username and password")
+			return HttpResponseRedirect(reverse('admin_login'))
 		
 @method_decorator(login_required, name="dispatch")
 class DeleteMultiProducts(generic.TemplateView):
@@ -51,3 +55,4 @@ class DeleteMultiProducts(generic.TemplateView):
 			SupplierProduct.objects.filter(id=product_instance.id).delete()
 		
 		return JsonResponse({'message': 'Deleted successfully.'})
+		

@@ -1,63 +1,444 @@
-    <div class="container-fluid">
-          <div class="row p-t-b-20">
-            <div class="col-md-12">
-              <div class="form-card no-b" style="    overflow-y: scroll;">
-                <div class="login-form-card">
-                  
-                  
-                  <div style="position: relative;bottom: 36px;">
-                    <div class="div-table">
-                      <div class="table-responsive">
-                        <table id="example" class="table table-striped " style="width:100%">
-                          <thead>
-                            <tr>
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+  .picker {
+    display: flex;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 3px 6px -4px rgb(0 0 0 / 10%);
+    border: 1px solid #ccc;
+}
+.dropzone-wrapper {
+    border: 2px dashed #91b0b3;
+    color: #92b0b3;
+    position: relative;
+    height: 289px;
+    width: 289px;
+}
+.dropzone-desc {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    width: 67%;
+    top: 128px;
+    font-size: 16px;
+}
+.dropzone-wrapper input[type="file"] {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0pc;
+    text-indent: -5000px;
+    cursor: pointer;
+    outline: none;
+    opacity: 0;
+}
+li.nav-item {
+    width: 50%;
+    text-align: center;
+    padding: 0px 5px;
+    }
+    a.nav-link.small.text-uppercase.active.blues {
+    padding: 24px;
+    background: #707070;
+    border-radius: 12px;
+    color: white;
+    font-size: 18px;
+    display: block;
+  }
+  ul,li{font-size: 16px;}
+
+  button.multiselect.dropdown-toggle.btn.btn-default {
+    border: 1px solid #ddd;
+    justify-content: space-between;
+    display: flex;
+}
+.multiselect-container.dropdown-menu {
+    min-width: 0px;
+}
+.btn-group {
+    width: 100%;
+}
+ul.checkboxes {
+    list-style-type: none;
+    display: inline-flex;
+    padding-left: 0px!important;
+}
+li.checkss {
+    display: inline-block;
+}
+input[type="checkbox"][id^="myCheckbox"] {
+    display: none;
+}
+label.pull {
+    /* border: 1px solid #fff; */
+    padding: 0px;
+    display: block;
+    position: relative;
+    /* margin: 10px; */
+    cursor: pointer;
+}
+.img-check :checked + label {
+    border-color: #ddd;
+}
+.img-check :checked + label:after {
+    content: "✓"!important;
+    color: white;
+    transform: scale(1);
+    background-image: linear-gradient(#4d5a73, rgb(46 69 76 / 70%)), url(../images/Laundry.png);
+}
+label.pull:after {
+    content: " ";
+    display: block;
+    /* border: 1px solid #e8d9d9; */
+    position: absolute;
+    top: 7px;
+    left: 10px;
+    width: 75px;
+    height: 76px;
+    text-align: center;
+    line-height: 76px;
+    transition-duration: 0.4s;
+}
+div#sub ul.nav.nav-tabs.centers li.nav-item {
+    width: 33.333%;
+}
+
+div#sub ul.nav.nav-tabs.centers li.nav-item a.nav-link {
+    font-size: 14px;
+}
+a.nav-link.btn.btn-primary.primarys-1 {
+    padding: 13px 1px -15px 65px;
+    background: #707070;
+    border-radius: 10px;
+    font-size: 18px;
+}
+.product_cate {
+    background-color: #2088CA!important;
+    color: white!important;
+}
+</style>
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+               
+                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                                {% else %}
+            
+                                <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+   <div class="container-fluid">
+      <div class="row p-t-b-20">
+         <div class="col-md-12">
+            <div class="form-card no-b">
+               <div class="login-form-card">
+                  <h3 class="add_name">{{get_supplier_instance.full_name}}'s Products</h3>
+                   <a href="add-operator.php" class="add-btn " data-toggle="modal" data-target="#AddexampleModal" style="position: absolute;top: 10px;right: 4%;"><i class="fa fa-plus mr-5"></i>Add</a>
+                      
+             <div style="position: relative;bottom: 36px;">
+                 <div class="div-table">
+                  <div class="table-responsive">
+                     <table id="example-2" class="table table-striped " style="width:100%">
+                        <thead>
+                           <tr>
+                           
                               <th class="question-1">Image</th>
-                        <!--       <th>Product Name</th> -->
+                              <!-- <th>Product Name</th> -->
                               <th>Product Category</th>
                               <!-- <th>Added By</th> -->
-                              <th>View Product</th>
-                              <!--  <th>Action</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                             <!--  <th>Action</th>
                               <th>Status</th> -->
-                              
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {% if get_supplier_products %}
-                            {% for data in get_supplier_products %}
-                            <tr>
-                              
-                              <td ><img src="{{data.image_1.url}}" style="width: 100px;"></td>
-                           <!--    <td>Sewing Machine</td> -->
-                             {% if data.Product_subcategory %}
+                        
+                           </tr>
+                        </thead>
+                        <tbody>
+                          {% if get_supplier_products %}
+                          {% for data in get_supplier_products %}
+                           <tr>
+                           
+                              <td >{% if data.image_1 %}
+                                    <img src="{{data.image_1.url}}"  style="width: 100px;">
+                                    {% elif data.image_2%}
+                                    <img src="{{data.image_2.url}}"  style="width: 100px;">
+                                    {% else %}
+                                    <img src="{% static 'images/no-image.jpg' %}"  style="width: 100px;">
+                                    {% endif %}
+                                   
+                                  </td>
+                              {% if data.Product_subcategory %}
                               <td>{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</td>
                                  {% else %}
                                   <td>{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</td>
                                 {% endif %}
-                              <!-- <td>Customer</td> -->
-                              <td><button class="btn btn-primary view_products_details" data-id="{{data.id}}"> View </button></td>
+                             <!--  <td>Machine</td> -->
+                              <!-- <td>{{data.user_id.userx.full_name}}</td> -->
+                                 <td>
                             
-                            </tr>
-                           {% endfor %}
-                           {% endif %}
-                          
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+                              {% if data.status == True %}
+                              <button type="button" class="badge badge-gradient-info product_status" id="{{data.id}}" productstatus="{{data.status}}">Active</button>
+                              {% else %}
+                              <button type="button" class="badge badge-gradient-info product_status"  id="{{data.id}}" productstatus="{{data.status}}">DeActive</button>
+                              {% endif %}
+                          </td>
+                              <td>  <table class="act-button">
+                              <tbody><tr>
+                                 <td><a href="javascript:void(0)" data-id="{{data.id}}" class="btn view_products_details" title="view" ><span class="fa fa-eye"></span></a></td>
+                                <td><a href="javascript:void(0)" title="Edit" data-id="{{data.id}}" class="btn-edit edit_product"><i class="fa fa-pencil"></i></a></td>
+                                <td><a href="javascript:void(0)" data-id="{{data.id}}" class="btn-delete delete_product" title="Delete" ><span class="fa fa-trash"></span></a></td>
+                              
+                              </tr>
+                            </tbody></table>
+                          </td>
+                    
+                           </tr>
+                             
+                          {% endfor %}
+                          {% endif %}
+                              
+                        </tbody>
+                     </table>
                   </div>
-                  
-                  &nbsp;
-                  
                 </div>
               </div>
+                   <!--   <div class="row">
+                <div class="col-md-12 ">
+               
+                    
+                    <nav>
+
+                      <ul class="pagination text">
+                        <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-left"></i></a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-right"></i></a></li>
+                      </ul>
+                    </nav>
+                  
+              </div>
+              </div>
+                  &nbsp; -->
+                <!--    <div class="dropdown">
+  <button class="btn btn-primary delete_product" type="button" aria-haspopup="true" aria-expanded="false">
+    Delete 
+  </button>
+</div> -->
+               </div>
             </div>
+         </div>
+      </div>
+   </div>
+
+
+
+</section>
+
+<div class="modal fade" id="AddexampleModal" tabindex="-1" role="dialog" aria-labelledby="AddexampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Add {{get_supplier_instance.full_name}}'s Product </h4>
+        <span class="close-box" data-dismiss="modal" onclick="location.reload(true)" aria-label="Close">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+      </div>
+        <div class="modal-body">
+        <ul id="tabs" class="nav nav-tabs tabsss">
+                {% if get_product_cate %}
+            {% for data in get_product_cate %}
+              <li class="nav-item "><a href="javascript:void(0)" class="nav-link small text-uppercase blues cate active" data-userid="{{get_supplier_instance.id}}" data-id="{{data.id}}" onclick="localStorage.clear()">{{data.category_name}}</a>
+            </li>
+            <!--  <li class="nav-item"><a href="" data-target="#messages1" data-toggle="tab" class="nav-link small text-uppercase gray sewing">Sewing, yarn and <br>accessories</a> -->
+          {% endfor %}
+        {% endif %}
+        </ul>
+        <div id="sub"></div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #2088ca;">
+        <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+    
+      </div>
+     <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary"data-dismiss="modal">Close</button>
+        
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal-7" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Edit </h4>
+        <span class="close-box" data-dismiss="modal" onclick="location.reload(true)" aria-label="Close">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--image crop modal start-->
+<div id="uploadimageModal_edit" class="modal" role="dialog">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Upload & Crop Image</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-8 text-center">
+            <div id="profile_image_edit" style="width:300px; margin-top:30px"></div>
+          </div>
+          <div class="col-md-4" style="padding-top:10px;">
+            <br />
+            <br />
+            <br/>
+            <div class="row">
+              <div class="col-md-12 set_loader"></div>
+            </div>
+            <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
           </div>
         </div>
-      
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success crop_image">Save Image</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--image crop modal end-->
 
 
+<!--image crop modal start-->
+<div id="uploadfabricimageModal2" class="modal" role="dialog">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Upload & Crop Image</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-8 text-center">
+            <div id="fabric_product_image2" style="width:300px; margin-top:30px"></div>
+          </div>
+          <div class="col-md-4" style="padding-top:10px;">
+            <br />
+            <br />
+            <br/>
+            <div class="row">
+              <div class="col-md-12 set_loader"></div>
+            </div>
+            <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success crop_image_edit">Save Image</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--image crop modal end-->
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript">
+
+
+$(document).on('click',".cate",function(){
+       $(".cate").each(function(){
+       if($(this).hasClass("product_cate"))
+       {
+        $(this).removeClass("product_cate");
+       }
+       });
+       $(this).addClass("product_cate");
+  });
+
+$(document).on("click",".cate",function(){
+var id = $(this).data("id");
+var userid = $(this).data("userid");
+console.log(userid,id);
+$("input").empty();
+$.ajax({
+method:"GET",
+url :"/my-products/category/"+id+'?userid='+userid,
+dataType:"html",
+success:function(data)
+{
+  // console.log(data);
+$("#sub").html(data);
+}
+});
+});
+</script>
 <!-- supplier view start -->
 <script type="text/javascript">
+  //---------Edit User start----------------
+$(document).on("click",".edit_product",function(){
+var id = $(this).data("id");
+console.log(id)
+$.ajax({
+method:"GET",
+url :"/my-products/edit-product/"+id,
+dataType:"html",
+success:function(data)
+{
+$("#exampleModal-7 .modal-body").html(data);
+$("#exampleModal-7").modal("show");
+}
+});
+});
+//---------Edit User end----------------
 
 $(document).on("click",".view_products_details",function(){
 var id = $(this).data("id");
@@ -70,10 +451,112 @@ $.ajax({
   success:function(data)
 
   {
-     $("#exampleModal-14 .modal-body").html(data);
-     $("#exampleModal-14 ").modal("show");
-    
+     $("#exampleModal .modal-body").html(data);
+     $("#exampleModal").modal("show");
   }
 });
 });
 </script>
+<script type="text/javascript">
+  
+  //---------delete User start----------------
+$(document).ready(function(){
+$(".delete_product").click(function(){
+var delete_value = $(this).data("id");
+console.log(delete_value)
+swal({
+title: "Are you sure?",
+text: "You want to delete !",
+type: "warning",
+showCancelButton: true,
+confirmButtonClass: 'btn-danger',
+confirmButtonText: 'Yes, delete it!',
+closeOnConfirm: false,
+// closeOnCancel: false
+},
+function(isConfirm){
+if (isConfirm) {
+var token = '{{csrf_token}}';
+$.ajax({
+headers: { "X-CSRFToken": token },
+url: "/my-products/delete/"+delete_value,
+type: "POST",
+success: function () {
+swal("Done!","It was succesfully deleted!","success");
+location.reload();
+}
+});
+}
+else{
+swal("Cancelled", "Your imaginary file is safe :)", "error");
+}
+})
+});
+});
+//---------delete product end----------------
+</script>
+<script type="text/javascript">
+  
+  //---------active and deactive status Start----------------
+$(document).on('click', ".product_status", function (e) {
+var productid = $(e.currentTarget).attr("id");
+var productstatus = $(e.currentTarget).attr('productstatus');
+if(productstatus == 'True'){
+varstatus = 'Deactive';
+}
+else{
+varstatus = 'Active';
+}
+swal({
+title: 'Are you sure?',
+text: varstatus+' this',
+icon: 'warning',
+buttons: {
+cancel: {
+text: "Cancel",
+value: null,
+visible: true,
+closeModal: true,
+},
+confirm: {
+text: "OK",
+value: true,
+visible: true,
+closeModal: true
+},
+}
+},
+function(isConfirm){
+if (isConfirm) {
+var dataString = 'productid='+productid+'&productstatus='+productstatus;
+var token = '{{csrf_token}}';
+$.ajax({
+method:"POST",
+headers: { "X-CSRFToken": token },
+url: "/my-products/productstatus",
+data: dataString,
+dataType:"json",
+cache: false,
+success: function (data) {
+swal("Done!","succesfully Edited!","success");
+location.reload();
+}
+});
+}
+else{
+swal("Cancelled", "Your status is safe :)", "error");
+}
+});
+});
+//---------active and deactive service End----------------
+</script>
+
+<script type="">
+   
+    $(document).ready(function() {
+            $('#multiple-checkboxess').multiselect({
+              includeSelectAllOption: true,
+            });
+        });
+  </script>
+{% endblock %}

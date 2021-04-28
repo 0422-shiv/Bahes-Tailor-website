@@ -1,7 +1,8 @@
 {% load static %}
 <div id="home1" class="tab-pane fade active show">
-  <form method="POST">
+  <form method="POST" action="/my-products/">
     {% csrf_token %}
+    <input type="hidden" name="user" value="{{userid}}">
     <input type="hidden" name="fabric" value="{{get_product_cate.id}}">
     <div class="form-group">
       <label for="" class="bold-font">Country Origin</label>
@@ -155,72 +156,7 @@
   </form>
 </div>
 
-<!--image crop modal start-->
-<div id="uploadimageModal_edit" class="modal" role="dialog">
-  <div class="modal-dialog ">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Upload & Crop Image</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-8 text-center">
-            <div id="profile_image_edit" style="width:300px; margin-top:30px"></div>
-          </div>
-          <div class="col-md-4" style="padding-top:10px;">
-            <br />
-            <br />
-            <br/>
-            <div class="row">
-              <div class="col-md-12 set_loader"></div>
-            </div>
-            <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-success crop_image">Save Image</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--image crop modal end-->
-<!--image crop modal start-->
-<div id="uploadfabricimageModal2" class="modal" role="dialog">
-  <div class="modal-dialog ">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Upload & Crop Image</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-8 text-center">
-            <div id="fabric_product_image2" style="width:300px; margin-top:30px"></div>
-          </div>
-          <div class="col-md-4" style="padding-top:10px;">
-            <br />
-            <br />
-            <br/>
-            <div class="row">
-              <div class="col-md-12 set_loader"></div>
-            </div>
-            <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-success crop_image_edit">Save Image</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--image crop modal end-->
+
 <script src='{% static "js/product_img_crop_1.js" %}'></script>
 <script src='{% static "js/product_img_crop_2.js" %}'></script>
 <script type="">

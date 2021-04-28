@@ -1,3 +1,4 @@
+{% load static %}
     <section class="bg-lightshow">
         <div class="title-supplier mb-5">
           <div class="container">
@@ -13,10 +14,17 @@
           <div class="row mb-4">
             <div class="col-md-3">
               <div class="supliers-left" style="height:auto;">
-                <img src="{{get_product_instance.image_1.url}}" style="width:100%" alt="">
-                <div class="ask-question">
+              
+                {% if get_product_instance.image_1 %}
+                                    <img src="{{get_product_instance.image_1.url}}"  style="width: 260px;">
+                                    {% elif get_product_instance.image_2%}
+                                    <img src="{{get_product_instance.image_2.url}}"  style="width: 260px;">
+                                    {% else %}
+                                    <img src="{% static 'images/no-image.jpg' %}"  style="width: 260px;">
+                                    {% endif %}
+              <!--   <div class="ask-question">
                   <a href="#" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i> Ask me question</a>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="col-md-9">

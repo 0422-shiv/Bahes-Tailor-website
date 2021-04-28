@@ -2,7 +2,7 @@
                    
  					{% if get_product_subcate %}
  					{% for data in get_product_subcate %}
-                      <li class="nav-item subcat"> <a class="nav-link active btn btn-primary primarys-1 blue subcate" data-toggle="tab" href="" data-id="{{data.id}}" data-slug="{{data.slug}}"role="tab">{{data.subcategory_name}}</a>
+                      <li class="nav-item subcat"> <a class="nav-link active btn btn-primary primarys-1 blue subcate" data-toggle="tab" href="" data-id="{{data.id}}" data-slug="{{data.slug}}" data-userid="{{userid}}"role="tab">{{data.subcategory_name}}</a>
                       </li>
                       {% endfor %}
                      {% endif %}
@@ -11,14 +11,23 @@
 
 
 <script type="text/javascript">
+  $(document).on('click',".subcate",function(){
+       $(".subcate").each(function(){
+       if($(this).hasClass("product_cate"))
+       {
+        $(this).removeClass("product_cate");
+       }
+       });
+       $(this).addClass("product_cate");
+  });
   
   $(document).on("click",".subcate",function(){
 var id = $(this).data("id");
 var slug = $(this).data("slug");
-
+var userid = $(this).data("userid");
 $.ajax({
   method:"GET",
-  url :"/my-products/subcategory/"+id+'/'+slug,
+  url :"/my-products/subcategory/"+id+'/'+slug+'?userid='+userid,
   dataType:"html",
 
   success:function(data)

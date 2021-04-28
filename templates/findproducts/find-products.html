@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 {% load static %}
 {% block content %}
-  <div class="banner-profile">
+  <div class="banner-profile" style="background: url({{'FindProducts'|get_banner_img}}) no-repeat center top;">
     <div class="profile-overlay">
       <div class="container">
         <div class="heading-title supplies text-center">
@@ -79,10 +79,10 @@
           </div>
           </h3>
           <div class="supplier_counts">
-            <p class="sortby">Sort By :</p>
+            <h3 class="sortby" style="padding-right: 7px;">Sort By :</h3>
             <div class="dropdown">
               
-              <select class="form-control" id="short_by">
+              <select class="form-control" id="short_by" style="font-size:13px;">
                 <option value="">sort</option>
                 
                 {% for data in q_list %}
@@ -107,7 +107,7 @@
            
             <div class="col-md-4 mb-4">
               <div class="product-box textlimit">
-               <a href="{% url 'findproducts:ProductDetail' data.id %}"> 
+               <a href="{% url 'findproducts:ProductDetail' data.id %}" target="blank"> 
                 
                 {% if data.image_1 %}
                 <img src="{{data.image_1.url}}">
@@ -118,16 +118,16 @@
                 {% endif %}
 
               </a>
-                <a href="{% url 'findproducts:ProductDetail' data.id %}"><h4 >
+                <a href="{% url 'findproducts:ProductDetail' data.id %}" target="blank"><h4 >
                   {% if data.Product_subcategory %}
                   <span>{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</span>
                   {% else %}
                   <span>{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</span>
                   {% endif %}
                 </h4></a>
-                <a href="{% url 'findproducts:ProductDetail' data.id %}" > <p data-maxlength="15"><span>{{data.user_id.userx.full_name}}</span></p></a>
+                <a href="{% url 'findproducts:ProductDetail' data.id %}" target="blank"> <p data-maxlength="15"><span>{{data.user_id.userx.full_name}}</span></p></a>
                 <div class="text-right">
-                  <a href="{% url 'findproducts:ProductDetail' data.id %}" tabindex="0" class="kw">{{data.price}} {{data.currency}}</a>
+                  <a href="{% url 'findproducts:ProductDetail' data.id %}" tabindex="0" class="kw" target="blank">{{data.price}} {{data.currency}}</a>
                 </div>
               </div>
             </div>

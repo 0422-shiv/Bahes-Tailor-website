@@ -6,6 +6,8 @@ body {
   font-size: 16px;
   line-height: 1.6;
 }
+
+
 h1 {
   font-size: 32px;
 }
@@ -169,7 +171,7 @@ p.Resetting {
 .supplier_counts {
     position: absolute;
     right: 3%;
-    top: -1%;
+    top: -7px;
     display: flex;
     align-items: baseline;
 }
@@ -293,7 +295,7 @@ h3.other_features-1 {
     color: #555459;
     width: 100%;
     max-width: 100%;
-    font-family: Slack-Lato,appleLogo,sans-serif;
+    /*font-family: Slack-Lato,appleLogo,sans-serif;*/
     margin: 0 0 .5rem;
     -webkit-transition: box-shadow 70ms ease-out,border-color 70ms ease-out;
     -moz-transition: box-shadow 70ms ease-out,border-color 70ms ease-out;
@@ -347,7 +349,7 @@ h3.other_features-1 {
 /*------------------------------------------changes-----------------------------*/
 .bg-black {
   background: rgb(35 32 29 / 73%);
-  height: 128px;
+  height: 102px;
 }
 
 .banner img {
@@ -717,6 +719,10 @@ h3.other_features-1 {
 .red {
     background: #F39893;
 }
+.rmoutline:focus 
+{
+  outline:none;
+}
 
 section{padding:50px 0px}
 
@@ -789,6 +795,14 @@ section{padding:50px 0px}
 .services-box img {
     width: 100%;
 }
+.supplier-services-box img{
+  width: 66%;
+    height: auto;
+
+  }
+ .supplier-services-box {text-align: center;}
+ .supplier-subit {   position: relative;
+    right: 30px;}
 .slick-slider.slider-2 .slick-list {
     width: 90%;
     margin: auto;
@@ -2145,6 +2159,7 @@ span.close-box:hover{background: #00bcd4;}
 .title-supplier h3 {
     margin: 0px;
     color: #2088CA;
+
 }
 
 .supliers-list h2 {
@@ -2202,6 +2217,11 @@ span.close-box:hover{background: #00bcd4;}
 .list-box {
     min-height: 200px;
     margin: 3px;
+}
+.product_cate
+{
+  background-color:#2088CA!important;
+  color:white!important;
 }
 .productboxl img {
     height: 332px;
@@ -2352,6 +2372,10 @@ li.inline-list {
 h3.sewing {
     font-weight: bold;
     padding-top: 9px;
+    color: black;
+}
+p.owner{
+  color: black;
 }
 span.kw{
     color: #E91C6A;
@@ -2501,6 +2525,7 @@ ul#tabs li.nav-item {
     text-align: center;
     padding: 0px 5px;
 }
+
 a.nav-link.small.text-uppercase.active.blues {
     padding: 24px;
     background: #707070;
@@ -3009,4 +3034,46 @@ ul.multiselect-container.dropdown-menu.show li {
 .profilebox.chartlist #v-pills-tab a {
     display: block;
     width: 100%;
+}
+.hoverdiv {
+    position: relative;
+}
+
+.overday {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background: rgb(0 0 0 / 72%);
+    display: none;
+}
+
+
+
+.hoverdiv:hover .overday {
+    display: flex;
+}
+
+@media screen and (max-width: 700px) and (min-width: 320px){
+
+.profilebox {
+    box-shadow: 5px 3px 21px #00000012;
+    height: 56%;
+    background: #fff;
+}
+.bg-lightgray {
+    background: rgb(32 136 202 / 3%);
+    padding: 15px;
+  position: relative;
+    bottom: 262px;
+}
+div#v-pills-tab {
+    position: relative;
+    top: 223px;
+    z-index: 99;
+}
+
 }

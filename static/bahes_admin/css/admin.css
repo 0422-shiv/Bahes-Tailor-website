@@ -1,4 +1,53 @@
+.servicescounter{
+   display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    color: #0a0a0a;
+    text-align: center;
+    border-radius: 100%;
+    line-height: 22px;
+   margin-left: 8px
+  }
+  button.btn.btn-secondary.views {
+    padding: 1px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+}
 
+  .chat-2 {
+    float: right;
+    width: auto;
+    background: #2088CA;
+    color: white;
+    padding: 0px 13px !important;
+    border-radius: 7px;
+    max-width: 70%;
+
+    word-break: break-word;
+}
+.chat_1 {
+     background: #F6F6F6;
+    width: auto;
+    padding: 3px 15px !important;
+    border-radius: 7px;
+    padding: 2px;
+    margin: 10px 0;
+    display: inline-block;
+  max-width: 70%;
+    word-break: break-word;
+  }
+  .main-dive {
+    padding: 5px 27px;
+    display: table;
+    width: 100%;
+}
+p.text_lorem {
+    font-size: 13px;
+    margin: 10px 0;
+    padding: 0px;
+}
 html{
   overflow-x: hidden;
 }
@@ -142,7 +191,7 @@ a.customer:active{
     background-color: #2088ca!important;
 }
 .table td, .table th {
-    padding: .75rem;
+    padding: .5rem;
     vertical-align: inherit!important;
     border-top: 1px solid #dee2e6;
 }

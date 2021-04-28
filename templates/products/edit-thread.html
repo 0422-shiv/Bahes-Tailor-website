@@ -11,7 +11,7 @@
         <label for="" class="bold-font">Thread Type</label>
         <select class="form-control" name="thread_type" required="">
           {% if get_thread_type %}
-            <option class="active">select</option>
+            <option class="active"></option>
             {% for data in get_thread_type %}
               {% if data.id == product_instance.threadtype.id %}
               <option value="{{data.id}}" selected="">{{data.name}}</option>

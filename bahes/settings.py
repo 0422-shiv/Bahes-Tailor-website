@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'import_export',
+ 
+    
     # User Apps start
     'account',
     'dashboard',
@@ -54,6 +56,7 @@ INSTALLED_APPS = [
     'custom_app',
     'admin_settings',
     'channels',
+    # 'last_seen',
     #Admin Apps start
     'admin_dashboard',
     'manage_member',
@@ -61,8 +64,10 @@ INSTALLED_APPS = [
     'manage_products',
     'manage_questions',
     'manage_cms',
+    'manage_chat',
     'manage_payments',
-    'manage_admin_settings', 
+    'manage_admin_settings',
+    'manage_user_answers' 
 ]
 
 MIDDLEWARE = [
@@ -73,7 +78,25 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'last_seen.middleware.LastSeenMiddleWare',
+    # 'chat.middleware.activeuser_middleware.ActiveUserMiddleware'
+  
 ]
+
+# Setup caching per Django docs. In actuality, you'd probably use memcached instead of local memory.
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#         'LOCATION': 'default-cache'
+#     }
+# }
+
+# Number of seconds of inactivity before a user is marked offline
+# USER_ONLINE_TIMEOUT = 300
+
+# Number of seconds that we will keep track of inactive users for before 
+# their last seen is removed from the cache
+# USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
 
 ROOT_URLCONF = 'bahes.urls'
 
@@ -155,7 +178,7 @@ STATICFILES_DIRS = [
     STATIC_DIR
 ]
 
-
+images_BASE_URL="http://digimonk.net:6262"
 BASE_URL = "http://digimonk.net:6262/"
 
 MEDIA_URL = '/media/'
@@ -171,7 +194,7 @@ EMAIL_HOST = 'smtpout.secureserver.net'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'gaurav@digimonk.net'
-EMAIL_HOST_PASSWORD = 'D!gimonK@321'
+EMAIL_HOST_PASSWORD = ''
 
 
 

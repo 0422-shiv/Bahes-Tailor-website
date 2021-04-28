@@ -21,6 +21,12 @@ class System_settings(models.Model):
 	logo = models.ImageField(upload_to='logo_images', null=True,blank=True)
 	footer_logo=models.ImageField(upload_to='logo_images',null=True, blank=True)
 	header_bg_img = models.ImageField(upload_to='header_bg_img_images', blank=True, null=True)
+	find_supplier_bg_img = models.ImageField(upload_to='header_bg_img_images', blank=True, null=True)
+	find_services_bg_img = models.ImageField(upload_to='header_bg_img_images', blank=True, null=True)
+	find_products_bg_img = models.ImageField(upload_to='header_bg_img_images', blank=True, null=True)
+	supplier_dashboard_bg_img = models.ImageField(upload_to='header_bg_img_images', blank=True, null=True)
+	customer_dashbaord_bg_img = models.ImageField(upload_to='header_bg_img_images', blank=True, null=True)
+	about_us_bg_img = models.ImageField(upload_to='header_bg_img_images', blank=True, null=True)
 	service_counter = models.IntegerField(blank=True, null=True)
 
 	product_counter = models.IntegerField(blank=True, null=True)

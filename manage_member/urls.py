@@ -5,7 +5,7 @@ from . import views
 
 # Define urls for User Application function.
 urlpatterns = [
-path('manage-customer', views.ManageCustomer.as_view(), name="ManageCustomer"),
+path('', views.ManageCustomer.as_view(), name="ManageCustomer"),
 path('edit-customer/<int:id>', views.EditCustomer.as_view(), name="EditCustomer"),
 path('manage-supplier', views.ManageSupplier.as_view(), name="ManageSupplier"),
 path('edit-supplier/<int:id>', views.EditSupplier.as_view(), name="EditSupplier"),

@@ -102,12 +102,12 @@ class OtpViewPage(generic.TemplateView):
 
             data_content = {"username": userprofile_instance.full_name,
                             "user_otp": userprofile_instance.otp}
-            email_content = 'email_template/email_send_for_otp.html'
+            email_content = 'email_template/email.html'
 
             email_template = get_template(email_content).render(data_content)
             reciver_email = user.email
 
-            Subject = 'BAHES'
+            Subject = 'Please Verify Your Email Address'
             if Email_Setting.objects.filter(status=True).exists():
                 email_data = Email_Setting.objects.filter(status=True)
                 for data in email_data:
@@ -120,7 +120,7 @@ class OtpViewPage(generic.TemplateView):
             email_msg.content_subtype = 'html'
             email_msg.send(fail_silently=False)
             id = str(id)
-            messages.success(request, "OTP has been sent to your registered email if not got check entered email is correct or not or resend again")
+            messages.success(request, "Four digit code has been sent to your registered email "+userprofile_instance.user_id.email+"")
         else:
             messages.error(request, "Something going wrong")
         return render(request, self.template_name,{'id':id,'get_system_settings':self.get_system_settings})
@@ -133,6 +133,29 @@ class OtpViewPage(generic.TemplateView):
         if userprofile_instance.otp == otp:
             userprofile_instance.verify_status = True
             userprofile_instance.save()
+            if User.objects.filter(email=userprofile_instance.user_id.email).exists():
+                    login_url=BASE_URL+'account/login'
+                    data_content = {"username": userprofile_instance.full_name,"login_url":login_url,}
+                    email_content = 'email_template/registration.html'
+                    
+
+                    email_template = get_template(email_content).render(data_content)
+                    reciver_email = 'shiveshbhardwaj149@gmail.com'
+
+                    Subject = userprofile_instance.full_name+' Has Been Registered, Congratulations!'
+
+                    if Email_Setting.objects.filter(status=True).exists():
+                        email_data = Email_Setting.objects.filter(status=True)
+                        for data in email_data:
+                            EMAIL_HOST = data.smtp_host
+                            EMAIL_PORT = data.smtp_port
+                            EMAIL_HOST_USER = data.smtp_username
+                            EMAIL_HOST_PASSWORD = data.smtp_password
+                    email_msg = EmailMessage(Subject, email_template, EMAIL_HOST_USER, [reciver_email],
+                                             reply_to=[EMAIL_HOST_USER])
+                    email_msg.content_subtype = 'html'
+                    email_msg.send(fail_silently=False)
+                  
             messages.success(request, 'Your account successfully verified')
             return redirect(BASE_URL + 'survey/' + id+'?q=1')
         else:
@@ -197,12 +220,12 @@ class ForgotPasswordOtp(generic.TemplateView):
             userprofile_instance.save()
             data_content = {"username": userprofile_instance.full_name,
                             "user_otp": userprofile_instance.otp}
-            email_content = 'email_template/email_send_for_otp.html'
+            email_content = 'email_template/otp.html'
 
             email_template = get_template(email_content).render(data_content)
             reciver_email = user.email
 
-            Subject = 'BAHES'
+            Subject = 'Need a password?'
             if Email_Setting.objects.filter(status=True).exists():
                 email_data = Email_Setting.objects.filter(status=True)
                 for data in email_data:

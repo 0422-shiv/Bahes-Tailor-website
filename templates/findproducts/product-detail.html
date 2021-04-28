@@ -30,16 +30,12 @@
     </div>
   </div>
   <section class="bg-lightshow">
-    <div class="title-supplier mb-5">
+   
       <div class="container">
-      
-         {% if get_product_instance.Product_subcategory %}
-          <h3>{{get_product_instance.Product_subcategory.subcategory_name}}</h3>
-          {% else %}
-          <h3>{{get_product_instance.product_category.category_name}}</h3>
-          {% endif %}
+      <h3 style="text-align: right;">
+         <a href="{% url 'findproducts:FindProducts' %}" style="font-size:12px ;" ><i class="fa fa-arrow-circle-left fa-2x"></i></a></h3>
       </div>
-    </div>
+  
     <div class="container">
       <div class="row mb-4">
         <div class="col-md-3">
@@ -57,8 +53,10 @@
               <!-- <a href="#" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i> Ask me question</a> -->
               {% if get_payment.payment_status == True %}
              
-                <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom{% if get_product_instance.user_id.id == request.user.id %}{% else %}&id={{get_product_instance.user_id.userx.id}}{% endif %}" class="btn btn-primary btn-block"><i class="fa fa-comments-o" ></i> Ask Question</a>
-              
+              <!--   <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom{% if get_product_instance.user_id.id == request.user.id %}{% else %}&id={{get_product_instance.user_id.userx.id}}{% endif %}" class="btn btn-primary btn-block"><i class="fa fa-comments-o" ></i> Ask Question</a> -->
+              {% if not  get_product_instance.user_id.id == request.user.id %}
+                <a href="" data-toggle="modal" data-target="#chatmodal" class="btn btn-primary btn-block" onclick="mychatFunction('{{get_product_instance.user_id.userx.id}}')"><i class="fa fa-comments-o" ></i> Ask Question</a>
+                {% endif %}
                 <a href=""  data-toggle="modal" data-target="#exampleModal-1" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i>View Contact Details</a>
                 {% else %}
                 <a href="javascript:void(0)" class="btn btn-primary btn-block customer_payment"><i class="fa fa-comments-o"></i> Ask Question</a>
@@ -83,9 +81,9 @@
             <div class="row">
               {% if get_color_list %}
               {% for data in get_color_list %}
-             
+            
               <div class="col-md-2">
-                <div class="list-box textlimit">
+                <div class="textlimit">
                   <div class="loction-view red height-box">
                     <div class="kwit-3" style="color:{{data}};background:{{data}};"><!-- <span>Red</span> --></div>
                   </div>
@@ -283,6 +281,33 @@
       </div>
     </div>
   </div>
+
+    <div class="modal fade" id="chatmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #2088ca;">
+          <h5 class="modal-title" id="exampleModalLabel">Chat</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+ 
+          </button>
+        </div>
+        <div class="modal-body">
+           <div id="username"></div><input type="hidden" name="receiver_id" id="userval" />
+      <div id="chat_saved_data"  style="display: none;" ></div>
+        <div class="round-input_1 texta" style="display: none;">
+                  <input type="text" class="form-control round-input"  placeholder="Write your message" id="chat-message-input">
+                 
+                    <button id="chat-message-submit" type="button" class="fa fa-telegram chatmessagesubmit chatsubmitbutton" style="font-size:24px; color: #2088CA;margin-left: -53px;margin-top: -9px;"></button>
+          
+                  </div>
+          
+         
+        </div>
+     
+      </div>
+    </div>
+  </div> 
 {% endblock %}
 
 {% block script %}

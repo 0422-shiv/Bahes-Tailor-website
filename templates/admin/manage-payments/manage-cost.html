@@ -3,67 +3,81 @@
 {% block content %}
 <!----------------COntent start-------------->
 <section id="content-wrapper">
+    <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                                {% else %}
+            
+                                <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                    </div>
    <div class="container-fluid">
       <div class="row p-t-b-20">
          <div class="col-md-12">
             <div class="form-card no-b">
                <div class="login-form-card">
                   <h3 class="add_name">Manage Registration Cost</h3>
-                   <!-- <a href="add-operator.php" class="add-btn "  style="position: absolute;top: 7%;right: 4%;"><i class="fa fa-plus mr-5"></i>Add</a> -->
-                         <div class="date-pickers">
-                  <div class="form-group">
-          <label for="inputDate" class="set_dates">Date</label>
-          <input type="input" class="form-control" id="inputDate">
-        </div>
-        &nbsp;
-        <div class="form-group">
-          
-          <input type="input" class="form-control" id="inputDate-1">
-        </div>
-           
-             </div>
-             <form style="padding: 15px 0;position: relative;top: 8px;left: 71%;">
+                  
+            <!--  <form style="padding: 15px 0;position: relative;top: 8px;left: 71%;">
                 <label class="searchh">Search:<input type="search" class="form-control" placeholder="" aria-controls="example"></label>
-             </form>
+             </form> -->
              <div style="position: relative;bottom: 36px;">
                  <div class="div-table">
                   <div class="table-responsive">
-                     <table id="example" class="table table-striped " style="width:100%">
+                     <table  class="table table-striped " style="width:100%">
                         <thead>
                            <tr>
-                              <th class="question-1"><input type="checkbox" name="">&nbsp; Content</th>
+                              <th class="question-1"> Content</th>
                               <th>Price</th>
                               <th>Action</th>
-                              <th>Status</th>
+                              <!-- <th>Status</th> -->
                         
                            </tr>
                         </thead>
                         <tbody>
+                          {% if get_registration_fee %}
+                          {% for data in get_registration_fee %}
                            <tr>
           
-                              <td ><input type="checkbox" name=""> Deshdasha</td>
-                              <td>2000</td>
-                        <td>
+                              <td >{{data.content}}</td>
+                              <td>{{data.amount}}</td>
+                       
+                      <!--   <td>
                               <label class="badge badge-gradient-info">Active</label>
-                            </td>
-                              <td >
-                                 <table class="act-button">
-                                    <tr>
+                            </td> -->
+                              <!-- <td > -->
+                                 <!-- <table class="act-button"> -->
+                                  <!--   <tr>
                                            <td><div class="custom-control custom-switch">
   <input type="checkbox" class="custom-control-input" id="customSwitches">
   <label class="custom-control-label" for="customSwitches"></label>
-</div></td>
-                                       <td ><a href=""data-toggle="modal" data-target="#exampleModal" title="Edit" class="btn-edit "><span class="fa fa-pencil"></span></a></td>
-                                    </tr>
-                                 </table>
-                              </td>
+</div></td> -->
+                                       <td ><a href="javascript:void(0)" data-id="{{data.id}}" title="Edit" class="btn-edit update_registration_fee"><span class="fa fa-pencil"></span></a></td>
+                                    <!-- </tr> -->
+                                 <!-- </table> -->
+                              <!-- </td> -->
                            </tr>
+                             {% endfor %}
+                          {% endif %}
                         </tbody>
                      </table>
                   </div>
                 </div>
               </div>
-                     <div class="row">
+                    <!--  <div class="row">
                 <div class="col-md-12 ">
                
                     
@@ -80,13 +94,13 @@
                     </nav>
                   
               </div>
-              </div>
-                  &nbsp;
+              </div> -->
+                 <!--  &nbsp;
                   <div class="dropdown">
   <button class="btn btn-primary " type="button" aria-haspopup="true" aria-expanded="false">
     Delete 
   </button>
-</div>
+</div> -->
                </div>
             </div>
          </div>
@@ -107,32 +121,50 @@
 
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="registrationfeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="background: #2088ca;">
-        <h5 class="modal-title" id="exampleModalLabel">Add Cost</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Update Cost</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-       <form>
-         <label>Manage Content</label>
-         <input type="text" name="" class="form-control" placeholder="price">
-         <br>
-          <label>Manage Price</label>
-         <input type="text" name="" class="form-control" placeholder="price">
-
-       </form>
-       <br>
-       <button class="btn btn-primary">Update</button>
+      
       </div>
-      <div class="modal-footer">
+    <!--   <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary"data-dismiss="modal">Close</button>
        
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
+{% endblock %}
+
+
+{% block script %}
+
+
+<!-- supplier view start -->
+<script type="text/javascript">
+
+$(document).on("click",".update_registration_fee",function(){
+var id = $(this).data("id");
+console.log(id);
+$.ajax({
+  method:"GET",
+  url :"/admin/manage-payments/update-cost/"+id,
+  dataType:"html",
+
+  success:function(data)
+
+  {
+     $("#registrationfeeModal .modal-body").html(data);
+     $("#registrationfeeModal").modal("show");
+  }
+});
+});
+</script>
+
 {% endblock %}

@@ -110,12 +110,8 @@
     <div class="col-md-3">
     <div class="footer-link">
     <h3>Our Services</h3>
-    <ul>
-    <li><a href="#">Suit Resizing </a></li>
-    <li><a href="#">Custom Accessories </a></li>
-    <li><a href="#">Wedding Services </a></li>
-    
-    </ul>
+    {{'footer_services'|get_footer_services}}
+   
     
     </div>
     </div>
@@ -142,8 +138,11 @@
     </footer>
      {% endfor %}
     {% endif %}
+
     <script src="{% static 'js/jquery.min.js' %}"></script> 
+
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
     <script src="{% static 'js/bootstrap.min.js' %}"></script> 
     
     <script src="{% static 'js/slick.js' %}"></script> 
@@ -152,8 +151,9 @@
     <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
 
     <script src='{% static "js/croppie.js" %}'></script>
+     <script src="{% static 'js/user_crop_img.js' %}"></script>
+ 
 
-    
 
 <script type="text/javascript">
   
@@ -288,6 +288,41 @@ $('.slick-slider').slick({
       ],
 });
 
+
+
+
+
+$('.slick-services').slick({
+  // centerMode: true,
+  slidesToShow: 3,
+  dots: false,
+  loop:false,
+  //arrows: true,
+  swipe: true,
+//  infinite: true,
+  swipeToSlide: true,
+  centerPadding:'0px 50px',
+  //adaptiveHeight: true,
+   prevArrow: '<button class="slide-arrow prev-arrow"><i class="fa fa-arrow-left"></i></button>',
+    nextArrow: '<button class="slide-arrow next-arrow"><i class="fa fa-arrow-right" ></i></button>',
+  responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            adaptiveHeight: true,
+          },
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+      ],
+});
 
 
 
@@ -487,8 +522,171 @@ $(document).ready(function() {
                     function goBack() {
                       window.history.back();
                     }
-             </script>  
+             </script> 
+<!-- ############################################################## -->
+
+
+<!-- ############################################################################################################### -->
+
+  <script type="text/javascript">
+    function mychatFunction(userid)
+       {
+        console.log(userid);
+      $.ajax({
+      method:"GET",
+     
+      url: "/chat/user/"+userid,
+      
+      dataType:"json",
+     
+      success: function (data) {
+      // console.log(data.id);
+
+       $("#chat_saved_data").empty();
+       $(".defultdiv").hide();
+       $(".texta").fadeIn("1500");
+       $("#chat_saved_data").fadeIn("1500");
+       $("#bahes"+data.id+"").hide();
+         var user_message_count = $("#bahes"+data.get_id+"").text();
+        var totalmessagecount = $("#totalmessagecount").text();
+
+        var a = parseInt(totalmessagecount) - parseInt(user_message_count); 
+       if(a>0){
+       $("#totalmessagecount").html(''+a+'');
+     }
+     else
+     {
+      $("#totalmessagecount").hide();
+     }
+     // console.log(data.chat_data.length);
+     for(var i=0;i<data.chat_data.length;i++)
+  
+     {
+
+    if(data.chat_data[i].sender_id == '{{request.user.id}}')
+    {
+      $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat-2"><p class="text_lorem">'+data.chat_data[i].message_text+'</p></div></div></div>');
+    }
+    else{
+        $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat_1"><p class="text_lorem">'+data.chat_data[i].message_text+'</p></div></div></div>');
+        }
+
+
+     }
+    // console.log(data.get_id);
+     $("#userval").val(data.get_id);
+     $('#offlinestatus').val(data.get_status);
+      // $(".unread_mess_count").html('<span>'+data.unread_mess_count+'</span>');
+    $("#username").html( '<h4 class="user_1"><span>'+(data.get_name).charAt(0)+'</span>'+data.get_name+'<br><p class="Online" >'+(data.get_status == true ? 'Online': 'offline')+'</p></h4>');
+
+     $("#chat_saved_data").animate({scrollTop: $("#chat_saved_data").get(0).scrollHeight }, 1);
+      }
+      });
+      
+      }
+    
+    
+      </script>
+       <script>
+        // const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const roomName='chatbahesroom';
+        // console.log(roomName);
+        const chatSocket = new WebSocket('ws://'+window.location.host+'/ws/chat/'+ roomName+'/');
+         
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+           
+           
+      if(((data.message.sender == '{{request.user.id}}') & (data.message.reciever == $('#userval').val())) |((data.message.reciever == '{{request.user.id}}') & (data.message.sender == $('#userval').val())))
+            {
+            if(data.message.sender == '{{request.user.id}}')
+            {
+               // const audio = new Audio('/static/send-message-popup.mp3');
+              
+               const audio = new Audio('{{'sender_audio'|get_audio_url:request.user}}');
+              audio.play();
+              $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat-2"><p class="text_lorem">'+data.message.message+'</p></div></div></div>');
+
+            }
+            else{
+             const audio = new Audio('{{'receiver_audio'|get_audio_url:request.user}}');
+
+             audio.play();
+         $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat_1"><p class="text_lorem">'+data.message.message+'</p></div></div></div>');
+            }
+             $("#chat_saved_data").animate({scrollTop: $("#chat_saved_data").get(0).scrollHeight}, 1);
+          }
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+               
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+          
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': {"message":message ,"sender":"{{request.user.id}}","reciever":document.querySelector('#userval').value}
+            }));
+            messageInputDom.value = '';
+        var sender = '{{request.user.id}}'
+        var reciever = $('#userval').val();
+       
+        var dataString = 'message='+message+'&sender='+sender+'&reciever='+reciever;
+         
+        var token = '{{csrf_token}}';
+        $.ajax({
+          method:"POST",
+          headers: { "X-CSRFToken": token },
+          url: "/chat/user/messagesubmit/",
+          data: dataString,
+          dataType:"json",
+          cache: false,
+          success: function (data) {
+          $("#chat_saved_data").animate({scrollTop: $("#chat_saved_data").get(0).scrollHeight}, 1);
+          // location.reload();
+         
+          }
+        });
+       };
+    </script>
+   
+<script >
+$(document).ready(function () {
+    // $('button[type="button"]').attr('disabled', true);
+    $('.chatsubmitbutton').attr('disabled', true);
+    $('input[type="text"]').on('keyup', function () {
+        var textarea_value = $("#chat-message-input").val();
+        
+        if (textarea_value != '') {
+            // $('button[type="button"]').attr('disabled', false);
+            $('.chatsubmitbutton').attr('disabled', false);
+           
+        } else {
+            // $('button[type="button"]').attr('disabled', true);
+            $('.chatsubmitbutton').attr('disabled', true);
+
+        }
+    });
+});
+</script>
+
+
+
+
+<!-- ################################################################################################################## -->
+
      {% block script %}
+
             {% endblock %}
     </body>
     </html>

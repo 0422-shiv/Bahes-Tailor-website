@@ -16,6 +16,8 @@ import base64
 from django.core.files.base import ContentFile
 import simplejson as json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.template.defaulttags import register
+from bahes.settings import BASE_URL
 
 # @method_decorator(login_required(login_url='/account/login'))
 @method_decorator(login_required(login_url='/account/login'), name="dispatch")
@@ -35,7 +37,7 @@ class Product(generic.TemplateView):
 
         page = request.GET.get('page', 1)
 
-        paginator = Paginator(get_supplier_product, 6)
+        paginator = Paginator(get_supplier_product, 12)
         try:
             get_products = paginator.page(page)
         except PageNotAnInteger:
@@ -47,6 +49,14 @@ class Product(generic.TemplateView):
         return render(request, self.template_name,{'get_products':get_products,'get_supplier_product':get_supplier_product,'get_product_cate':get_product_cate,'userprofile': userprofile_instance,'get_system_settings':get_system_settings})
 
     def post(self, request, *args, **kwargs):
+        if 'user' in request.POST:
+            if not request.POST['user']  == 'None' :
+                user_profile_instance=get_object_or_404(UserProfile,id=request.POST['user'])
+                user_instance=user_profile_instance.user_id
+              
+            else:
+                user_instance=request.user
+
         if 'fabric' in request.POST:
             fabric=request.POST['fabric']
             get_fabric_instance=get_object_or_404(Product_category,id=fabric)
@@ -64,7 +74,7 @@ class Product(generic.TemplateView):
             
             description=request.POST['description']
 
-            fabric_datasave=SupplierProduct(user_id=request.user,product_category=get_fabric_instance,country_origin=get_country,fabrictype=get_fabrictype,currency=currency,price=price,quantity=quantity,width_size=size,other_description=description)
+            fabric_datasave=SupplierProduct(user_id=user_instance,product_category=get_fabric_instance,country_origin=get_country,fabrictype=get_fabrictype,currency=currency,price=price,quantity=quantity,width_size=size,other_description=description)
             fabric_datasave.color=json.dumps(color)
             fabric_datasave.save()
 
@@ -119,7 +129,7 @@ class Product(generic.TemplateView):
                 quantity=request.POST['quantity']
                 description=request.POST['description']
                 color=request.POST.getlist('color')
-                datasave=SupplierProduct(user_id=request.user,product_category=get_instance,Product_subcategory=get_sub_cat_instance,threadtype=get_thread_type,currency=currency,price=price,quantity=quantity,other_description=description)
+                datasave=SupplierProduct(user_id=user_instance,product_category=get_instance,Product_subcategory=get_sub_cat_instance,threadtype=get_thread_type,currency=currency,price=price,quantity=quantity,other_description=description)
                 datasave.color=json.dumps(color)
                 datasave.save()
                 if request.POST["profilepic"] :
@@ -158,7 +168,7 @@ class Product(generic.TemplateView):
                 currency=request.POST['currency']
                 description=request.POST['description']
                 color=request.POST.getlist('color')
-                datasave=SupplierProduct(user_id=request.user,product_category=get_instance,Product_subcategory=get_sub_cat_instance,material_type1=get_material_type1,width_size=size,country_origin=get_country,currency=currency,price=price,other_description=description)
+                datasave=SupplierProduct(user_id=user_instance,product_category=get_instance,Product_subcategory=get_sub_cat_instance,material_type1=get_material_type1,width_size=size,country_origin=get_country,currency=currency,price=price,other_description=description)
                 datasave.color=json.dumps(color)
                 datasave.save()
                 if request.POST["profilepic"] :
@@ -198,7 +208,7 @@ class Product(generic.TemplateView):
                 roller=request.POST['roller']
                 description=request.POST['description']
                 color=request.POST.getlist('color')
-                datasave=SupplierProduct(user_id=request.user,product_category=get_instance,Product_subcategory=get_sub_cat_instance,material_type2=get_material_type2,country_origin=get_country,width_size=size,currency=currency,price=price,roller=roller,other_description=description)
+                datasave=SupplierProduct(user_id=user_instance,product_category=get_instance,Product_subcategory=get_sub_cat_instance,material_type2=get_material_type2,country_origin=get_country,width_size=size,currency=currency,price=price,roller=roller,other_description=description)
                 datasave.color=json.dumps(color)
                 datasave.save()
                 if request.POST["profilepic"] :
@@ -227,8 +237,11 @@ class Product(generic.TemplateView):
                 messages.success(request, 'Product Successfully added')
             else:
                 messages.error(request, ' products can not be add', )
-        
-        return HttpResponseRedirect(reverse('products:product'))
+        if request.user.is_superuser:
+            id=str(user_profile_instance.id)      
+            return redirect(BASE_URL+'admin/manage-member/view-products/'+id)
+        else:
+            return HttpResponseRedirect(reverse('products:product'))
             
            
             
@@ -237,22 +250,24 @@ class GetProductCategory(generic.TemplateView):
    
 
     def get(self, request,id, *args, **kwargs):
+        if 'userid' in request.GET:
+            userid=request.GET['userid']
+        else:
+            userid=None
         get_countries=Countries.objects.all()
-
-        
 
         get_product_subcate=None
         get_product_cate=get_object_or_404(Product_category,id=id)
         if Product_subcategory.objects.filter(product_category_id=get_product_cate).exists():
             
             get_product_subcate=Product_subcategory.objects.filter(product_category_id=get_product_cate)
-            return render(request, 'products/product-sub-category.html',{'get_countries':get_countries,'get_product_subcate':get_product_subcate})       
+            return render(request, 'products/product-sub-category.html',{'userid':userid,'get_countries':get_countries,'get_product_subcate':get_product_subcate})       
         elif get_product_cate.slug ==   'fabrics':
             get_currency=CountryCurrency.objects.all()
             get_fabric_type=Fabric_type.objects.all()
             get_washing_method=Washing_method.objects.all()
             get_season=Season.objects.all()
-            return render(request, 'products/fabric.html',{'get_currency':get_currency,'get_season':get_season,'get_washing_method':get_washing_method,'get_fabric_type':get_fabric_type,'get_countries':get_countries,'get_product_cate':get_product_cate})       
+            return render(request, 'products/fabric.html',{'userid':userid,'get_currency':get_currency,'get_season':get_season,'get_washing_method':get_washing_method,'get_fabric_type':get_fabric_type,'get_countries':get_countries,'get_product_cate':get_product_cate})       
 
 
            
@@ -262,22 +277,26 @@ class GetProductCategory(generic.TemplateView):
 class GetSubProductCategory(generic.TemplateView):
  
     def get(self, request,id,slug, *args, **kwargs):
+        if 'userid' in request.GET:
+            userid=request.GET['userid']
+        else:
+            userid=None
         get_countries=Countries.objects.all()
         get_currency=CountryCurrency.objects.all()
        
         get_sub_cat_instance=get_object_or_404(Product_subcategory,id=id)
         if get_sub_cat_instance.slug == 'threads':
             get_thread_type=Thread_type.objects.all()
-            return render(request, 'products/thread.html',{'get_currency':get_currency,'get_thread_type':get_thread_type,'id':id,'get_countries':get_countries,'get_sub_cat_instance':get_sub_cat_instance})       
+            return render(request, 'products/thread.html',{'userid':userid,'get_currency':get_currency,'get_thread_type':get_thread_type,'id':id,'get_countries':get_countries,'get_sub_cat_instance':get_sub_cat_instance})       
 
         elif get_sub_cat_instance.slug == 'buttons-and-closures':
             get_material_type1=Material_type1.objects.all()
-            return render(request, 'products/buttons.html',{'get_currency':get_currency,'get_material_type1':get_material_type1,'id':id,'get_countries':get_countries,'get_sub_cat_instance':get_sub_cat_instance})       
+            return render(request, 'products/buttons.html',{'userid':userid,'get_currency':get_currency,'get_material_type1':get_material_type1,'id':id,'get_countries':get_countries,'get_sub_cat_instance':get_sub_cat_instance})       
 
         
         elif get_sub_cat_instance.slug == 'zipperstapetrim-and-elastic':
             get_material_type2=Material_type2.objects.all()
-            return render(request, 'products/elastic.html',{'get_currency':get_currency,'get_material_type2':get_material_type2,'id':id,'get_countries':get_countries,'get_sub_cat_instance':get_sub_cat_instance})       
+            return render(request, 'products/elastic.html',{'userid':userid,'get_currency':get_currency,'get_material_type2':get_material_type2,'id':id,'get_countries':get_countries,'get_sub_cat_instance':get_sub_cat_instance})       
 
 @method_decorator(login_required(login_url='/account/login'), name="dispatch")
 class ProductDelete(generic.TemplateView):
@@ -285,9 +304,13 @@ class ProductDelete(generic.TemplateView):
     def post(self, request, id, *args, **kwargs):
 
         product_instance = get_object_or_404(SupplierProduct, id=id)
-      
+        user_instance = get_object_or_404(User, id=product_instance.user_id.id)
         SupplierProduct.objects.filter(id=product_instance.id).delete()
-        return HttpResponseRedirect(reverse('products:product'))
+        if request.user.is_superuser:
+            id=str(user_instance.userx.id)      
+            return redirect(BASE_URL+'admin/manage-member/view-products/'+id)
+        else:
+            return HttpResponseRedirect(reverse('products:product'))
        
            
 @method_decorator(login_required(login_url='/account/login'), name="dispatch")
@@ -347,6 +370,7 @@ class ProductEdit(generic.TemplateView):
         
         if SupplierProduct.objects.filter(id=id).exists:
             product_instance = get_object_or_404(SupplierProduct,id=id)
+            user_instance=get_object_or_404(User,id=product_instance.user_id.id)
            
             if 'fabric' in request.POST:
                 fabric=request.POST['fabric']
@@ -398,7 +422,7 @@ class ProductEdit(generic.TemplateView):
                         
                         product_instance.image_2=data
                         product_instance.save()
-                SupplierProduct.objects.filter(id=id).update(user_id=request.user,product_category=get_fabric_instance,country_origin=get_country,fabrictype=get_fabrictype,currency=currency,price=price,quantity=quantity,width_size=size,other_description=description)
+                SupplierProduct.objects.filter(id=id).update(user_id=user_instance,product_category=get_fabric_instance,country_origin=get_country,fabrictype=get_fabrictype,currency=currency,price=price,quantity=quantity,width_size=size,other_description=description)
 
                 messages.success(request, 'Product Successfully Edited')
             elif 'accessories' in request.POST:     
@@ -440,7 +464,7 @@ class ProductEdit(generic.TemplateView):
                             
                             product_instance.image_2=data
                             product_instance.save()
-                    SupplierProduct.objects.filter(id=id).update(user_id=request.user,product_category=get_instance,Product_subcategory=get_sub_cat_instance,threadtype=get_thread_type,currency=currency,price=price,quantity=quantity,other_description=description)
+                    SupplierProduct.objects.filter(id=id).update(user_id=user_instance,product_category=get_instance,Product_subcategory=get_sub_cat_instance,threadtype=get_thread_type,currency=currency,price=price,quantity=quantity,other_description=description)
 
                     messages.success(request, 'Product Successfully Edited')    
                 elif 'buttons' in request.POST:
@@ -480,7 +504,7 @@ class ProductEdit(generic.TemplateView):
                             
                             product_instance.image_2=data
                             product_instance.save()
-                    SupplierProduct.objects.filter(id=id).update(user_id=request.user,product_category=get_instance,Product_subcategory=get_sub_cat_instance,material_type1=get_material_type1,width_size=size,country_origin=get_country,currency=currency,price=price,other_description=description)
+                    SupplierProduct.objects.filter(id=id).update(user_id=user_instance,product_category=get_instance,Product_subcategory=get_sub_cat_instance,material_type1=get_material_type1,width_size=size,country_origin=get_country,currency=currency,price=price,other_description=description)
 
                     messages.success(request, 'Product Successfully Edited')
                 elif 'elastic' in request.POST:
@@ -522,12 +546,23 @@ class ProductEdit(generic.TemplateView):
                             
                             product_instance.image_2=data
                             product_instance.save()
-                    SupplierProduct.objects.filter(id=id).update(user_id=request.user,product_category=get_instance,Product_subcategory=get_sub_cat_instance,material_type2=get_material_type2,country_origin=get_country,width_size=size,currency=currency,price=price,roller=roller,other_description=description)
+                    SupplierProduct.objects.filter(id=id).update(user_id=user_instance,product_category=get_instance,Product_subcategory=get_sub_cat_instance,material_type2=get_material_type2,country_origin=get_country,width_size=size,currency=currency,price=price,roller=roller,other_description=description)
 
                     messages.success(request, 'Product Successfully Edited')
                 else:
                     messages.error(request, ' products can not be Edited', )
-        
-        return HttpResponseRedirect(reverse('products:product'))
+        if request.user.is_superuser:
+            id=str(user_instance.userx.id)      
+            return redirect(BASE_URL+'admin/manage-member/view-products/'+id)
+        else:
+            return HttpResponseRedirect(reverse('products:product'))
 
-           
+@register.filter(name='total_myproducts_counter')
+def total_myproducts_counter(user):
+    total_myproducts_counter = 0
+    if User.objects.filter(id=user.id).exists():
+        user_instance = get_object_or_404(User, id=user.id)
+        userprofile_instance = get_object_or_404(UserProfile,user_id=user_instance)
+        total_myproducts_counter = SupplierProduct.objects.filter(user_id=user_instance).count()
+    
+    return total_myproducts_counter       

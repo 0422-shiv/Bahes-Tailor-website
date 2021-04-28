@@ -14,6 +14,7 @@ from bahes.settings import BASE_URL
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from admin_settings.models import System_settings
+from django.template.defaulttags import register
 
 
 @method_decorator(login_required(login_url='/account/login'), name="dispatch")
@@ -33,7 +34,7 @@ class Services(generic.TemplateView):
         userprofile_instance = get_object_or_404(UserProfile,user_id=user_instance)
         get_services = SupplierServices.objects.filter(user_id=user_instance)
         get_system_settings = System_settings.objects.all()
-        get_tailor_spec=TailorSpecification.objects.all()
+        get_tailor_spec=TailorSpecification.objects.filter(status=True)
         return render(request, self.template_name,
                       {'flag':flag,'get_tailor_spec':get_tailor_spec,'get_system_settings':get_system_settings,'form': self.form, 'get_services': get_services, 'userprofile': userprofile_instance})
 
@@ -90,7 +91,7 @@ class EditService(generic.TemplateView):
         form = SupplierServicesForm(instance=service_instance)
         user_instance = get_object_or_404(User, id=service_instance.user_id.id)
         userprofile = UserProfile.objects.get(user_id=user_instance)
-        get_tailor_spec=TailorSpecification.objects.all()
+        get_tailor_spec=TailorSpecification.objects.filter(status=True)
         return render(request, self.template_name,
                       {'get_tailor_spec':get_tailor_spec,'form': form, 'service_instance':service_instance, 'userprofile': userprofile,'user_instance': user_instance})
 
@@ -123,7 +124,7 @@ class EditService(generic.TemplateView):
                 else:
                     saveservices_data.ship_outside_country = "False"
 
-                saveservices_data.user_id = request.user
+                saveservices_data.user_id = user_instance
                 saveservices_data.created_by = request.user
                 saveservices_data.tailor_speci_id=get_tailor_spec_instance
                 saveservices_data.save()
@@ -131,8 +132,11 @@ class EditService(generic.TemplateView):
                 messages.success(request, 'Services Successfully edited')
             else:
                 messages.error(request, ' Services can not be edit', )
-     
-        return HttpResponseRedirect(reverse('services:Services'))
+        if request.user.is_superuser:
+            id=str(userprofile_instance.id)      
+            return redirect(BASE_URL+'admin/manage-member/view-services/'+id)
+        else:
+            return HttpResponseRedirect(reverse('services:Services'))
       
 
 @method_decorator(login_required(login_url='/account/login'), name="dispatch")
@@ -141,9 +145,13 @@ class ServiceDelete(generic.TemplateView):
     def post(self, request, id, *args, **kwargs):
 
         service_instance = get_object_or_404(SupplierServices, id=id)
-        
+        user_instance = get_object_or_404(User, id=service_instance.user_id.id)
         SupplierServices.objects.filter(id=service_instance.id).delete()
-        return HttpResponseRedirect(reverse('services:Services'))
+        if request.user.is_superuser:
+            id=str(user_instance.userx.id)      
+            return redirect(BASE_URL+'admin/manage-member/view-services/'+id)
+        else:
+            return HttpResponseRedirect(reverse('services:Services'))
 
 
 @method_decorator(login_required(login_url='/account/login'), name="dispatch")
@@ -163,3 +171,16 @@ class ServiceStatus(generic.TemplateView):
             # service_instance = get_object_or_404(SupplierServices, id=serviceid)
             SupplierServices.objects.filter(id=serviceid).update(status=status)
         return JsonResponse({'message': 'Status Changed successfully.'})
+
+
+
+
+@register.filter(name='total_myservices_counter')
+def total_myservices_counter(user):
+    total_myservices_counter = 0
+    if User.objects.filter(id=user.id).exists():
+        user_instance = get_object_or_404(User, id=user.id)
+        userprofile_instance = get_object_or_404(UserProfile,user_id=user_instance)
+        total_myservices_counter = SupplierServices.objects.filter(user_id=user_instance).count()
+    
+    return total_myservices_counter

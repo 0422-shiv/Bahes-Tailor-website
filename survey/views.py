@@ -11,6 +11,13 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User, auth
 from bahes.settings import BASE_URL
 from admin_settings.models import System_settings
+from django.template.loader import render_to_string, get_template
+import smtplib
+import email.message
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+from manage_admin_settings.models import *
+
 
 
 # @method_decorator(login_required, name="dispatch")
@@ -61,6 +68,7 @@ class Questions(generic.TemplateView):
 				return redirect(BASE_URL + 'survey/' + id+'?q='+ques_in_str)
 			else:
 				
+					
 				username=user_instance.email
 				password=userprofile_instance.passward
 				

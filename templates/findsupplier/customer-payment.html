@@ -1,7 +1,13 @@
 <div class="ksd-pay bg-colorform">
-	<p>Kindly pay one time Registration Fee.</p>
-	<h2>29.900 kd</h2>
-	<a href="javascript:void(0)" class="pay-now customer_payment_done">Pay Now</a>
+
+	{% if get_registration_fee %}
+	{% for data in get_registration_fee %}
+	<p>{{data.content}}</p>
+	<h2>{{data.amount}}</h2>
+	
+	<a href="javascript:void(0)" data-amount="{{data.amount}}" class="pay-now customer_payment_done">Pay Now</a>
+{% endfor %}
+	{% endif %}
 </div>
 
 
@@ -9,13 +15,15 @@
 //--------- Customer Payment Done start----------------
 $(document).on("click",".customer_payment_done",function(){
 
-    	// var dataString = 'serviceid='+serviceid
-         var token = '{{csrf_token}}';
+    	var amount = $(this).data("amount");
+    	console.log(amount);
+         // var token = '{{csrf_token}}';
             $.ajax({
-                headers: { "X-CSRFToken": token },
+                // headers: { "X-CSRFToken": token },
                 url: "/find-supplier/customer-payment-done",
                 type: "GET",
                 dataType:"json",
+                data:{ amount :amount},
                 success: function (data) {
                 	// console.log(data);
                 	$("#exampleModal").modal("hide");

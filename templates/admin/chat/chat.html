@@ -1,0 +1,168 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div class="container-fluid">
+      <div class="row p-t-b-20">
+         <div class="col-md-12">
+            <div class="form-card no-b">
+               <div class="login-form-card">
+                  <h3 class="add_name">Chat</h3>
+                   <!-- <a href="add-operator.php" class="add-btn "  style="position: absolute;top: 7%;right: 4%;"><i class="fa fa-plus mr-5"></i>Add</a> -->
+                   
+            <!--  <form style="padding: 15px 0;position: relative;top: 8px;left: 71%;">
+                <label class="searchh">Search:<input type="search" class="form-control" placeholder="" aria-controls="example"></label>
+             </form> -->
+             <div style="position: relative;bottom: 36px;">
+                 <div class="div-table">
+                  <div class="table-responsive">
+                     <table id="example" class="table table-striped " style="width:100%">
+                        <thead>
+                           <tr> 
+
+                           	<th style="display: none"></th>
+                              <th class="question-1">Sender</th>
+                              <th>Receiver</th>
+                              <th>View Chat</th>
+                              <th>Last Message Time</th>
+                        
+                           </tr>
+                        </thead>
+                        <tbody>
+
+                           		{% if get_chat %}
+                           	{% for data in get_chat %}
+
+                           <tr>
+          						<td style="display: none"></td>
+
+                              <td > {{data.sender_id.userx.full_name}}  ({{data.sender_id.userx.user_type.type_name}})</td>
+                             
+                              <td>{{data.receiver_id.userx.full_name}}  ({{data.receiver_id.userx.user_type.type_name}})</td>
+                        	<td>
+                              <button class="badge badge-gradient-info" data-toggle="modal" data-target="#chatmodal" onclick="mychatFunction('{{data.sender_id.id}}','{{data.receiver_id.id}}')">View</button>
+                            </td>
+                            <td>{{data.send_datetime}}</td>
+                              
+                           </tr>
+                           {% endfor %}
+                           {% endif %}
+                        </tbody>
+                     </table>
+                  </div>
+                </div>
+              </div>
+                    <!--  <div class="row">
+                <div class="col-md-12 ">
+               
+                    
+                    <nav>
+
+                      <ul class="pagination text">
+                        <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-left"></i></a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-right"></i></a></li>
+                      </ul>
+                    </nav>
+                  
+              </div>
+              </div> -->
+                <!--   &nbsp;
+                  <div class="dropdown">
+  <button class="btn btn-primary delete_product" type="button" aria-haspopup="true" aria-expanded="false">
+    Delete 
+  </button>
+</div> -->
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+
+</section>
+
+
+
+ <div class="modal fade" id="chatmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #2088ca;">
+          <h5 class="modal-title" id="exampleModalLabel">Chat History</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+
+          </button>
+        </div>
+         <div class="row" id="senderreceivername">
+          
+         </div>
+        <div class="modal-body">
+   
+        
+     
+      <div id="chat_saved_data"  ></div>
+      
+          
+         
+        </div>
+     
+      </div>
+    </div>
+  </div> 
+{% endblock %}
+{% block script %}
+
+  <script type="text/javascript">
+    function mychatFunction(senderid,receiverid)
+       {
+        
+      $.ajax({
+      method:"GET",
+     
+      url: "/admin/manage-chat/chat-history/",
+      
+      dataType:"json",
+        data : { senderid : senderid, receiverid : receiverid },
+      success: function (data) {
+        console.log(data.chat_data[0].receiver_id);
+    
+     $("#chat_saved_data").empty();
+       $(".defultdiv").hide();
+     
+       $("#chat_saved_data").fadeIn("1500");
+    $("#senderreceivername").empty();
+       $("#senderreceivername").append(' <div class="col-md-8 pl-5">Sender messages</div><div class="col-md-4 pl-5">Receiver messages</div>')  
+      
+     for(var i=0;i<data.chat_data.length;i++)
+  
+     {
+     
+    if(data.chat_data[i].receiver_id == parseInt(data.receiverid))
+    {
+      $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat-2"><p class="text_lorem">'+data.chat_data[i].message_text+'</p></div></div></div>');
+    }
+    else{
+        $("#chat_saved_data").append( '<div class="main-dive"><div class="col-md-12"><div class="chat_1"><p class="text_lorem">'+data.chat_data[i].message_text+'</p></div></div></div>');
+        }
+
+
+     }
+  
+
+     $("#chat_saved_data").animate({scrollTop: $("#chat_saved_data").get(0).scrollHeight }, 1);
+      }
+      });
+      
+      }
+    
+    
+      </script>
+       <script type="text/javascript">
+
+{% endblock%}

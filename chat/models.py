@@ -19,3 +19,11 @@ class ChatSystem(models.Model):
 
 	def __str__(self):
 		return str(self.sender_id)
+
+
+class MuteChat(models.Model):
+	
+	receiving_mess_sound=models.URLField(blank=True, null=True) 
+	sending_mess_sound= models.URLField(blank=True, null=True) 
+	
+	

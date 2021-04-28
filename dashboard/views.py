@@ -106,14 +106,14 @@ class EditProfile(generic.TemplateView):
 @login_required
 def ProfileChange(request):
     if request.method == 'POST':
-        print('hello')
+        
         user_instance = get_object_or_404(User, id=request.user.id)
         
-        if 'profilepic' in request.POST:
-            print('hello')
+        if 'save_profile_image' in request.POST:
+            # print('hello')
+            # print(request.POST['save_profile_image'])
             userupdate = get_object_or_404(UserProfile,user_id=user_instance)
-            format, imgstr = request.POST["profilepic"].split(
-                ';base64,')
+            format, imgstr = request.POST["save_profile_image"].split(';base64,')
             ext = format.split('/')[-1]
 
             file_name = "photo." + ext
@@ -126,8 +126,15 @@ def ProfileChange(request):
             messages.success(request, 'Your profile pic was successfully updated!')
         else:
             messages.error(request, 'Something going wrong ,please try again')
+        if request.POST['pagename'] == 'profile':
+             return HttpResponseRedirect(reverse('dashboard:EditProfile'))
+        elif request.POST['pagename'] == 'chat':
+            return redirect(BASE_URL+"chat/?chatbahesroom=chatbahesroom")
+        elif request.POST['pagename'] == 'service':
+            return HttpResponseRedirect(reverse('services:Services'))
+        elif request.POST['pagename'] == 'product':
+            return HttpResponseRedirect(reverse('products:product'))
 
-        return HttpResponseRedirect(reverse('dashboard:EditProfile'))
 
 
 @login_required

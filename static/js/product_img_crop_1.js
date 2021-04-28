@@ -45,8 +45,11 @@ url: event.target.result,
 })
 .then(function () {
 console.log("jQuery bind complete");
+console.log('show modal');
 });
 $("#uploadimageModal_edit").modal("show");
+console.log('show modal');
+$("#AddexampleModal").modal("hide");
 } else {
 status = false;
 alert("Please select image greater that 289*289px.");
@@ -76,6 +79,7 @@ $(".crop_image").attr("disabled", false);
 $("#profile_image").val(response);
 $("#show_cropped_image").html('<img src="' + response + '">');
 $("#uploadimageModal_edit").modal("hide");
+$("#AddexampleModal").modal("show");
 });
 });
 });

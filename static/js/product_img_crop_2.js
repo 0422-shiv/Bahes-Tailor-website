@@ -47,6 +47,7 @@ url: event.target.result,
 console.log("jQuery bind complete");
 });
 $("#uploadfabricimageModal2").modal("show");
+$("#AddexampleModal").modal("hide");
 } else {
 set_status = false;
 alert("Please select image greater that 289*289px.");
@@ -76,6 +77,7 @@ $(".crop_image_edit").attr("disabled", false);
 $("#fabric_image2").val(response);
 $("#show_cropped_fabric_image2").html('<img src="' + response + '">');
 $("#uploadfabricimageModal2").modal("hide");
+$("#AddexampleModal").modal("show");
 });
 });
 });

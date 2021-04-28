@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 {% load static %}
 {% block content %}
-  <div class="banner-profile">
+  <div class="banner-profile" style="background: url({{'FindServices'|get_banner_img}}) no-repeat center top;">
     <div class="profile-overlay">
       <div class="container">
         <div class="heading-title supplies text-center">
@@ -27,8 +27,8 @@
   <section class="bg-lightshow">
     <div class="container">
       <div class="row">
-        <div class="col-md-3">
-          <div class="supliers-left">
+        <div class="col-md-0" style="display: none;">
+          <div class="supliers-left" >
             <h3>Filter</h3>
             <div class="filter-menu">
               <div class="accordion" id="faq">
@@ -40,7 +40,7 @@
                   </div>
                   <div id="faq2" class="collapse show" aria-labelledby="faqhead2" data-parent="#faq" style="border-bottom:0px;">
                     <div class="card-body">
-                      <ul id="filters">
+                      <ul id="filters" >
                        <!--  {% if get_tailor_specilization %}
                           {% for data in get_tailor_specilization %}
                             <li ><a href="javascript:void(0)" class="get_service" data-id="{{data.id}}" data-name="{{data.id}}">{{data.tailor_speci}} <span><input type="checkbox" value="{{data.tailor_speci|slice:3}}" id="check{{data.id}}" style="opacity:0; position:absolute; left:9999px;" /></span></a></li>
@@ -71,18 +71,18 @@
             </div>
           </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-12">
           <div class="supplier_colorbox">
             <h3 class="mb-4">Services
             <div class="supplier_count-1"><span>{{get_tailor|length}}</span>
           </div>
           </h3>
-          <div class="supplier_counts">
-            <p class="sortby">Sort By :</p>
+        <!--   <div class="supplier_counts">
+            <h3 class="sortby" style="padding-right: 7px;">Sort By :</h3>
             <div class="dropdown">
              
              <div class="dropdown">
-            <select class="form-control" id="short_by">
+            <select class="form-control" id="short_by" style="font-size:13px;">
                 <option value="">sort</option>
                 
                
@@ -98,22 +98,22 @@
               </select>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="supliers-list" id="demo">
-          <!-- <h3 class="mb-4">Services</h3> -->
-          {% if get_tailor %}
-          {% for data in get_tailor %}
+           {% if get_tailor_spec %}
+          {% for data in get_tailor_spec %}
+      
           <div class="mb-4 border-bottom pb-4 {{data.tailor_speci|slice:3}} hide">
             <div class="row ">
               <div class="col-md-4">
                 <div class="services-box shadow">
-                  <img src="{{data.img.url}}" alt="">
-                  <h4>{{data.tailor_speci|upper}}</h4>
+                 <a href="{% url 'findsupplier:FindSupplier'%}?&service={{data.tailor_speci}}" style="text-decoration: none;"> <img src="{{data.img.url}}" alt="">    
+                  <h4>{{data.tailor_speci|upper}}</h4> </a>
                 </div>
               </div>
               <div class="col-md-8">
-                <div class="subit">
+                <a href="{% url 'findsupplier:FindSupplier'%}?&service={{data.tailor_speci}}" style="text-decoration: none;color: black">  <div class="subit" >
                   <h3>{{data.tailor_speci|upper}}</h3>
                   <p>{{data.description}}</p>
                   <div class="profile-div">
@@ -124,12 +124,49 @@
                        </ul>
                    
                   </div>
-                </div>
+                </div></a>
               </div>
             </div>
           </div>
+
           {% endfor %}
         {% endif %}
+          <!-- <h3 class="mb-4">Services</h3> -->
+          {% if get_tailor_specilization_list %}
+          {% for item in get_tailor_specilization_list %}
+
+          {% if get_tailor %}
+          {% for data in get_tailor %}
+           {% if item == data.service_count %}
+          <div class="mb-4 border-bottom pb-4 {{data.tailor_speci|slice:3}} hide">
+            <div class="row ">
+              <div class="col-md-4">
+                <div class="services-box shadow">
+                 <a href="{% url 'findsupplier:FindSupplier'%}?&service={{data.tailor_speci}}" style="text-decoration: none;"> <img src="{{data.img.url}}" alt="">    
+                  <h4>{{data.tailor_speci|upper}}</h4> </a>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <a href="{% url 'findsupplier:FindSupplier'%}?&service={{data.tailor_speci}}" style="text-decoration: none;color: black">  <div class="subit" >
+                  <h3>{{data.tailor_speci|upper}}</h3>
+                  <p>{{data.description}}</p>
+                  <div class="profile-div">
+
+                    <ul>
+                      {{data|get_supplier}}
+                     
+                       </ul>
+                   
+                  </div>
+                </div></a>
+              </div>
+            </div>
+          </div>
+      {% endif %}
+          {% endfor %}
+        {% endif %}
+        {% endfor %}
+         {% endif %}
           <nav aria-label="Page navigation " class="supplier-pagination">
           
 {% if get_tailor.has_other_pages %}

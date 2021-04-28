@@ -1,0 +1,19 @@
+ <ul>
+ 	{% if get_tailor_service_list %}
+ 	{% for item in get_tailor_service_list %}
+      {% if get_tailor_service %}
+      {% for data in get_tailor_service|slice:'0:4' %}
+      {% if item == data.service_count %}
+      
+    <li><a href="{% url 'findservices:FindServices' %}?&service={{data.tailor_speci}}">{{data.tailor_speci}} </a></li>
+ {% endif %}
+    
+      {% endfor %}
+       {% endif %}
+        {% endfor %}
+       
+      <li ><a href="{% url 'findservices:FindServices' %}" style="margin-left: 45px;font-size: 14px;color:#2088ca;">View More . . .</a></li>
+    
+      {% endif %}
+      
+    </ul>     

@@ -54,12 +54,13 @@ urlpatterns = [
     path('admin/dashboard/', include(('admin_dashboard.urls', 'admin_dashboard'), namespace='admin_dashboard')),
     path('admin/manage-member/', include(('manage_member.urls', 'manage_member'), namespace='manage_member')),
     path('admin/manage-cms/', include(('manage_cms.urls', 'manage_cms'), namespace='manage_cms')),
+    path('admin/manage-chat/', include(('manage_chat.urls', 'manage_chat'), namespace='manage_chat')),
     path('admin/manage-questions/', include(('manage_questions.urls', 'manage_questions'), namespace='manage_questions')),
     path('admin/manage-services/', include(('manage_services.urls', 'manage_services'), namespace='manage_services')),
     path('admin/manage-products/', include(('manage_products.urls', 'manage_products'), namespace='manage_products')),
     path('admin/manage-payments/', include(('manage_payments.urls', 'manage_payments'), namespace='manage_payments')),
     path('admin/manage-admin-settings/', include(('manage_admin_settings.urls', 'manage_admin_settings'), namespace='manage_admin_settings')),
-   
+     path('admin/manage-user-answers/', include(('manage_user_answers.urls', 'manage_user_answers'), namespace='manage_user_answers')),
             ############# Admin urls end ################
 
 

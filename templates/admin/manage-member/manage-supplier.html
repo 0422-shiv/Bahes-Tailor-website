@@ -64,14 +64,17 @@
                           <td><div class="checkbox" ><input type="checkbox" class="dt-checkboxes member" 
                             value="{{data.id}}"><label></label></div></td>
                           <td>{{data.created_date|date:'d/m/y'}}</td>
-                          <td style="display: flex;align-items: baseline;justify-content: space-between; position: relative;top: 14px;border-top: none;">{{data.full_name}}</td>
+                          <td style="display: flex;align-items: baseline;justify-content: space-between; ">{{data.full_name}}</td>
                           <td>{{data.user_id.email}}</td>
                           <td>{{data.phone}}</td>
                           
                           <td><a href="javascript:void(0)" class="view_answers" data-id="{{data.id}}">{% if data|answer_status == 'No' %}<button class="badge badge-gradient-danger" disabled=""> {{data|answer_status}}</button>{% else %}<button class="badge badge-gradient-danger" > {{data|answer_status}}</button>{% endif %}</a> </td>
                           
-                          <td><button class="btn btn-secondary views view_services"  data-id="{{data.id}}" style="background: black;">View</button></td>
-                          <td><button class="btn btn-secondary views view_products" data-id="{{data.id}}" >View</button></td>
+                         <!--  <td><button class="btn btn-secondary views view_services"  data-id="{{data.id}}" style="background: black;">View<span class="servicescounter">{{data|get_services_count}}</span></button></td> -->
+                          <td><a href="{% url 'manage_member:ViewServices' data.id %}" class="btn btn-secondary views"  style="background: black;white-space: nowrap;">View<span class="servicescounter">{{data|get_services_count}}</span></a></td>
+                        <!--   <td><button class="btn btn-secondary views view_products" data-id="{{data.id}}" >View<span class="servicescounter">{{data|get_product_count}}</span></button></td>
+                          <td> -->
+                              <td><a href="{% url 'manage_member:ViewProducts' data.id %}" class="btn btn-secondary views view_products" style="white-space: nowrap;">View<span class="servicescounter">{{data|get_product_count}}</span></a></td>
                           <td>
                               {% if data.status == True %}
                               <button type="button" class="badge badge-gradient-info customer_status" id="{{data.id}}" supplierstatus="{{data.status}}">Active</button>

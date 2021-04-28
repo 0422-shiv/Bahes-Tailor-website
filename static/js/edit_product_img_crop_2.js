@@ -45,6 +45,7 @@ url: event.target.result,
 })
 .then(function () {
 console.log("jQuery bind complete");
+
 });
 $("#uploadfabricimageModal2").modal("show");
 $("#exampleModal-7").modal("hide");

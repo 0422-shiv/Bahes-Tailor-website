@@ -1,0 +1,96 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+  <div class="container-fluid">
+    <div class="row p-t-b-20">
+      <div class="col-md-12">
+        <div class="form-card no-b">
+          <div class="login-form-card">
+            <h3 class="add_name">Supplier Answers</h3>
+             <form method="GET">
+              <div class="row">
+
+              
+                <div class="col-md-7">
+                <div class="form-group">
+                  
+                  <input type="text" value="{{question|default:''}}" class="form-control" name="question" placeholder="Enter Supplier Question" required="">
+                </div>
+              </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                  
+                  <input type="text" value="{{option|default:''}}" class="form-control" name="option" placeholder="Enter Answer Option" required="">
+                </div>
+              </div>
+              <div class="col-md-2">
+              <div class="form-group">
+                 <button type="submit" class="btn btn-primary" >search</button>
+              </div>
+            </div>
+              </div>
+             
+              </form>
+           <!--  <form style="padding: 15px 0;position: relative;top: 8px;left: 71%;">
+              <label class="searchh">Search:<input type="search" class="form-control" placeholder="" aria-controls="example"></label>
+            </form> -->
+            <div class="table-responsive">
+              <table id="example-2" class="table table-striped " style="width:100%">
+                <thead>
+                  <tr>
+     
+                    <th>Full name</th>
+                  
+                    <th>Questions</th>
+                    <th>Answers</th>
+                  
+                   
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if get_answer %}
+                  {% for data in get_answer %}
+                  <tr>
+                    
+                   
+                    <td style="display: flex;align-items: baseline;justify-content: space-between;">{{data.user.userx.full_name}}</td>
+                    <td>  {{data.question.question}}</td>
+                    {% for item in get_question %}
+
+                     {% if data.answer|lower == item.option_a|lower %}
+                    
+                    <td>A </td>
+                    {% elif data.answer|lower == item.option_b|lower %}
+                    
+                    <td>B </td>
+                     {% elif data.answer|lower == item.option_c|lower %}
+                    
+                    <td>C </td>
+                     {% elif data.answer|lower == item.option_d|lower %}
+                    
+                    <td>D </td>
+                     
+
+                    {% endif %}
+                    {% endfor %}
+                  </tr>
+                 
+                  {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+         
+            &nbsp;
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</section>
+{% endblock %}

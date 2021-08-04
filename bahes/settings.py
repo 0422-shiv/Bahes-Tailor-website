@@ -224,16 +224,16 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # ------------------------------------facebook setup---------------------------------------
-SOCIAL_AUTH_FACEBOOK_KEY = '546707063125382'
-SOCIAL_AUTH_FACEBOOK_SECRET = '2e71b00f7a25aeb7382b03b82283f97c'
+SOCIAL_AUTH_FACEBOOK_KEY = 
+SOCIAL_AUTH_FACEBOOK_SECRET = 
 
 # -----------------Google keys--------------------------------------------------------
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY  ='451550635920-ienamllnl1p9ug59k1h91f4gu07mqi15.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'MnKYYdXrm_mCJhkMP77CoFXp'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY  =
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 
 
 # -----------------Twitter keys--------------------------------------------------------
-SOCIAL_AUTH_TWITTER_KEY  = '14ihwasbEXELQmpS59iy9znuB'
-SOCIAL_AUTH_TWITTER_SECRET = 'lPO6rv9NIdCYCjPnZOjSeernLncPNyKwEYrcYY2XI2FaXzCcB3'
+SOCIAL_AUTH_TWITTER_KEY  = 
+SOCIAL_AUTH_TWITTER_SECRET = 
 
 # Bearer Token of twitter
 # AAAAAAAAAAAAAAAAAAAAAHFFRgEAAAAAjDvbEmv%2By6MpMFyLdmLY6fbw3mA%3DvOx2tTZNIiV4uO59tYbBQT4NknF31zheHHjGLU1MSuW6mPhZAJ
@@ -243,5 +243,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtpout.secureserver.net'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'gaurav@digimonk.net'
-EMAIL_HOST_PASSWORD = 'D!gimonK@321'
+EMAIL_HOST_USER = 
+EMAIL_HOST_PASSWORD = 

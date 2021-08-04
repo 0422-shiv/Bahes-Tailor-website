@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf.urls import url
 from django.contrib.auth import views as auth_login
 from django.conf import settings
 from django.conf.urls.static import static
@@ -27,17 +28,6 @@ urlpatterns = [
     path('dashboard/', include(('dashboard.urls', 'dashboard'), namespace='dashboard')),
     path('account/', include(('account.urls', 'account'), namespace='account')),
     path('survey/', include(('survey.urls', 'survey'), namespace='survey')),
-    # =====================================
-    # forgot pasword url
-    # path('password-reset/', auth_login.PasswordResetView.as_view(template_name='account/forgot-password.html'),
-    #                        name="PasswordReset"),
-    # path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(
-    #                       template_name='account/password_reset_done.html'), name='password_reset_done'),
-    #  path('password-reset-confirm/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='account/password_reset_confirm.html'),
-    #                        name='password_reset_confirm'),
-    # path('password-reset-complete/',auth_views.PasswordResetCompleteView.as_view(template_name='account/password_reset_complete.html'),
-    #                        name='password_reset_complete'),
-    # ======================================
     path('my-services/', include(('services.urls', 'services'), namespace='services')),
     path('contact-us/', include(('contactus.urls', 'contactus'), namespace='contactus')),
     path('find-products/', include(('findproducts.urls', 'findproducts'), namespace='findproducts')),
@@ -60,8 +50,8 @@ urlpatterns = [
     path('admin/manage-products/', include(('manage_products.urls', 'manage_products'), namespace='manage_products')),
     path('admin/manage-payments/', include(('manage_payments.urls', 'manage_payments'), namespace='manage_payments')),
     path('admin/manage-admin-settings/', include(('manage_admin_settings.urls', 'manage_admin_settings'), namespace='manage_admin_settings')),
-     path('admin/manage-user-answers/', include(('manage_user_answers.urls', 'manage_user_answers'), namespace='manage_user_answers')),
+    path('admin/manage-user-answers/', include(('manage_user_answers.urls', 'manage_user_answers'), namespace='manage_user_answers')),
             ############# Admin urls end ################
 
-
+    path('oauth/', include('social_django.urls', namespace='social')),  # <--social login urls
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

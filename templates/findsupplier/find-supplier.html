@@ -29,7 +29,7 @@
 			<div class="row">
 				<div class="col-md-3">
 					<div class="supliers-left">
-						<h3>Filter</h3>
+						<h3 class="supp-filter">Filter</h3>
 						<div class="filter-menu">
 							<div class="accordion" id="faq">
 								<div class="card">
@@ -37,7 +37,7 @@
 										<a href="#" class="btn-header-link" data-toggle="collapse" data-target="#faq1"
 										aria-expanded="true" aria-controls="faq1">Products</a>
 									</div>
-									<div id="faq1" class="collapse show" aria-labelledby="faqhead1" data-parent="#faq">
+									<div id="faq1" class="collapse hide" aria-labelledby="faqhead1" data-parent="#faq">
 										<div class="card-body">
 											<ul class="filters">
 												{% if get_products %}
@@ -71,7 +71,7 @@
 										<a href="#" class="btn-header-link collapsed" data-toggle="collapse" data-target="#faq2"
 										aria-expanded="true" aria-controls="faq2">Services</a>
 									</div>
-									<div id="faq2" class="collapse show" aria-labelledby="faqhead2" data-parent="#faq" style="border-bottom:0px;">
+									<div id="faq2" class="collapse hide" aria-labelledby="faqhead2" data-parent="#faq" style="border-bottom:0px;">
 										<div class="card-body" >
 											<ul class="filters">
 												
@@ -101,7 +101,7 @@
 				</div>
 				<div class="col-md-9">
 					<div class="supplier_colorbox">
-						<h3 class="mb-4">Suppliers
+						<h3 class="mb-4 supplierse">Suppliers
 						<div class="supplier_count"><span>{{get_supplier|length}}</span>
 					</div>
 					</h3>
@@ -171,7 +171,7 @@
 											<div class="overlay-sup">
 												
 												<div class="sup-div" >
-													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" target="blank">
+													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" >
 														<div class="Name-razamurad">{{data.user_id.userx.full_name|upper}}</div>
 														<!--  <div class="name-sup">Name</div>
 														<div class="surname">Raza Murad</div> -->
@@ -181,27 +181,27 @@
 												
 												
 												<div class="sup-div">
-													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" target="blank">
+													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10">
 														<div class="name-sup">Location</div>
 														<div class="surname">{{data.country_id.country_name}}</div>
 													</a>
 												</div>
 												
 												<div class="sup-div">
-													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" target="blank">
+													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10">
 														<div class="name-sup">Specialization</div>
 														<div class="surname">{{data.tailor_speci_id}}</div>
 													</a>
 												</div>
 												
 												<div class="sup-div ">
-													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" target="blank">
+													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" >
 														<div class="name-sup">Experience</div>
 														<div class="surname">{{data.tailor_experience}}</div>
 													</a>
 												</div>
 												<div class="sup-div ">
-													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" target="blank">
+													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10">
 														<div class="name-sup">Multinational Shipping</div>
 														{% if data.ship_outside_country == True %}
 															<div class="surname">Yes</div>
@@ -212,7 +212,7 @@
 												</div>
 												
 												<div class="sup-div">
-													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" target="blank">
+													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" >
 														<div class="name-sup">Targeted Customer</div>
 														{% if data.targeted_customer %}
 															
@@ -223,7 +223,7 @@
 												</div>
 												
 												<div class="sup-div">
-													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10" target="blank">
+													<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" data-maxlength="10">
 														<div class="name-sup">Gender</div>
 														{% if data.tailor_staff_gender %}
 															
@@ -234,7 +234,7 @@
 												</div>
 												
 												
-												<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" target="blank" style="text-decoration: none;"><div class="view-profile"><i class="fa fa-eye"></i> View Profile</div></a>
+												<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" style="text-decoration: none;"><div class="view-profile"><i class="fa fa-eye"></i> View Profile</div></a>
 												
 												
 											</div>
@@ -297,6 +297,19 @@
 {% endblock %}
 {% block script %}
 	<script type="text/javascript">
+		{% for data in get_products %}
+			{% if data in get_filter_products_subcat %}
+			$("#faq1").addClass("show");
+			{% endif %}
+		{% endfor %}
+		 {% if get_filter_fabric_product %}
+		 $("#faq1").addClass("show");
+		 {% endif %}
+	{% for data in get_services %}							
+		{% if data in get_filter_supplier %}
+			$("#faq2").addClass("show");
+		{% endif %}
+	{% endfor %}
 	$(document).on('change',"#short_by",function(){
 	var short_by = $(this).val();
 	// alert(short_by);
@@ -312,7 +325,9 @@
 	// $(".filters :checkbox").click(function() {
 	var service_type = "";
 	$(".service_type:checked").each(function(i){
+		
 	service_type = service_type+"&"+$(this).val();
+
 	// console.log(service_type);
 	// if(i>0){
 	//   $(".hideservice").css("display", "none");

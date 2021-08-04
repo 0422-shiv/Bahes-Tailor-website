@@ -58,10 +58,10 @@ class FindProducts(generic.TemplateView):
 			
 		
 		else:
-			get_prod=SupplierProduct.objects.filter(status=True)
+			get_prod=SupplierProduct.objects.filter(status=True).order_by('-id')
 			
 		page = request.GET.get('page', 1)
-		paginator = Paginator(get_prod, 9) 
+		paginator = Paginator(get_prod, 12) 
 			
 			
 		try:

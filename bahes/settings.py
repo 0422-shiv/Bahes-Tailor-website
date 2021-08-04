@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = '03y7h5wm3^@(g__l_mgrsuhvb_%*o@b_&#l$u9_c_0n^dn1h$i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'import_export',
- 
+    'social_django',
     
     # User Apps start
     'account',
@@ -78,25 +79,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'last_seen.middleware.LastSeenMiddleWare',
-    # 'chat.middleware.activeuser_middleware.ActiveUserMiddleware'
+    # 'social_django.middleware.SocialAuthExceptionMiddleware',
+  
   
 ]
 
-# Setup caching per Django docs. In actuality, you'd probably use memcached instead of local memory.
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-#         'LOCATION': 'default-cache'
-#     }
-# }
-
-# Number of seconds of inactivity before a user is marked offline
-# USER_ONLINE_TIMEOUT = 300
-
-# Number of seconds that we will keep track of inactive users for before 
-# their last seen is removed from the cache
-# USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
 
 ROOT_URLCONF = 'bahes.urls'
 
@@ -111,6 +98,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                 'social_django.context_processors.backends',  # <-- Here
+                'social_django.context_processors.login_redirect', # <-- Here
+
             ],
         },
     },
@@ -126,11 +116,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME':'bahes_new',
-        'USER':'bahes_new',
-        'PASSWORD':'bahes_new',
+        'NAME':'bahes',
+        'USER':'bahes',
+        'PASSWORD':'bahes',
         'HOST':'localhost',
-        'PORT':'',
+        'PORT':'5432',
     }
 }
 
@@ -178,30 +168,80 @@ STATICFILES_DIRS = [
     STATIC_DIR
 ]
 
-images_BASE_URL="http://digimonk.net:6262"
-BASE_URL = "http://digimonk.net:6262/"
+images_BASE_URL="https://www.thebahes.com"
+BASE_URL = "https://www.thebahes.com/"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
 
-LOGIN_URL = BASE_URL+'admin/login'
+LOGIN_URL = BASE_URL+'admin/login/' 
 LOGIN_REDIRECT_URL = BASE_URL+'admin/dashboard/'
-LOGOUT_REDIRECT_URL = BASE_URL+'admin/login'
+LOGOUT_REDIRECT_URL = BASE_URL+'admin/login/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL =  "https://www.thebahes.com/"
+
+                
+# ---------------------------------------------------------for chat system-------------------------------------------------
+ASGI_APPLICATION = 'bahes.routing.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis-server-name", 6379)],
+        },
+    
+    },
+}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer"
+#    }
+# }
 
 
+
+# SOCIAL_AUTH_PIPELINE = (
+#     'social_core.pipeline.social_auth.social_details',
+#     'social_core.pipeline.social_auth.social_uid',
+#     'social_core.pipeline.social_auth.social_user',
+#     'social_core.pipeline.user.get_username',
+#     'social_core.pipeline.social_auth.associate_by_email',
+#     'social_core.pipeline.user.create_user',
+#     'social_core.pipeline.social_auth.associate_user',
+#     'social_core.pipeline.social_auth.load_extra_data',
+#     'social_core.pipeline.user.user_details',
+# )
+
+# SOCIALKEY_MODEL= manage_admin_settings.SocialKeys
+
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# ------------------------------------facebook setup---------------------------------------
+SOCIAL_AUTH_FACEBOOK_KEY = '546707063125382'
+SOCIAL_AUTH_FACEBOOK_SECRET = '2e71b00f7a25aeb7382b03b82283f97c'
+
+# -----------------Google keys--------------------------------------------------------
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY  ='451550635920-ienamllnl1p9ug59k1h91f4gu07mqi15.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'MnKYYdXrm_mCJhkMP77CoFXp'
+
+# -----------------Twitter keys--------------------------------------------------------
+SOCIAL_AUTH_TWITTER_KEY  = '14ihwasbEXELQmpS59iy9znuB'
+SOCIAL_AUTH_TWITTER_SECRET = 'lPO6rv9NIdCYCjPnZOjSeernLncPNyKwEYrcYY2XI2FaXzCcB3'
+
+# Bearer Token of twitter
+# AAAAAAAAAAAAAAAAAAAAAHFFRgEAAAAAjDvbEmv%2By6MpMFyLdmLY6fbw3mA%3DvOx2tTZNIiV4uO59tYbBQT4NknF31zheHHjGLU1MSuW6mPhZAJ
+
+# ----------------------------------mail setup --------------------------------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtpout.secureserver.net'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'gaurav@digimonk.net'
-EMAIL_HOST_PASSWORD = ''
-
-
-
-ASGI_APPLICATION = "bahes.routing.application"
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-   }
-}
+EMAIL_HOST_PASSWORD = 'D!gimonK@321'

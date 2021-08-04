@@ -54,12 +54,16 @@ button.multiselect.dropdown-toggle.btn.btn-default {
     <div class="container-fluid">
       <div class="row p-t-b-20">
         <div class="col-md-12">
+           <h3 style="text-align: right;">
+               <a href="{% url 'manage_member:ManageSupplier'%}" style="font-size:12px ;color:#2088CA; ;" ><i class="fa fa-arrow-circle-left fa-2x"></i></a></h3>
           <div class="form-card no-b">
              
             <div class="login-form-card">
+             
               <h3 class="add_name">{{get_supplier_instance.full_name}}'s Services</h3>
 
-              <a href="add-operator.php" class="add-btn " data-toggle="modal" data-target="#exampleModal" style="position: absolute;top: 1%;right: 4%;"><i class="fa fa-plus mr-5"></i>Add</a>
+        
+              <a href="add-operator.php" class="add-btn " data-toggle="modal" data-target="#exampleModal" style="position: absolute;top: 52px;right: 4%;"><i class="fa fa-plus mr-5"></i>Add</a>
            
               <div>
                 <div >

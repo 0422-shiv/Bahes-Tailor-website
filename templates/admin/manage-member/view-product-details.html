@@ -16,11 +16,11 @@
               <div class="supliers-left" style="height:auto;">
               
                 {% if get_product_instance.image_1 %}
-                                    <img src="{{get_product_instance.image_1.url}}"  style="width: 260px;">
+                                    <img src="{{get_product_instance.image_1.url}}"  style="width: 260px;" class="img-style">
                                     {% elif get_product_instance.image_2%}
-                                    <img src="{{get_product_instance.image_2.url}}"  style="width: 260px;">
+                                    <img src="{{get_product_instance.image_2.url}}"  style="width: 260px;" class="img-style">
                                     {% else %}
-                                    <img src="{% static 'images/no-image.jpg' %}"  style="width: 260px;">
+                                    <img src="{% static 'images/no-image.jpg' %}"  style="width: 260px;" class="img-style">
                                     {% endif %}
               <!--   <div class="ask-question">
                   <a href="#" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i> Ask me question</a>
@@ -64,7 +64,7 @@
                   <div class="loction-view height-box">
                     <div class="kwit-5" data-maxlength="15"><span>{{get_product_instance.country_origin.country_name}}</span></div>
                   </div>
-                  <p data-maxlength="10"><span>Country</span></p>
+                  <p data-maxlength="10"><span class="cntry">Country</span></p>
                 </div>
               </div>
               {% endif %}
@@ -83,7 +83,7 @@
                       {% endif %}
                     </div>
                   </div>
-                  <p data-maxlength="15"><span>Type</span></p>
+                  <p data-maxlength="15"><span class="cntry">Type</span></p>
                 </div>
               </div>
                    <div class="col-md-2">
@@ -91,7 +91,7 @@
                   <div class="loction-view height-box">
                     <div class="kwit-5" data-maxlength="15"><span>{{get_product_instance.price}} KD</span></div>
                   </div>
-                  <p data-maxlength="20"><span>Price</span></p>
+                  <p data-maxlength="20"><span class="cntry">Price</span></p>
                 </div>
               </div>
                
@@ -105,7 +105,7 @@
 
                     </div>
                   </div>
-                  <p data-maxlength="20"><span>Quantity</span></p>
+                  <p data-maxlength="20"><span class="cntry">Quantity</span></p>
                 </div>
               </div>
               {% endif %}

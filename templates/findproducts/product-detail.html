@@ -33,7 +33,7 @@
    
       <div class="container">
       <h3 style="text-align: right;">
-         <a href="{% url 'findproducts:FindProducts' %}" style="font-size:12px ;" ><i class="fa fa-arrow-circle-left fa-2x"></i></a></h3>
+         <a href="{% url 'findproducts:FindProducts' %}" style="font-size:15px ;" ><i class="fa fa-arrow-circle-left "></i></a></h3>
       </div>
   
     <div class="container">
@@ -53,12 +53,13 @@
               <!-- <a href="#" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i> Ask me question</a> -->
               {% if get_payment.payment_status == True %}
              
-              <!--   <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom{% if get_product_instance.user_id.id == request.user.id %}{% else %}&id={{get_product_instance.user_id.userx.id}}{% endif %}" class="btn btn-primary btn-block"><i class="fa fa-comments-o" ></i> Ask Question</a> -->
+           
               {% if not  get_product_instance.user_id.id == request.user.id %}
                 <a href="" data-toggle="modal" data-target="#chatmodal" class="btn btn-primary btn-block" onclick="mychatFunction('{{get_product_instance.user_id.userx.id}}')"><i class="fa fa-comments-o" ></i> Ask Question</a>
                 {% endif %}
                 <a href=""  data-toggle="modal" data-target="#exampleModal-1" class="btn btn-primary btn-block"><i class="fa fa-comments-o"></i>View Contact Details</a>
                 {% else %}
+
                 <a href="javascript:void(0)" class="btn btn-primary btn-block customer_payment"><i class="fa fa-comments-o"></i> Ask Question</a>
               
                 <a href="javascript:void(0)" class="btn btn-primary btn-block customer_payment"><i class="fa fa-comments-o"></i>View Contact Details</a>
@@ -67,8 +68,14 @@
           </div>
         </div>
         <div class="col-md-9">
-          <div>
-            <p class="supplier_names">Supplier Name : <span style="color: #707070;">{{get_product_instance.user_id.userx.full_name}}</span> </p>
+          <div class="heading_raza blocke">
+            <p class="supplier_names ">Supplier : <span style="color: #707070;">{{get_product_instance.user_id.userx.full_name}}</span>
+              {% if get_product_instance.user_id.userx.online_status %}
+                <span class="online_span">Online</span>
+              {% else %}
+                <span class="online_span">Offline</span>
+              {% endif %}
+             </p>
           </div>
           <div class="supliers-list">
             <h3 class="mb-4">Description</h3>
@@ -77,12 +84,13 @@
                 <p>{{get_product_instance.other_description}}</p>
               </div>
             </div>
+            {% if get_color_list %}
             <h3 class="mb-4">Available Colors</h3>
             <div class="row">
               {% if get_color_list %}
               {% for data in get_color_list %}
             
-              <div class="col-md-2">
+              <div class="col-3 col-md-2">
                 <div class="textlimit">
                   <div class="loction-view red height-box">
                     <div class="kwit-3" style="color:{{data}};background:{{data}};"><!-- <span>Red</span> --></div>
@@ -95,15 +103,13 @@
               <h4 style="padding-left: 321px;">No color to display</h4>
               {% endif %}
               
-             
-             
-            
-            
+         
             </div>
+            {% endif %}
             <h3 class="other_features-1">Other Features</h3>
             <div class="row">
               {% if get_product_instance.country_origin.country_name %}
-              <div class="col-md-2">
+              <div class="col-4 col-md-2">
                 <div class="list-box textlimit">
                   <div class="loction-view height-box">
                     <div class="kwit-5" data-maxlength="15"><span>{{get_product_instance.country_origin.country_name}}</span></div>
@@ -112,7 +118,8 @@
                 </div>
               </div>
               {% endif %}
-              <div class="col-md-2">
+              {% if get_product_instance.fabrictype or get_product_instance.threadtype or get_product_instance.material_type1 or get_product_instance.material_type2 %}
+              <div class="col-4  col-md-2">
                 <div class="list-box textlimit">
                   <div class="loction-view height-box">
                     <div class="kwit-5" data-maxlength="15">
@@ -130,7 +137,8 @@
                   <p data-maxlength="15"><span>Type</span></p>
                 </div>
               </div>
-              <div class="col-md-2">
+              {% endif %}
+              <div class="col-4 col-md-2 col-md-2">
                 <div class="list-box textlimit">
                   <div class="loction-view height-box">
                     <div class="kwit-5" data-maxlength="15"><span>{{get_product_instance.price}} {{get_product_instance.currency}}</span></div>
@@ -139,7 +147,7 @@
                 </div>
               </div>
                 {% if get_product_instance.quantity %}
-              <div class="col-md-2">
+              <div class="col-4 col-md-2">
                 <div class="list-box textlimit">
                   <div class="loction-view height-box">
                     <div class="kwit-5" data-maxlength="15">
@@ -153,7 +161,7 @@
               </div>
               {% endif %}
                {% if get_product_instance.washing_method.all %}
-              <div class="col-md-2" data-toggle="modal" data-target="#washing_method_modal" >
+              <div class="col-4 col-md-2" data-toggle="modal" data-target="#washing_method_modal" >
            
                 <div class="list-box textlimit">
                   <div class="loction-view height-box">
@@ -343,6 +351,9 @@ $.ajax({
                 }
                },
                  function(isConfirm){ });
+  }
+    else if(data == 'usertype'){
+        window.location.href="{% url 'account:UserType' %}"
   }
   else{ 
  $("#exampleModal .modal-body").html(data);

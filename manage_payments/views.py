@@ -48,7 +48,8 @@ class UpdateManageCost(generic.TemplateView):
 	
 			amount=request.POST['amount']
 			content=request.POST['content']
-			RegistraionFees.objects.filter(id=id).update(amount= amount,content=content)
+			currency_type=request.POST['currency_type']
+			RegistraionFees.objects.filter(id=id).update(amount= amount,content=content,currency_type=currency_type)
 			messages.success(request,"One Time Registraion Fee Successfully Updated")
 			return HttpResponseRedirect(reverse('manage_payments:ManageCost'))
 		else:
@@ -74,7 +75,7 @@ class ManageOrder(generic.TemplateView):
 				to_date_format = datetime.strptime(to_date,"%m/%d/%Y")
 				get_user_payements=BahesPayment.objects.filter(payment_date__range=[from_date_format, to_date_format]).exclude(user_id__is_superuser=True)
 			else:
-				get_user_payements = BahesPayment.objects.all().exclude(user_id__is_superuser=True)
+				get_user_payements = BahesPayment.objects.exclude(user_id__is_superuser=True).order_by('-id')
 			return render(request, self.template_name,{'get_user_payements':get_user_payements,'from_date':from_date,'to_date':to_date})
 		else:
 			messages.error(request,"Please enter valid username and password")

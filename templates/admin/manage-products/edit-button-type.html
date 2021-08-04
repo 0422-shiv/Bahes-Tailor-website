@@ -1,0 +1,17 @@
+
+  
+
+
+<form method="POST" action="/admin/manage-products/edit-button-types/{{material1_ins.id}}">
+  {% csrf_token %}
+  <div class="form-group">
+   <label>Type Name</label>
+    <input type="text" name="name" class="form-control"  value="{{material1_ins.name}}">
+  </div>
+  
+
+  <div class="form-group">
+    
+    <button type="submit" class="btn btn-primary">Edit</button>
+  </div>
+</form>

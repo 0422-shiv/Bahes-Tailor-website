@@ -10,7 +10,7 @@
       <select class="form-control" id="" name="material_type1" required="">
         
         {% if get_material_type1 %}
-          <option class="active"></option>
+         
           {% for data in get_material_type1 %}
             <option value="{{data.id}}">{{data.name}}</option>
           {% endfor %}
@@ -19,16 +19,19 @@
     </div>
     <div class="form-group">
       <label for="formControlRange" class="bold-font">Size Width</label>
-      <input type="range" class="form-control-range" name="size"id="formControlRange" required="">
+      <input type="range" class="form-control-range" name="size"id="formControlRange" required="" >
     </div>
     <div class="form-group">
       <label for="" class="bold-font">Country Origin</label>
       <select class="form-control" name="country" required="">
         {% if get_countries %}
-          <option class="active"></option>
+       
           {% for data in get_countries %}
+           {% if data.id == 117 %}
+             <option value="{{data.id}}" selected="">{{data.country_name}}</option>
+          {% else %}
             <option value="{{data.id}}">{{data.country_name}}</option>
-            
+            {% endif %}
           {% endfor %}
         {% endif %}
       </select>
@@ -36,15 +39,16 @@
     <div class="form-group">
       <label for="" class="bold-font">Price</label>
       <div class="row">
-        <div class="col-md-2 pr-2">
-          <select class="form-control"  name="currency" required="">
-            <option class="active"></option>
+        <div class="col-md-2">
+          <select class="form-control pricee"  name="currency" required="">
                         {% if get_currency %}
                            {% for data in get_currency %}
                            
-                           <!-- {% if data.symbol %}
-                            <option value="{{data.id}}">{{data.symbol}}</option>
-                            {% else %} -->
+                             {% if data.currency == 'KWD' %}
+
+                           <option value="{{data.currency}}" selected="">{{data.currency}}</option>
+                           
+                            {% else %}
                               <option value="{{data.currency}}">{{data.currency}}</option>
                               {% endif %}
                           {% endfor %}
@@ -52,8 +56,8 @@
                           </select>
           <!-- <input type="text" class="form-control set_number_only" maxlength="12" name="price" id="" required=""> -->
         </div>
-        <div class="col-md-10 pl-1">
-      <input type="text" class="form-control set_number_only" maxlength="12"  name="price" required="">
+        <div class="col-md-10 ">
+      <input type="text" class="form-control set_number_only option-clss price" maxlength="12"  name="price" required="" placeholder="enter price">
     </div>
   </div>
     </div>
@@ -76,11 +80,11 @@
     
     <div class="form-group">
       <label for="" class="bold-font">Other Description</label>
-      <textarea class="form-control" rows="10" name="description" required=""></textarea>
+      <textarea class="form-control" rows="10" name="description" required="" placeholder="enter description"></textarea>
     </div>
     <h4 class="bold-font">Upload Image</h4>
     <div class="row">
-      <div class="col-md-6" style="text-align: -webkit-center;position: relative;left: 22px;">
+      <div class="col-md-6 upload-imgaee" style="text-align: -webkit-center;position: relative;left: 22px;">
         
           <div class="dropzone-wrapper">
             <div class="dropzone-desc"> <i class="glyphicon glyphicon-download-alt"></i>
@@ -94,7 +98,7 @@
       </div>
       
       
-      <div class="col-md-6" style="text-align: -webkit-center;position: relative;right:22px;">
+      <div class="col-md-6 upload-pic" style="text-align: -webkit-center;position: relative;right:22px;">
         
         
           <div class="dropzone-wrapper">

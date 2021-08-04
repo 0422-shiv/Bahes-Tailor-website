@@ -1,0 +1,111 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+<div class="page-loader" style="display: none;">
+ <div class="status">&nbsp;</div>
+</div>
+   {% if request.user.userx.user_type.type_name == 'supplier' %}
+  <div class="banner-profile" style="background: url({{'supplierdashboard'|get_banner_img}}) no-repeat center top;">
+    {% else %}
+     <div class="banner-profile" style="background: url({{'customerdashboard'|get_banner_img}}) no-repeat center top;">
+ {% endif %}
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>My Profile</span></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">My Profile</a></li>
+          
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+  
+  <div class="container-fluid">
+    <div class="row">
+      {% include 'dashboard_base_sidebar.html' %}
+            <div>
+        {% if messages %}
+          {% for message in messages %}
+            
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+              <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                <strong>{{message}}</strong>
+              </div>
+              
+            {% else %}
+              
+              <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                <strong>{{message}}</strong>
+              </div>
+            {% endif %}
+            
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="main-roww">
+        <div class="row">
+          <div class="Dashboardd">
+            <h3>My Services</h3>
+            <a href="{% url 'chat:ChatUser' %}" class="btn btn-primary"><i class="fa fa-comments" aria-hidden="true"></i> Chat Now</a>
+          </div>
+          {% if get_services %}
+          {% for data in get_services %}
+            <div class="col-md-4">
+              {% if data.tailor_speci_id.img %}
+               <div class="product-boxe newds">
+                  <img src="{{data.tailor_speci_id.img.url}}" class="imgg-1"/>
+                {% endif %}<!-- 
+                <h4 class="Deshdasha">{{data.tailor_speci_id.tailor_speci}}</h4> -->
+                <h3 class="sewing">{{data.tailor_speci_id.tailor_speci}}</h3>
+               <!--  <p class="owner">Shivesh
+                  </p> -->
+                <ul class="inlines">
+                  <li class="list_style"><i class="fa fa-edit"></i>
+                    <a href="javascript:void(0)" class="font-sizes edit_service" data-id="{{data.id}}">Edit</a>
+                  </li>
+                  <li class="list_style">
+                    <a href="javascript:void(0)" class="font-sizes delete_service" data-id="{{data.id}}"><i class="fa fa-trash"></i> Delete</a>
+                  </li>
+                  <li class="list_style">
+                    
+                    {% if data.status %}
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input approve" checked="true" id="{{data.id}}" servicestatus="{{data.status}}">
+                        <label class="custom-control-label" for="{{data.id}}">Active</label>
+                      </div>
+                    {% else %}
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input approve"
+                        id="{{data.id}}" servicestatus="{{data.status}}" >
+                        <label class="custom-control-label" for="{{data.id}}">Deactive</label>
+                      </div>
+                    {% endif %}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          {% endfor %}
+          {% else %}
+             <h3 class="noavailable">No Services posted to show</h3>
+          {% endif %}
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

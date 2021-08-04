@@ -23,18 +23,18 @@ class UserForm(UserCreationForm):
 class UserProfileForm(forms.ModelForm):
     full_name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(
             attrs={"class": "input-style", 'name': 'fullname', 'placeholder': 'Full Name'}))
-    tel_code = forms.CharField(
-        widget=forms.TextInput(
-            attrs={"class": "input-style set_number_only tel_code",'id':'tel', 'name': 'tel_code', 'placeholder': 'xxx',
-                   'maxlength': "6"}))
+    # tel_code = forms.CharField(
+    #     widget=forms.TextInput(
+    #         attrs={"class": "input-style set_number_only tel_code",'id':'tel', 'name': 'tel_code', 'placeholder': 'xxx',
+    #                'maxlength': "6"}))
     phone = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "input-style set_number_only", 'name': 'phone', 'placeholder': 'xxxxxxxxxx','maxlength':"12"}))
+        widget=forms.TextInput(attrs={"class": "input-style set_number_only pho_register", 'name': 'phone', 'placeholder': 'Mob','maxlength':"11","id":"phone",'autocomplete':"off",'data-intl-tel-input-id':"0"}))
     country = forms.ModelChoiceField(required=True, empty_label="Select Country", queryset=Countries.objects.all(),
                                      widget=forms.Select(attrs={"class": "input-style country", 'name': 'country'}))
 
     class Meta:
         model = UserProfile
-        fields = ['full_name','tel_code','phone', 'country']
+        fields = ['full_name','phone', 'country']
 
 
 class MyPasswordChangeForm(PasswordChangeForm):

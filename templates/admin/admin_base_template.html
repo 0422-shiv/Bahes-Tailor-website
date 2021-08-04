@@ -69,18 +69,27 @@
         <li class="{% if 'manage-services' in request.build_absolute_uri %} acive  {% endif %}">
           <a href="{% url 'manage_services:ManageServices'%}"><i class="fa fa-list-alt"></i>Manage Services</a>
         </li>
-        <li class="{% if 'manage-products' in request.build_absolute_uri %} acive  {% endif %}">
+   <!--      <li class="{% if 'manage-products' in request.build_absolute_uri %} acive  {% endif %}">
           <a href="{% url 'manage_products:ManageProducts'%}"><i class="fa fa-support"></i>Manage Products</a>
-        </li>
+        </li> -->
+          <li><div class="dropdown show">
+          <a class=" dropdown-toggle {% if 'manage-products' in request.build_absolute_uri %} acive  {% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExampleproduct-3" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-id-card"></i> Manage Products 
+          </a>
+          <div class="collapse {% if 'manage-products' in request.build_absolute_uri %} show  {% endif %}" id="collapseExampleproduct-3">
+            <a class="dropdown-item {% if 'manage-products' in request.build_absolute_uri and 'washing-method' not in  request.build_absolute_uri  and 'fabric-types' not in  request.build_absolute_uri  and 'thread-types' not in  request.build_absolute_uri  and 'button-types' not in request.build_absolute_uri  and 'elastic-tape-trim-types' not in  request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_products:ManageProducts'%}">Manage Suppliers Products</a>
+            <a class="dropdown-item {% if 'washing-method' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_products:WashingMethod' %}">Fabric Washing Methods</a>
+             <a class="dropdown-item {% if 'fabric-types' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_products:FabricTypes' %}">Fabric Types</a>
+             <a class="dropdown-item {% if 'thread-types' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_products:ThreadTypes' %}">Thread Types</a>
+              <a class="dropdown-item {% if 'button-types' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_products:ButtonTypes' %}">Buttons and closuers Types</a>
+              <a class="dropdown-item {% if 'elastic-tape-trim-types' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_products:ElasticTypes' %}">Zipper,Tape,Trim or Elastic Types</a>
+          </div>
+        </div></li>
+        
         <li class="{% if 'manage-chat' in request.build_absolute_uri %} acive  {% endif %}">
             <a href="{% url 'manage_chat:ManageChat' %}"><i class="fa fa-list-alt"></i>Manage Chat</a>
          </li>
-      <!--    <li><div >
-          <a  href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-3" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-id-card"></i> Manage Payments
-          </a>
-     
-        </div></li> -->
+   
         <li><div class="dropdown show">
           <a class=" dropdown-toggle {% if 'manage-payments/cost' in request.build_absolute_uri or 'manage-payments/order' in request.build_absolute_uri%} acive  {% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-3" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-id-card"></i> Manage Payments
@@ -93,14 +102,15 @@
         
         <li><div class="dropdown show">
           <a class=" dropdown-toggle {% if 'manage-admin-settings' in request.build_absolute_uri %} acive  {% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-2" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-cog"></i>&nbsp; Manage Admin Setting
+            <i class="fa fa-cog"></i>&nbsp; Manage Admin Settings
           </a>
           <div class="collapse {% if 'manage-admin-settings' in request.build_absolute_uri or 'email-settings' in request.build_absolute_uri or 'enquiries'  in request.build_absolute_uri %} show  {% endif %}" id="collapseExample-2">
            
             <a class="dropdown-item {% if 'manage-admin-settings' in request.build_absolute_uri and 'email-settings' not in request.build_absolute_uri and 'enquiries' not in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_admin_settings:ChangePassword'%}">Change Password</a>
 
       
-            <a class="dropdown-item {% if 'email-settings' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_admin_settings:EmailSettings'%}">Email Setting</a>
+            <a class="dropdown-item {% if 'email-settings' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_admin_settings:EmailSettings'%}">Email Settings</a>
+          <!--   <a class="dropdown-item {% if 'social-key-settings' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_admin_settings:SocialKeySettings'%}">Social Key Settings</a> -->
             <a class="dropdown-item {% if 'enquiries' in request.build_absolute_uri %} acive_dsp  {% endif %}" href="{% url 'manage_admin_settings:ManageEnquiries'%}">Manage Help Enquiries</a>
           </div>
         </div></li>
@@ -110,19 +120,19 @@
     <div id="navbar-wrapper">
       <nav class="navbar navbar-inverse">
         <div class="container-fluid">
-          <div class="header-cont d-flex justify-content-between">
+          <div class="header-cont ">
             <div class="navbar-header">
               <a href="#" class="navbar-brand" id="sidebar-toggle"><i class="fa fa-bars"></i>
-              <img src="{% static 'bahes_admin/images/icons/logo.png' %}" class="mobile-logo"></a>
+              <img src="https://www.thebahes.com/media/logo_images/logo.png" class="mobile-logo"></a>
               <!-- <a href="dashboard.php  ">
               </a> -->
             </div>
             <div class="head-right">
               <ul>
                 <li>
-                  <i class="fa fa-user-circle" style="color: #2088ca;font-size: 25px; position: relative;top: 3px;"></i><span style="color: #2088ca;font-size: 20px;padding: 9px 2px 9px 15px;font-weight: 600;">{{request.user}}</span>
+                  <i class="fa fa-user-circle" style="color: #2088ca;font-size: 25px; position: relative;top: 3px;"></i><span style="color: #2088ca;font-size: 16px;padding: 9px 2px 9px 15px;font-weight: 600;">{{request.user}}</span>
                 </li>
-                <li><a href="{% url 'logout' %}"><button class="btn btn-outline-primary">Log Out</button></a></li>
+                <li><a href="{% url 'logout' %}"><i class="fa fa-power-off error" aria-hidden="true"></i></a></li>
               </ul>
             </div>
           </div>
@@ -184,8 +194,8 @@
             // }
          }
       ],
-      'select': 'multi',
-      'order': [[1, 'asc']]
+      // 'select': 'multi',
+      // 'order': [[1, 'asc']]
    });
 });         
            </script> 
@@ -292,6 +302,163 @@
     $wrapper.classList.toggle('toggled');
     });
     </script>
+
+
+
+    <script type="text/javascript">
+//---------active and deactive status Start----------------
+$(document).on('click', ".paid", function (e) {
+      var userid = $(e.currentTarget).attr("id");
+      var paidstatus = $(e.currentTarget).attr('paidstatus');
+      console.log(userid,paidstatus);
+      if(paidstatus == 'Paid'){
+      varstatus = 'Unpaid';
+      }
+      else{
+      varstatus = 'Paid';
+      }
+      swal({
+        title: 'Are you sure?',
+        text: varstatus+' this',
+        icon: 'warning',
+        buttons: {
+        cancel: {
+        text: "Cancel",
+        value: null,
+        visible: true,
+        closeModal: true,
+        },
+        confirm: {
+        text: "OK",
+        value: true,
+        visible: true,
+        closeModal: true
+        },
+        }
+        },
+      function(isConfirm){
+      if (isConfirm) {
+        console.log(userid,paidstatus);
+      var dataString = 'userid='+userid+'&paidstatus='+paidstatus;
+      var token = '{{csrf_token}}';
+      $.ajax({
+      method:"GET",
+     
+      url: "/admin/manage-member/change-paid-status",
+      data: dataString,
+      dataType:"json",
+      cache: false,
+      success: function (data) {
+        console.log(data)
+      swal("Done!","succesfully Edited!","success");
+      location.reload();
+      }
+      });
+      }
+      else{
+      swal("Cancelled", "Your status is safe :)", "error");
+      }
+      });
+      });
+//---------active and deactive question End----------------
+</script>
+
+<script type="text/javascript">
+  //---------Edit manage products types or  method  start----------------
+$(document).on("click",".edit_type_methods",function(){
+var id = $(this).data("id");
+var page = $(this).data("page");
+console.log(id,page)
+ if(page=='washing'){
+      url="/admin/manage-products/edit-washing-method/"+id
+    }
+    else if(page == 'fabrictypes')
+    {
+       url="/admin/manage-products/edit-fabric-types/"+id
+    }
+    else if(page == 'threadtypes')
+    {
+      url='/admin/manage-products/edit-thread-types/'+id
+    }
+      else if(page == 'button')
+    {
+      url='/admin/manage-products/edit-button-types/'+id
+    }
+      else if(page == 'elastic')
+    {
+      url='/admin/manage-products/edit-elastic-tape-trim-types/'+id
+    }
+$.ajax({
+  method:"GET",
+  url :url,
+  dataType:"html",
+
+  success:function(data)
+  {
+     $("#exampleModal-1 .modal-body").html(data);
+     $("#exampleModal-1").modal("show");
+  }
+});
+});
+//---------Edit manage products types or  method   end----------------
+  //---------delete manage products types or  method start----------------
+
+    $(document).on("click",".delete_type_methods",function(){
+var delete_id = $(this).data("id");
+
+var page = $(this).data("page");
+console.log(delete_id,page)
+     swal({
+          title: "Are you sure?",
+          text: "You want to delete !",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          confirmButtonText: 'Yes, delete it!',
+          closeOnConfirm: false,
+          // closeOnCancel: false
+          },
+          function(isConfirm){
+         if (isConfirm) {
+          if(page=='washing'){
+              url="/admin/manage-products/delete-washing-method/"+delete_id
+            }
+            else if(page == 'fabrictypes')
+            {
+               url="/admin/manage-products/delete-fabric-types/"+delete_id
+            }
+             else if(page == 'threadtypes')
+              {
+                url='/admin/manage-products/delete-thread-types/'+delete_id
+              }
+               else if(page == 'button')
+              {
+                url='/admin/manage-products/delete-button-types/'+delete_id
+              }
+               else if(page == 'elastic')
+              {
+                url='/admin/manage-products/delete-elastic-tape-trim-types/'+delete_id
+              }
+         var token = '{{csrf_token}}';
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                url: url,
+                type: "POST",
+                success: function () {
+                    swal("Done!","It was succesfully deleted!","success");
+                        location.reload();
+                }
+            });
+          }
+          else{
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+       })
+     
+});
+  //---------delete manage products types or  method end----------------
+</script>
+
     {% block script %}
     {% endblock %}
   </body>

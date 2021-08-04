@@ -89,6 +89,8 @@ class SupplierProduct(models.Model):
     threadtype = models.ForeignKey(Thread_type, related_name='thread_type', on_delete=models.CASCADE, null=True, blank=True)
     material_type1 = models.ForeignKey(Material_type1, related_name='material_type1', on_delete=models.CASCADE, null=True, blank=True)
     material_type2 = models.ForeignKey(Material_type2, related_name='material_type2', on_delete=models.CASCADE, null=True, blank=True)
+    equipment_name =models.CharField(max_length=30, null=True, blank=True)
+    brand_name =models.CharField(max_length=30, null=True, blank=True)
     color = models.TextField(null=True)
     currency=models.CharField(max_length=30, null=True, blank=True)
     price = models.DecimalField(max_digits=20, decimal_places=3,null=True, blank=True)

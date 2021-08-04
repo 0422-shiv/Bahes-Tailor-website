@@ -50,6 +50,7 @@
                       <th>Phone number </th>
                       
                       <th>Question replies</th>
+                       <th>Payment Status</th>
                       <th>Services</th>
                       <th>Products</th>
                       <th>Status</th>
@@ -60,6 +61,8 @@
                   <tbody>
                     {% if get_supplier_user %}
                       {% for data in get_supplier_user %}
+                        {% if data.user_id.is_superuser %}
+                        {% else %}
                         <tr>
                           <td><div class="checkbox" ><input type="checkbox" class="dt-checkboxes member" 
                             value="{{data.id}}"><label></label></div></td>
@@ -70,10 +73,15 @@
                           
                           <td><a href="javascript:void(0)" class="view_answers" data-id="{{data.id}}">{% if data|answer_status == 'No' %}<button class="badge badge-gradient-danger" disabled=""> {{data|answer_status}}</button>{% else %}<button class="badge badge-gradient-danger" > {{data|answer_status}}</button>{% endif %}</a> </td>
                           
-                         <!--  <td><button class="btn btn-secondary views view_services"  data-id="{{data.id}}" style="background: black;">View<span class="servicescounter">{{data|get_services_count}}</span></button></td> -->
+                         <td>
+                      {% if data|paid_status == 'Paid' %}
+                      <button class="btn btn-danger paid" id="{{data.id}}" paidstatus="Paid">Paid</button>
+                      {% else %}
+                      <button class="btn btn-danger paid" id="{{data.id}}" paidstatus="Unpaid">Unpaid</button>
+                      {% endif %}
+                    </td>
                           <td><a href="{% url 'manage_member:ViewServices' data.id %}" class="btn btn-secondary views"  style="background: black;white-space: nowrap;">View<span class="servicescounter">{{data|get_services_count}}</span></a></td>
-                        <!--   <td><button class="btn btn-secondary views view_products" data-id="{{data.id}}" >View<span class="servicescounter">{{data|get_product_count}}</span></button></td>
-                          <td> -->
+                   
                               <td><a href="{% url 'manage_member:ViewProducts' data.id %}" class="btn btn-secondary views view_products" style="white-space: nowrap;">View<span class="servicescounter">{{data|get_product_count}}</span></a></td>
                           <td>
                               {% if data.status == True %}
@@ -95,7 +103,7 @@
                             </table>
                           </td>
                         </tr>
-                       
+                       {% endif %}
                          {% endfor %}
                          {% endif %}
                             </table>

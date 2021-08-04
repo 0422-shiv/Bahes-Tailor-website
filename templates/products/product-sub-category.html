@@ -1,8 +1,11 @@
- 			<ul class="nav nav-tabs centers" role="tablist">
+ 		<div class="page-loader" style="display: none;">
+ <div class="status">&nbsp;</div>
+</div>
+    	<ul class="nav nav-tabs centers" role="tablist">
                    
  					{% if get_product_subcate %}
  					{% for data in get_product_subcate %}
-                      <li class="nav-item subcat"> <a class="nav-link active btn btn-primary primarys-1 blue subcate" data-toggle="tab" href="" data-id="{{data.id}}" data-slug="{{data.slug}}" data-userid="{{userid}}"role="tab">{{data.subcategory_name}}</a>
+                      <li class="nav-item subcat"> <a class="nav-link active btn btn-primary primarys-1 blue subcate center" data-toggle="tab" href="" data-id="{{data.id}}" data-slug="{{data.slug}}" data-userid="{{userid}}"role="tab">{{data.subcategory_name}}</a>
                       </li>
                       {% endfor %}
                      {% endif %}
@@ -12,6 +15,7 @@
 
 <script type="text/javascript">
   $(document).on('click',".subcate",function(){
+
        $(".subcate").each(function(){
        if($(this).hasClass("product_cate"))
        {
@@ -22,6 +26,7 @@
   });
   
   $(document).on("click",".subcate",function(){
+    $('.page-loader').show();
 var id = $(this).data("id");
 var slug = $(this).data("slug");
 var userid = $(this).data("userid");
@@ -32,6 +37,7 @@ $.ajax({
 
   success:function(data)
   { 
+    $('.page-loader').hide();
      $("#subcate").html(data);
     
   }

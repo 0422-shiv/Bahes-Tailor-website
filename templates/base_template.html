@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
 <link rel="stylesheet" href="{% static 'css/style.css'%}">
 <link rel='stylesheet' href="{% static 'css/slick.css'%}">
+<!-- <link rel='stylesheet' href="{% static 'css/dialing-code.css'%}"> -->
 <link rel='stylesheet' href="{% static 'css/slick-theme.css'%}">
 <link rel="shortcut icon" href="{% static 'images/fevicon.png'%}" type="image" />
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -16,11 +17,14 @@
 <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
  <link rel="stylesheet" href='{% static "css/croppie.css" %}'  type="text/css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.9/css/intlTelInput.css" rel="stylesheet" media="screen">
 </head>
 </head>
 <body>
 <!-- Pageloader -->
 <div class="pageloader"></div>
+
+  <header class="large">
 <nav class="navbar navbar-expand-lg  bg-black fixed-top">
     {% if get_system_settings %}
         {% for data in get_system_settings %}
@@ -36,7 +40,7 @@
         <li class="nav-item {% if 'find-services' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link" href="{% url 'findservices:FindServices'%}">Find Services</a> </li>
         <li class="nav-item {% if 'find-products' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link" href="{% url 'findproducts:FindProducts'%}">Find Products</a> </li>
         {% if request.user.is_authenticated %}
-        <li class="nav-item dropdown {% if 'dashboard' in request.build_absolute_uri or 'chat' in request.build_absolute_uri or 'my-services' in request.build_absolute_uri or 'my-products' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if request.user.userx.full_name %}{{request.user.userx.full_name}}{% else %}{{request.user.username}}{% endif %}</a>
+        <li class="nav-item dropdown {% if 'dashboard' in request.build_absolute_uri or 'chat' in request.build_absolute_uri or 'my-services' in request.build_absolute_uri or 'my-products' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{request.user.username}}</a>
           {% else %}
            <li class="nav-item dropdown {% if 'account' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Register</a>
             {% endif %}
@@ -44,25 +48,194 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             {% if not request.user.is_authenticated %}
           
-		   <a class="dropdown-item" href="{% url 'account:login' %}">Login</a>
-		  <a class="dropdown-item" href="{% url 'account:UserType' %}">Registration</a> 
+       <a class="dropdown-item" href="{% url 'account:login' %}">Login</a>
+      <a class="dropdown-item" href="{% url 'account:UserType' %}">Registration</a>
 
       {% endif %}
       {% if  request.user.is_authenticated %}
-      {{request.user_detail.online_status}}
+      {% if request.user.userx.user_type.type_name == 'supplier' %}
+      <a class="dropdown-item" href="{% url 'dashboard:Dashboard' %}">My Profile</a>
+      {% else %}
       <a class="dropdown-item" href="{% url 'dashboard:EditProfile' %}">My Profile</a>
-      <a class="dropdown-item" href="{% url 'account:logout' %}">Logout </a>
-   
       {% endif %}
-		 
-		  
+      <a class="dropdown-item" href="{% url 'account:logout' %}">Logout </a>
+
+      {% endif %}
+
+
         </li>
+
+
+
+          <!-- mobile view start  -->
+       <!--  {% if request.user.is_authenticated %}
+        <li class="nav-item dropdown {% if 'dashboard' in request.build_absolute_uri or 'chat' in request.build_absolute_uri or 'my-services' in request.build_absolute_uri or 'my-products' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if request.user.userx.full_name %}{{request.user.userx.full_name}}{% else %}{{request.user.username}}{% endif %}</a>
+          {% else %}
+           <li class="nav-item dropdown {% if 'account' in request.build_absolute_uri %} active  {% endif %}"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Register</a>
+            {% endif %} -->
+       <li class="hide-desktop">
+
+            {% if not request.user.is_authenticated %}
+
+       <a class="dropdown-item listt {% if 'login' in request.build_absolute_uri %} active  {% endif %}" href="{% url 'account:login' %}">Login</a>
+      <a class="dropdown-item listt {% if 'user-type' in request.build_absolute_uri %} active  {% endif %}" href="{% url 'account:UserType' %}">Registration</a>
+
+      {% endif %}
+      {% if  request.user.is_authenticated %}
+   
+      <a class="nav-item listt  {% if 'dashboard' in request.build_absolute_uri or 'chat' in request.build_absolute_uri or 'my-services' in request.build_absolute_uri or 'my-products' in request.build_absolute_uri %} active  {% endif %}" href="{% url 'dashboard:EditProfile' %}">My Profile</a>
+      <a class="dropdown-item listt" href="{% url 'account:logout' %}">Logout </a>
+
+      {% endif %}
+
+
+        </li>
+
+
+        <!-- mobile view end  -->
       </ul>
     </div>
   </div>
 </nav>
- 
-{% block content %} 
+</header>
+   <!-----------------------------profile image crop modal start--------------------------------->
+  <div id="uploaduserimageModal" class="modal" role="dialog">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Upload & Crop Profile Image</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div id="user_profile_image"></div>
+            </div>
+      
+          </div>
+        </div>
+        
+        <form method="POST" action="/dashboard/profile-change/">
+          {% csrf_token %}
+          
+          <input type="hidden" name="save_profile_image" id="save_profile_image" />
+      
+          <div class="modal-footer">
+            <button class="btn btn-success crop_image_edit">Upload Image</button>
+          </form>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-----------------------------profile image crop modal end---------------------------------------->
+          <!-- ----------------------------------Update product model start ------------------------------------>
+        -
+        <div class="modal fade" id="exampleModal-7" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4>Edit </h4>
+                <span class="close-box" data-dismiss="modal" onclick="location.reload(true)" aria-label="Close">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+                </span>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ----------------------------------Update product model end ------------------------------------>
+        <!--product image crop modal start-->
+        <div id="uploadimageModal_edit" class="modal" role="dialog">
+          <div class="modal-dialog ">
+            <div class="modal-content class ">
+              <div class="modal-header">
+                <h4 class="modal-title">Upload & Crop Image</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                
+              </div>
+              <div class="modal-body ">
+                <div class="row">
+                  <div class="col-md-8 text-center">
+                    <div id="profile_image_edit" style="width:300px; margin-top:30px"></div>
+                  </div>
+                  <div class="col-md-4" style="padding-top:10px;">
+                    <br />
+                    <br />
+                    <br/>
+                    <div class="row">
+                      <div class="col-md-12 set_loader"></div>
+                    </div>
+                    <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-success crop_image">Save Image</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- product image crop modal end-->
+        <!--product image crop modal start-->
+        <div id="uploadfabricimageModal2" class="modal" role="dialog">
+          <div class="modal-dialog ">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Upload & Crop Image</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-8 text-center">
+                    <div id="fabric_product_image2" style="width:300px; margin-top:30px"></div>
+                  </div>
+                  <div class="col-md-4" style="padding-top:10px;">
+                    <br />
+                    <br />
+                    <br/>
+                    <div class="row">
+                      <div class="col-md-12 set_loader"></div>
+                    </div>
+                    <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-success crop_image_edit">Save Image</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--product image crop modal end-->
+        <!---------------------------------Update Service Modal start --------------------------------------->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content ">
+              <span class="close-box" data-dismiss="modal" aria-label="Close">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </span>
+              <div class="modal-body ">
+                
+              </div>
+              
+              
+              
+            </div>
+            
+          </div>
+          
+        </div>
+        <!---------------------------------Update Service Modal end --------------------------------------->
+{% block content %}
 
 {% endblock %}
  {% if get_system_settings %}
@@ -71,16 +244,16 @@
     <div class="footer-blue">
     <div class="container">
     <div class="text-right footer-icon">
-     
-       
+
+
     <a class="facebook" href="{{data.fb}}"><img src="{% static 'images/footer-icon-1.png' %}"/ alt=""></a>
     <a class="facebook" href="{{data.twitter}}"><img src="{% static 'images/footer-icon-2.png' %}"/ alt=""></a>
     <a class="facebook" href="{{data.linkedin}}"><img src="{% static 'images/footer-icon-3.png' %}"/ alt=""></a>
-   
+
     </div>
     </div>
     </div>
-    
+
     <div class="bg-foorer">
     <div class="container">
     <div class="row">
@@ -89,49 +262,106 @@
     <img src="{{data.footer_logo.url}}" alt=""/>
     </div>
     </div>
-    
+
     <div class="col-md-3">
-    <div class="footer-link">
+       <button class="btn btn-primary hide" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <div class="footer-link">
+    <h3>Quick Links <i class="fa fa-angle-down" aria-hidden="true"></i></h3>
+  </div>
+  </button>
+  <div class="collapse" id="collapseExample">
+  <div class="card card-body bg">
+   <div class="footer-link">
+
+    <ul>
+    <li><a href="{% url 'homepage:HomePage'%}">Home </a></li>
+    <li><a href="{% url 'findsupplier:FindSupplier'%}">Suppliers </a></li>
+    <li><a href="{% url 'findservices:FindServices'%}">Services </a></li>
+    <li><a href="{% url 'findproducts:FindProducts'%}">Products</a></li>
+    <li><a href="{% url 'account:UserType' %}">Register</a></li>
+    </ul>
+
+    </div>
+  </div>
+</div>
+    <div class="footer-link show">
     <h3>Quick Links</h3>
     <ul>
     <li><a href="{% url 'homepage:HomePage'%}">Home </a></li>
     <li><a href="{% url 'findsupplier:FindSupplier'%}">Suppliers </a></li>
     <li><a href="{% url 'findservices:FindServices'%}">Services </a></li>
-    <li><a href="{% url 'findproducts:FindProducts'%}">Products</a></li> 
+    <li><a href="{% url 'findproducts:FindProducts'%}">Products</a></li>
     <li><a href="{% url 'account:UserType' %}">Register</a></li>
     </ul>
-    
+
     </div>
     </div>
-    
-    
-    
-    
+
+
+
+
     <div class="col-md-3">
-    <div class="footer-link">
+      <button class="btn btn-primary hide" type="button" data-toggle="collapse" data-target="#collapseExample-1" aria-expanded="false" aria-controls="collapseExample">
+        <div class="footer-link">
+    <h3>Our Services <i class="fa fa-angle-down" aria-hidden="true"></i></h3>
+  </div>
+  </button>
+    <div class="collapse" id="collapseExample-1">
+  <div class="card card-body bg">
+  <div class="footer-link">
+
+    {{'footer_services'|get_footer_services}}
+
+
+    </div>
+  </div>
+</div>
+    <div class="footer-link show">
     <h3>Our Services</h3>
     {{'footer_services'|get_footer_services}}
-   
-    
+
+
     </div>
     </div>
-    
+
     <div class="col-md-3">
+      <button class="btn btn-primary hide" type="button" data-toggle="collapse" data-target="#collapseExample-3" aria-expanded="false" aria-controls="collapseExample">
+        <div class="footer-link">
+    <h3>Other Pages <i class="fa fa-angle-down" aria-hidden="true"></i></h3>
+  </div>
+  </button>
+   <div class="collapse" id="collapseExample-3">
+  <div class="card card-body bg">
     <div class="footer-link">
-    <h3>Other Pages</h3>
+
     <ul>
-    <li><a href="{% url 'contactus:Contact'%}">Contact us 
+    <li><a href="{% url 'contactus:Contact'%}">Contact us
     <li><a href="{% url 'custom_app:AboutUs'%}">About us </a></li>
     <li><a href="{% url 'custom_app:PrivacyPolicy'%}">Privacy policy </a></li>
     <li><a href="{% url 'custom_app:TermsOfServices'%}">Terms of Services </a></li>
     <!-- <li><a href="#">FAQ</a></li> -->
-    
-    
+
+
     </ul>
-    
+
+    </div>
+  </div>
+</div>
+    <div class="footer-link show">
+    <h3>Other Pages</h3>
+    <ul>
+    <li><a href="{% url 'contactus:Contact'%}">Contact us
+    <li><a href="{% url 'custom_app:AboutUs'%}">About us </a></li>
+    <li><a href="{% url 'custom_app:PrivacyPolicy'%}">Privacy policy </a></li>
+    <li><a href="{% url 'custom_app:TermsOfServices'%}">Terms of Services </a></li>
+    <!-- <li><a href="#">FAQ</a></li> -->
+
+
+    </ul>
+
     </div>
     </div>
-    
+
     </div>
     </div>
     </div>
@@ -139,24 +369,112 @@
      {% endfor %}
     {% endif %}
 
-    <script src="{% static 'js/jquery.min.js' %}"></script> 
+    <script src="{% static 'js/jquery.min.js' %}"></script>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
-    <script src="{% static 'js/bootstrap.min.js' %}"></script> 
-    
-    <script src="{% static 'js/slick.js' %}"></script> 
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'js/slick.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    
+
     <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
 
     <script src='{% static "js/croppie.js" %}'></script>
      <script src="{% static 'js/user_crop_img.js' %}"></script>
- 
 
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.9/js/intlTelInput.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.9/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.9/js/utils.js"></script>
 <script type="text/javascript">
   
+var telInput = $("#phone"),
+  errorMsg = $("#error-msg"),
+  validMsg = $("#valid-msg");
+
+// initialise plugin
+telInput.intlTelInput({
+
+  allowExtensions: true,
+  formatOnDisplay: true,
+  autoFormat: true,
+  autoHideDialCode: true,
+  autoPlaceholder: true,
+  // defaultCountry: "auto",
+  ipinfoToken: "yolo",
+
+  nationalMode: false,
+  numberType: "MOBILE",
+  //onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+  preferredCountries: ['kw','sa', 'ae', 'qa','om','bh','ma'],
+  preventInvalidNumbers: true,
+  separateDialCode: true,
+  // initialCountry: "auto",
+  geoIpLookup: function(callback) {
+  $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+    var countryCode = (resp && resp.country) ? resp.country : "";
+
+    console.log(countryCode)
+    callback(countryCode);
+  });
+},
+   utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.9/js/utils.js"
+});
+
+var reset = function() {
+  telInput.removeClass("error");
+  errorMsg.addClass("hide");
+  validMsg.addClass("hide");
+};
+
+// on blur: validate
+telInput.blur(function() {
+  reset();
+  if ($.trim(telInput.val())) {
+    if (telInput.intlTelInput("isValidNumber")) {
+      validMsg.removeClass("hide");
+    } else {
+      telInput.addClass("error");
+      errorMsg.removeClass("hide");
+    }
+  }
+});
+
+// on keyup / change flag: reset
+telInput.on("keyup change", reset);
+
+
+
+</script>
+
+ <script type="text/javascript">
+    window.onload = (event) => {
+  console.log('page is fully loaded');
+   console.log($('.selected-dial-code').text());
+          $('#tel_code').val($('.selected-dial-code').text());
+
+};
+     $(document).on("click",".Register",function(){
+                     console.log($('.selected-dial-code').text());
+          $('#tel_code').val($('.selected-dial-code').text());
+
+        });
+  </script>
+
+
+<script type="">
+  $(document).on("scroll", function() {
+
+  if($(document).scrollTop()>10) {
+    $("header").removeClass("large").addClass("small");
+  } else {
+    $("header").removeClass("small").addClass("large");
+  }
+  
+});
+</script>
+<script type="text/javascript">
+
 
    $(".set_number_only").keydown(function (e) {
         // Allow: backspace, delete, tab, escape, enter and .
@@ -177,7 +495,7 @@
             e.preventDefault();
         }
     });
- 
+
 
 
 </script>
@@ -194,7 +512,7 @@ $(document).ready(function(){
 </script>
 
 <script type="">
-   
+
     $(document).ready(function() {
             $('#multiple-checkboxess').multiselect({
               includeSelectAllOption: true,
@@ -203,7 +521,7 @@ $(document).ready(function(){
   </script>
 
 <script type="">
-   
+
     $(document).ready(function() {
             $('#multiple-checkboxe').multiselect({
               includeSelectAllOption: true,
@@ -216,7 +534,7 @@ $(document).ready(function(){
 
 
 <script type="">
-   
+
     $(document).ready(function() {
             $('#multiple-checkboxes').multiselect({
               includeSelectAllOption: true,
@@ -225,7 +543,7 @@ $(document).ready(function(){
   </script>
 
 <script type="">
-   
+
     $(document).ready(function() {
             $('#multiple-checkboxe').multiselect({
               includeSelectAllOption: true,
@@ -253,7 +571,7 @@ $(document).ready(function(){
       }, 700); //Placeloaders
 
 
- 
+''
     });
   }
 $('.slick-slider').slick({
@@ -395,7 +713,7 @@ $('.product-slider').slick({
 $('.counter').each(function() {
   var $this = $(this),
       countTo = $this.attr('data-count');
-  
+
   $({ countNum: $this.text()}).animate({
     countNum: countTo
   },
@@ -412,9 +730,9 @@ $('.counter').each(function() {
       //alert('finished');
     }
 
-  });  
-  
-  
+  });
+
+
 
 });
 /*
@@ -424,7 +742,7 @@ $(".textlimit span").text(function(index, currentText) {
     return currentText.substr(0, maxLength) + "...";
   } else {
     return currentText
-  } 
+  }
 });
 
 
@@ -434,7 +752,7 @@ $(".name-sup, .surname").text(function(index, currentText) {
     return currentText.substr(0, maxLength) + "...";
   } else {
     return currentText
-  } 
+  }
 });*/
 
 </script>
@@ -452,77 +770,17 @@ $(".name-sup, .surname").text(function(index, currentText) {
       }, 700); //Placeloaders
 
 
- 
+
     });
   }
 
 </script>
 
-
-<script type="">
-  function readFile(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-      var htmlPreview =
-        '<img width="200" src="' + e.target.result + '" />' +
-        '<p>' + input.files[0].name + '</p>';
-      var wrapperZone = $(input).parent();
-      var previewZone = $(input).parent().parent().find('.preview-zone');
-      var boxZone = $(input).parent().parent().find('.preview-zone').find('.box').find('.box-body');
-
-      wrapperZone.removeClass('dragover');
-      previewZone.removeClass('hidden');
-      boxZone.empty();
-      boxZone.append(htmlPreview);
-    };
-
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-function reset(e) {
-  e.wrap('<form>').closest('form').get(0).reset();
-  e.unwrap();
-}
-
-$(".dropzone").change(function() {
-  readFile(this);
-});
-
-$('.dropzone-wrapper').on('dragover', function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  $(this).addClass('dragover');
-});
-
-$('.dropzone-wrapper').on('dragleave', function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  $(this).removeClass('dragover');
-});
-
-$('.remove-preview').on('click', function() {
-  var boxZone = $(this).parents('.preview-zone').find('.box-body');
-  var previewZone = $(this).parents('.preview-zone');
-  var dropzone = $(this).parents('.form-group').find('.dropzone');
-  boxZone.empty();
-  previewZone.addClass('hidden');
-  reset(dropzone);
-});
-$(document).ready(function() {
-  $('.accordion a').click(function(){
-    $(this).toggleClass('active');
-    $(this).next('.content').slideToggle(400);
-   });
-});
-</script>
     <script>
                     function goBack() {
                       window.history.back();
                     }
-             </script> 
+             </script>
 <!-- ############################################################## -->
 
 
@@ -534,11 +792,11 @@ $(document).ready(function() {
         console.log(userid);
       $.ajax({
       method:"GET",
-     
+
       url: "/chat/user/"+userid,
-      
+
       dataType:"json",
-     
+
       success: function (data) {
       // console.log(data.id);
 
@@ -550,7 +808,7 @@ $(document).ready(function() {
          var user_message_count = $("#bahes"+data.get_id+"").text();
         var totalmessagecount = $("#totalmessagecount").text();
 
-        var a = parseInt(totalmessagecount) - parseInt(user_message_count); 
+        var a = parseInt(totalmessagecount) - parseInt(user_message_count);
        if(a>0){
        $("#totalmessagecount").html(''+a+'');
      }
@@ -560,7 +818,7 @@ $(document).ready(function() {
      }
      // console.log(data.chat_data.length);
      for(var i=0;i<data.chat_data.length;i++)
-  
+
      {
 
     if(data.chat_data[i].sender_id == '{{request.user.id}}')
@@ -582,21 +840,26 @@ $(document).ready(function() {
      $("#chat_saved_data").animate({scrollTop: $("#chat_saved_data").get(0).scrollHeight }, 1);
       }
       });
-      
+
       }
-    
-    
+
+
       </script>
        <script>
         // const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const roomName='chatbahesroom';
+      var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+      // var chatSocket = ws_scheme + '://' + window.location.host + "/ws/chat/"+roomName+"/";
         // console.log(roomName);
-        const chatSocket = new WebSocket('ws://'+window.location.host+'/ws/chat/'+ roomName+'/');
-         
+        const chatSocket = new WebSocket('wss://'+window.location.host+'/ws/chat/'+ roomName+'/');
+         //const chatSocket = new WebSocket(ws_path);
+         console.log("=================");
+         console.log(chatSocket);
+         console.log("================");
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
            
-           
+           console.log(data);
       if(((data.message.sender == '{{request.user.id}}') & (data.message.reciever == $('#userval').val())) |((data.message.reciever == '{{request.user.id}}') & (data.message.sender == $('#userval').val())))
             {
             if(data.message.sender == '{{request.user.id}}')
@@ -634,6 +897,7 @@ $(document).ready(function() {
           
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
+            console.log(message)
             chatSocket.send(JSON.stringify({
                 'message': {"message":message ,"sender":"{{request.user.id}}","reciever":document.querySelector('#userval').value}
             }));
@@ -684,7 +948,280 @@ $(document).ready(function () {
 
 
 <!-- ################################################################################################################## -->
+   <!------------------------------- product script------------------------------------------------ -->
+<script type="text/javascript">
 
+ function editloader() { // makes sure the whole site is loaded 
+  $('#status').fadeOut(); // will first fade out the loading animation 
+  $('#preloader').delay(2850).fadeOut('slow'); // will fade out the white DIV that covers the website. 
+  $('body').delay(2850).css({'overflow':'visible'});
+}
+
+
+//---------Edit product start----------------
+$(document).on("click",".edit_product",function(){
+  $('.page-loader').show();
+var id = $(this).data("id");
+
+$.ajax({
+method:"GET",
+url :"/my-products/edit-product/"+id,
+dataType:"html",
+success:function(data)
+{
+  $('.page-loader').hide();
+$("#exampleModal-7 .modal-body").html(data);
+$("#exampleModal-7").modal("show");
+}
+});
+});
+//---------Edit User end----------------
+//---------active and deactive status Start----------------
+$(document).on('click', ".approve_product", function (e) {
+var productid = $(e.currentTarget).attr("id");
+var productstatus = $(e.currentTarget).attr('productstatus');
+if(productstatus == 'True'){
+varstatus = 'Deactive';
+}
+else{
+varstatus = 'Active';
+}
+swal({
+title: 'Are you sure?',
+text: varstatus+' this',
+icon: 'warning',
+buttons: {
+cancel: {
+text: "Cancel",
+value: null,
+visible: true,
+closeModal: true,
+},
+confirm: {
+text: "OK",
+value: true,
+visible: true,
+closeModal: true
+},
+}
+},
+function(isConfirm){
+if (isConfirm) {
+var dataString = 'productid='+productid+'&productstatus='+productstatus;
+var token = '{{csrf_token}}';
+// console.log(dataString);
+$.ajax({
+method:"POST",
+headers: { "X-CSRFToken": token },
+url: "/my-products/productstatus",
+data: dataString,
+dataType:"json",
+cache: false,
+success: function (data) {
+swal("Done!","succesfully Edited!","success");
+location.reload();
+}
+});
+}
+else{
+swal("Cancelled", "Your status is safe :)", "error");
+}
+});
+});
+//---------active and deactive service End----------------
+//---------delete User start----------------
+$(document).ready(function(){
+$(".delete_product").click(function(){
+var delete_value = $(this).data("id");
+console.log(delete_value)
+swal({
+title: "Are you sure?",
+text: "You want to delete !",
+type: "warning",
+showCancelButton: true,
+confirmButtonClass: 'btn-danger',
+confirmButtonText: 'Yes, delete it!',
+closeOnConfirm: false,
+// closeOnCancel: false
+},
+function(isConfirm){
+if (isConfirm) {
+var token = '{{csrf_token}}';
+$.ajax({
+headers: { "X-CSRFToken": token },
+url: "/my-products/delete/"+delete_value,
+type: "POST",
+success: function () {
+swal("Done!","It was succesfully deleted!","success");
+location.reload();
+}
+});
+}
+else{
+swal("Cancelled", "Your imaginary file is safe :)", "error");
+}
+})
+});
+});
+//---------delete product end----------------
+
+</script>
+<!-- ################################################################################################################## -->
+<script type="text/javascript">
+
+//---------active and deactive status Start----------------
+         $(document).on('click', ".online_status", function (e) {
+         
+         var onlinestatus = $(e.currentTarget).attr('onlinestatus');
+          var userid = $(e.currentTarget).attr('userid');
+         
+         var dataString = 'onlinestatus='+onlinestatus+'&userid='+userid;
+         console.log(dataString)
+         var token = '{{csrf_token}}';
+          $.ajax({
+                  method:"POST",
+                  headers: { "X-CSRFToken": token },
+                 url: "/dashboard/onlinestatus/",
+                 data: dataString,
+                 dataType:"json",
+                 // cache: false,
+                success: function (data) {
+                    // console.log(data.message);
+                        location.reload();
+                         }
+                });
+         
+           });
+         //---------active and deactive service End----------------
+</script>
+                 <!------------------------------- product script end------------------------------------------------ -->
+
+
+                 <!------------------------------- services script start------------------------------------------------ -->
+<script type="text/javascript">
+
+//---------Edit User start----------------
+$(document).on("click",".edit_service",function(){
+    $('.page-loader').show();
+var id = $(this).data("id");
+console.log(id)
+$.ajax({
+method:"GET",
+url :"/my-services/edit-service/"+id,
+dataType:"html",
+success:function(data)
+{
+    $('.page-loader').hide();
+$("#exampleModal .modal-body").html(data);
+$("#exampleModal").modal("show");
+}
+});
+});
+//---------Edit User end----------------
+//---------delete User start----------------
+$(document).ready(function(){
+$(".delete_service").click(function(){
+var delete_value = $(this).data("id");
+console.log(delete_value)
+swal({
+title: "Are you sure?",
+text: "You want to delete !",
+type: "warning",
+showCancelButton: true,
+confirmButtonClass: 'btn-danger',
+confirmButtonText: 'Yes, delete it!',
+closeOnConfirm: false,
+// closeOnCancel: false
+},
+function(isConfirm){
+if (isConfirm) {
+var token = '{{csrf_token}}';
+$.ajax({
+headers: { "X-CSRFToken": token },
+url: "/my-services/delete-service/"+delete_value,
+type: "POST",
+success: function () {
+swal("Done!","It was succesfully deleted!","success");
+location.reload();
+}
+});
+}
+else{
+swal("Cancelled", "Your imaginary file is safe :)", "error");
+}
+})
+});
+});
+//---------delete User end----------------
+//---------active and deactive status Start----------------
+$(document).on('click', ".approve", function (e) {
+var serviceid = $(e.currentTarget).attr("id");
+var servicestatus = $(e.currentTarget).attr('servicestatus');
+
+if(servicestatus == 'True'){
+varstatus = 'Deactive';
+}
+else{
+varstatus = 'Active';
+}
+swal({
+title: 'Are you sure?',
+text: varstatus+' this',
+icon: 'warning',
+buttons: {
+cancel: {
+text: "Cancel",
+value: null,
+visible: true,
+closeModal: true,
+},
+confirm: {
+text: "OK",
+value: true,
+visible: true,
+closeModal: true
+},
+}
+},
+function(isConfirm){
+if (isConfirm) {
+var dataString = 'serviceid='+serviceid+'&servicestatus='+servicestatus;
+var token = '{{csrf_token}}';
+
+$.ajax({
+method:"POST",
+headers: { "X-CSRFToken": token },
+url: "/my-services/servicestatus",
+data: dataString,
+dataType:"json",
+cache: false,
+success: function (data) {
+swal("Done!","succesfully Edited!","success");
+location.reload();
+}
+});
+}
+else{
+swal("Cancelled", "Your status is safe :)", "error");
+}
+});
+});
+//---------active and deactive service End----------------
+
+</script>
+<script>
+$(document).ready(function(){
+  $(".show-toggle-side").click(function(){
+    $(".nonee").slideToggle();
+  });
+});
+
+
+
+
+</script>
+
+      <!------------------------------- services script end------------------------------------------------ -->
      {% block script %}
 
             {% endblock %}

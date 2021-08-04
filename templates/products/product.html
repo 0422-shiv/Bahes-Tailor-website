@@ -1,407 +1,151 @@
 {% extends 'base_template.html' %}
 {% load static %}
 {% block content %}
-  <style type="text/css">
-  
-  /*color-----------------------------------------------------------------------picker*/
-  /* Picker */
-  .picker {
-  display: flex;
-  overflow: hidden;
-  border-radius: 6px;
-  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc;
-  }
-  /* Picker focus ring */
-  .picker:focus-within {
-  outline: 1px dotted #212121;
-  outline: 5px auto -webkit-focus-ring-color;
-  }
-  /* Inputs */
-  input {
-  
-  border: none;
-  
-  outline: 0;
-  }
-
-  </style>
-</nav>{% if request.user.userx.user_type.type_name == 'supplier' %}
+<div class="page-loader" style="display: none;">
+ <div class="status">&nbsp;</div>
+</div>
+   {% if request.user.userx.user_type.type_name == 'supplier' %}
   <div class="banner-profile" style="background: url({{'supplierdashboard'|get_banner_img}}) no-repeat center top;">
     {% else %}
      <div class="banner-profile" style="background: url({{'customerdashboard'|get_banner_img}}) no-repeat center top;">
  {% endif %}
- 
-<div class="profile-overlay">
-  <div class="container">
-    <div class="heading-title supplies text-center">
-      <h1>
-      <div class="left-cricle"></div>
-      <div class="right-cricle"></div>
-      <span>Profile</span></h1>
-    </div>
-  </div>
-</div>
-</div>
-<div class="breadcr4eam">
-<div class="container">
-  <nav class="breadcrumb-new">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'homepage:HomePage' %}">Home</a>
-    </li>
-    <li class="breadcrumb-item"><a href="{% url 'dashboard:EditProfile' %}">Supplier Profile</a>
-  </li>
-  <li class="breadcrumb-item active" aria-current="page">My Products</li>
-</ol>
-</nav>
-</div>
-</div>
-<section class="bg-light">
-<div class="container">
-<div class="row">
-<div class="col-md-3">
-  <div class="profilebox">
-      <div class="iconbox">
-    {% if userprofile.image %}
-      <img src="{{userprofile.image.url}}" class="pexels-pixabay mb-2">
-    {% else%}
-      <img src="{% static 'images/dummy-image.png' %}" class="pexels-pixabay mb-2">
-      
-    {% endif%}
-     <input type="file"  id="user_Image" class="fa fa-edit pencils" accept="image/*" />
-           </div>
-    <!-- Tabs nav -->
-    <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist" aria-orientation="vertical"> <a class="nav-link active" onclick="location.reload(true)" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
-      
-      My Products <span>{{get_products|length}}</span></a>
-      <a class="nav-link"  id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
-        
-      Post Product</a>
-    </div>
-  </div>
-</div>
-<div class="col-md-9">
-  <div class="bg-lightgray">
-    <div class="buttons_left">
-      <h1>{{userprofile.full_name}}</h1>
-    </div>
-    <div class="custom-control custom-switch">
-    {% if userprofile.online_status %}
-              <input type="checkbox" class="custom-control-input online_status" onlinestatus="{{userprofile.online_status}}" userid="{{userprofile.id}}" id="customSwitches" checked=""
-              >
-              <label class="custom-control-label" for="customSwitches">Online</label>
-              {% else %}
-               <input type="checkbox" class="custom-control-input online_status" onlinestatus="{{userprofile.online_status}}" userid="{{userprofile.id}}" id="customSwitches" >
-               <label class="custom-control-label" for="customSwitches">Offline</label>
-              {% endif %}
-      
-    </div>
-    <div class="padding-tops">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="display_flex"> <i class="fa fa-calendar" style="font-size:24px"></i>
-            <p class="joineds">{{userprofile.user_id.last_login}}</p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="display_flex"> <i class="fa fa-phone" style="font-size:24px"></i>
-            <p class="joineds">+{{userprofile.tel_code}} {{userprofile.phone}}</p>
-          </div>
-        </div>
-        <div class="col-md-5">
-          <div class="display_flex"> <i class="fa fa-envelope" style="font-size:24px"></i>
-            <p class="joineds">{{userprofile.user_id.email}}</p>
-          </div>
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>My Profile</span></h1>
         </div>
       </div>
     </div>
   </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 padding-lefts">
-        <div class="tabbable-panel">
-          <div class="tabbable-line">
-            <ul class="nav nav-tabs">
-              <li> <a href="{% url 'dashboard:EditProfile' %}">Edit Profile</a>
-            </li>
-            <li> 
-              <!-- <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom">Chat</a> -->
-               <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom">Chat
-                 {% if request.user|total_message_counter %}<span id="totalmessagecount">{{request.user|total_message_counter}}</span>{% endif %}</a>
-          </li>
-           {% if request.user.userx.user_type.type_name == 'supplier' %}
-                          <li >
-                            <a href="{% url 'services:Services' %}">My services<span style="color:#2088ca;">{{request.user|total_myservices_counter}}</span></a>
-                            
-                          </li>
-                          <li class="active">
-                            <a href="{% url 'products:product'%}">My products<span style="color:#2088ca;">{{request.user|total_myproducts_counter}}</span></a>
-                          </li>
-                          {% else %}
-                          {% endif %}
-    </ul>
-  </div>
-</div>
-</div>
-</div>
-</div>
-<!-- Tabs content -->
-<div class="tab-content profile-form" id="v-pills-tabContent">
-<div class="tab-pane fade  show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-<div>
-{% if messages %}
-  {% for message in messages %}
-    
-    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-      <div class="alert alert-danger alert-dismissible" style="text-align: left;">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
-        <strong>{{message}}</strong>
-      </div>
-      
-    {% else %}
-      
-      <div class="alert alert-success alert-dismissible" style="text-align: left;">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
-        <strong>{{message}}</strong>
-      </div>
-    {% endif %}
-    
-  {% endfor %}
-{% endif %}
-</div>
-<div class="row">
-{% for data in get_products %}
-  <div class="col-md-4">
-    <a  href="{% url 'findproducts:ProductDetail' data.id %}" style="text-decoration: none">
-    <div class="product-boxe">
-      <!-- <img src="https://digimonk.net/bahes/images/pexels-fox-1.png" alt="" /> -->
-      {% if data.image_1 %}
-      <img src="{{data.image_1.url}}">
-      {% elif data.image_2%}
-      <img src="{{data.image_2.url}}">
-      {% else %}
-      <img src="{% static 'images/no-image.jpg' %}">
-      {% endif %}
-      {% if data.Product_subcategory %}
-        <h3 class="sewing">{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</h3>
-      {% else %}
-        <h3 class="sewing">{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</h3>
-      {% endif %}
-      <p class="owner">{{data.user_id.userx.full_name}}
-    </p>
-    <!-- <span class="kw"><a class="kw" href="{% url 'findproducts:ProductDetail' data.id %}">{{data.price}} {{data.currency}}</a></span> -->
-   
-              <p class="kw text-right">{{data.price}} {{data.currency}}</p>
-     </a> 
-    <ul class="inlienes">
-      <li class="inline-list">
-        <a href="javascript:void(0)" data-id="{{data.id}}" class="font-sizes edit_product"><i class="fa fa-edit"></i>Edit</a>
-      </li>
-      <li class="inline-list">
-        <a href="javascript:void(0)" data-id="{{data.id}}" class="font-sizes delete_product"><i class="fa fa-trash"></i>Delete</a>
-      </li>
-      <li class="inline-list">
-        {% if data.status %}
-          <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input approve" checked="true" id="{{data.id}}" productstatus="{{data.status}}">
-            <label class="custom-control-label" for="{{data.id}}">Active</label>
-          </div>
-        {% else %}
-          <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input approve"
-            id="{{data.id}}" productstatus="{{data.status}}" >
-            <label class="custom-control-label" for="{{data.id}}">Deactive</label>
-          </div>
-        {% endif %}
-      </li>
-    </ul>
-  </div>
-
-</div>
-{% endfor %}
-</div>
-<nav aria-label="Page navigation " class="supplier-pagination mt-5">
-
-
-{% if get_products.has_other_pages %}
-<ul class="pagination justify-content-center">
-    {% if get_products.has_previous %}
-      <li class="page-item"><a class="page-link" href="?page={{ get_products.previous_page_number }}">Previous</a></li>
-    {% else %}
-      <li class="disabled page-item"></li>
-    {% endif %}
-    {% for i in get_products.paginator.page_range %}
-      {% if get_products.number == i %}
-        <!-- <li class="active page-item"><span>{{ i }} <span class="sr-only">(current)</span></span></li> -->
-        <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-      {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
-    {% if get_products.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ get_products.next_page_number }}">Next</a></li>
-    {% else %}
-      <li class="disabled page-item"></li>
-    {% endif %}
-  </ul>
-{% endif %}
-
-</nav>
-</div>
-<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-<div class="row">
-<div class="col-md-12">
-<ul id="tabs" class="nav nav-tabs tabsss">
-  {% if get_product_cate %}
-    {% for data in get_product_cate %}
-      <li class="nav-item "><a href="javascript:void(0)" class="nav-link small text-uppercase blues cate active" data-id="{{data.id}}" onclick="localStorage.clear()">{{data.category_name}}</a>
-    </li>
-    <!--  <li class="nav-item"><a href="" data-target="#messages1" data-toggle="tab" class="nav-link small text-uppercase gray sewing">Sewing, yarn and <br>accessories</a> -->
-  {% endfor %}
-{% endif %}
-</li>
-</ul>
-<br>
-<div id="tabsContent" class="tab-content">
-<div id="sub"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal-7" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-<div class="modal-content">
-<div class="modal-header">
-<h4>Edit </h4>
-<span class="close-box" data-dismiss="modal" onclick="location.reload(true)" aria-label="Close">
-<i class="fa fa-times" aria-hidden="true"></i>
-</span>
-</div>
-<div class="modal-body">
-</div>
-<div class="modal-footer">
-</div>
-</div>
-</div>
-</div>
-
-
-
-<!--image crop modal start-->
-<div id="uploadimageModal_edit" class="modal" role="dialog">
-  <div class="modal-dialog ">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Upload & Crop Image</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-8 text-center">
-            <div id="profile_image_edit" style="width:300px; margin-top:30px"></div>
-          </div>
-          <div class="col-md-4" style="padding-top:10px;">
-            <br />
-            <br />
-            <br/>
-            <div class="row">
-              <div class="col-md-12 set_loader"></div>
-            </div>
-            <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-success crop_image">Save Image</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--image crop modal end-->
-
-
-<!--image crop modal start-->
-<div id="uploadfabricimageModal2" class="modal" role="dialog">
-  <div class="modal-dialog ">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Upload & Crop Image</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-8 text-center">
-            <div id="fabric_product_image2" style="width:300px; margin-top:30px"></div>
-          </div>
-          <div class="col-md-4" style="padding-top:10px;">
-            <br />
-            <br />
-            <br/>
-            <div class="row">
-              <div class="col-md-12 set_loader"></div>
-            </div>
-            <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-success crop_image_edit">Save Image</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--image crop modal end-->
-
-
-        <!--image crop modal start-->
-  <div id="uploaduserimageModal" class="modal" role="dialog">
-    <div class="modal-dialog ">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Upload & Crop Image</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">My Profile</a></li>
           
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-8 text-center">
-              <div id="user_profile_image" style="width:300px; margin-top:30px"></div>
-            </div>
-            <div class="col-md-4" style="padding-top:10px;">
-              <br />
-              <br />
-              <br/>
-              <div class="row">
-                <div class="col-md-12 set_loader"></div>
-              </div>
-              <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
-            </div>
-          </div>
-        </div>
-        
-        <form method="POST" action="/dashboard/profile-change/">
-          {% csrf_token %}
-          
-          <input type="hidden" name="save_profile_image" id="save_profile_image" />
-          <input type="hidden" name="pagename" value="product" />
-          <div class="modal-footer">
-            <button class="btn btn-success crop_image_edit">Upload Image</button>
-          </form>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
+        </ol>
+      </nav>
+      
     </div>
   </div>
   
-  <!--image crop modal end-->
+  <div class="container-fluid">
+    <div class="row">
+      {% include 'dashboard_base_sidebar.html' %}
+      <div>
+        {% if messages %}
+          {% for message in messages %}
+            
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+              <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                <strong>{{message}}</strong>
+              </div>
+              
+            {% else %}
+              
+              <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                <strong>{{message}}</strong>
+              </div>
+            {% endif %}
+            
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="main-roww">
+        <div class="row">
+          <div class="Dashboardd">
+            <h3>My Products</h3>
+            <a href="{% url 'chat:ChatUser' %}" class="btn btn-primary"><i class="fa fa-comments" aria-hidden="true"></i> Chat Now</a>
+          </div>
+          {% if get_products %}
+          {% for data in get_products %}
+            <div class="col-md-4">
+              <a  href="{% url 'findproducts:ProductDetail' data.id %}" style="text-decoration: none">
+                <div class="product-boxe newds">
+                  <!-- <img src="https://digimonk.net/bahes/images/pexels-fox-1.png" alt="" /> -->
+                  {% if data.image_1 %}
+                    <img src="{{data.image_1.url}}" class="imgg-1">
+                    {% elif data.image_2%}
+                    <img src="{{data.image_2.url}}" class="imgg-1">
+                  {% else %}
+                    <img src="{% static 'images/no-image.jpg' %}" class="imgg-2" >
+                  {% endif %}
+                  {% if data.Product_subcategory %}
+                    <h3 class="sewing">{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}{% if data.equipment_name %}({{data.equipment_name}}){% endif %}</h3>
+                  {% else %}
+                    <h3 class="sewing">{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</h3>
+                  {% endif %}
+                 <!--  <p class="owner">{{data.user_id.userx.full_name}}
+                  </p> -->
+                  <!-- <span class="kw"><a class="kw" href="{% url 'findproducts:ProductDetail' data.id %}">{{data.price}} {{data.currency}}</a></span> -->
+                  
+                  <p class="kw text-right mb-0">{{data.price}} {{data.currency}}</p>
+                </a>
+                <ul class="inlines">
+                  <li class="inline-list">
+                    <a href="javascript:void(0)" data-id="{{data.id}}" class="font-sizes edit_product"><i class="fa fa-edit"></i>Edit</a>
+                  </li>
+                  <li class="inline-list">
+                    <a href="javascript:void(0)" data-id="{{data.id}}" class="font-sizes delete_product"><i class="fa fa-trash"></i>Delete</a>
+                  </li>
+                  <li class="inline-list">
+                    {% if data.status %}
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input approve_product" checked="true" id="{{data.id}}" productstatus="{{data.status}}">
+                        <label class="custom-control-label" for="{{data.id}}">Active</label>
+                      </div>
+                    {% else %}
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input approve_product"
+                        id="{{data.id}}" productstatus="{{data.status}}" >
+                        <label class="custom-control-label" for="{{data.id}}">Deactive</label>
+                      </div>
+                    {% endif %}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          {% endfor %}
+          {% else %}
+          <h3 class="noavailable">No product Posted to show </h3>
+          {% endif %}
+          
+        </div>
+        
+        <nav aria-label="Page navigation " class="supplier-pagination mt-5">
+          {% if get_products.has_other_pages %}
+            <ul class="pagination justify-content-center">
+              {% if get_products.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ get_products.previous_page_number }}">Previous</a></li>
+              {% else %}
+                <li class="disabled page-item"></li>
+              {% endif %}
+              {% for i in get_products.paginator.page_range %}
+                {% if get_products.number == i %}
+                  <!-- <li class="active page-item"><span>{{ i }} <span class="sr-only">(current)</span></span></li> -->
+                  <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
+                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+              {% endfor %}
+              {% if get_products.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ get_products.next_page_number }}">Next</a></li>
+              {% else %}
+                <li class="disabled page-item"></li>
+              {% endif %}
+            </ul>
+          {% endif %}
+        </nav>
+        
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 {% block script %}
 
@@ -419,6 +163,7 @@ $(document).on('click',".cate",function(){
   });
 
 $(document).on("click",".cate",function(){
+  $('.page-loader').show();
 var id = $(this).data("id");
 $("input").empty();
 $.ajax({
@@ -427,142 +172,10 @@ url :"/my-products/category/"+id,
 dataType:"html",
 success:function(data)
 {
+  $('.page-loader').hide();
 $("#sub").html(data);
 }
 });
 });
 </script>
-<script type="text/javascript">
-//---------delete User start----------------
-$(document).ready(function(){
-$(".delete_product").click(function(){
-var delete_value = $(this).data("id");
-console.log(delete_value)
-swal({
-title: "Are you sure?",
-text: "You want to delete !",
-type: "warning",
-showCancelButton: true,
-confirmButtonClass: 'btn-danger',
-confirmButtonText: 'Yes, delete it!',
-closeOnConfirm: false,
-// closeOnCancel: false
-},
-function(isConfirm){
-if (isConfirm) {
-var token = '{{csrf_token}}';
-$.ajax({
-headers: { "X-CSRFToken": token },
-url: "/my-products/delete/"+delete_value,
-type: "POST",
-success: function () {
-swal("Done!","It was succesfully deleted!","success");
-location.reload();
-}
-});
-}
-else{
-swal("Cancelled", "Your imaginary file is safe :)", "error");
-}
-})
-});
-});
-//---------delete product end----------------
-//---------active and deactive status Start----------------
-$(document).on('click', ".approve", function (e) {
-var productid = $(e.currentTarget).attr("id");
-var productstatus = $(e.currentTarget).attr('productstatus');
-if(productstatus == 'True'){
-varstatus = 'Deactive';
-}
-else{
-varstatus = 'Active';
-}
-swal({
-title: 'Are you sure?',
-text: varstatus+' this',
-icon: 'warning',
-buttons: {
-cancel: {
-text: "Cancel",
-value: null,
-visible: true,
-closeModal: true,
-},
-confirm: {
-text: "OK",
-value: true,
-visible: true,
-closeModal: true
-},
-}
-},
-function(isConfirm){
-if (isConfirm) {
-var dataString = 'productid='+productid+'&productstatus='+productstatus;
-var token = '{{csrf_token}}';
-$.ajax({
-method:"POST",
-headers: { "X-CSRFToken": token },
-url: "/my-products/productstatus",
-data: dataString,
-dataType:"json",
-cache: false,
-success: function (data) {
-swal("Done!","succesfully Edited!","success");
-location.reload();
-}
-});
-}
-else{
-swal("Cancelled", "Your status is safe :)", "error");
-}
-});
-});
-//---------active and deactive service End----------------
-//---------Edit User start----------------
-$(document).on("click",".edit_product",function(){
-var id = $(this).data("id");
-console.log(id)
-$.ajax({
-method:"GET",
-url :"/my-products/edit-product/"+id,
-dataType:"html",
-success:function(data)
-{
-$("#exampleModal-7 .modal-body").html(data);
-$("#exampleModal-7").modal("show");
-}
-});
-});
-//---------Edit User end----------------
-</script>
-<script type="text/javascript">
-
-//---------active and deactive status Start----------------
-         $(document).on('click', ".online_status", function (e) {
-         
-         var onlinestatus = $(e.currentTarget).attr('onlinestatus');
-          var userid = $(e.currentTarget).attr('userid');
-         
-         var dataString = 'onlinestatus='+onlinestatus+'&userid='+userid;
-
-         var token = '{{csrf_token}}';
-          $.ajax({
-                  method:"POST",
-                  headers: { "X-CSRFToken": token },
-                 url: "/dashboard/onlinestatus/",
-                 data: dataString,
-                 dataType:"json",
-                 cache: false,
-                success: function (data) {
-                    
-                        location.reload();
-                         }
-                });
-         
-           });
-         //---------active and deactive service End----------------
-</script>
-
 {% endblock %}

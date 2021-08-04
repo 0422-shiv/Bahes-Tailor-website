@@ -19,48 +19,50 @@ from django.template.defaulttags import register
 
 @method_decorator(login_required(login_url='/account/login'), name="dispatch")
 class Services(generic.TemplateView):
-    template_name = 'services/my-services.html'
-    form = SupplierServicesForm
-
+    template_name = 'services/services.html'
+ 
     def get(self, request,  *args, **kwargs):
-        if 'flag' in request.GET:
-            if 'post_services' == request.GET['flag']:
-                flag='post_services'
-            else:
-                flag='services'
-        else:
-            flag='services'
-        user_instance = get_object_or_404(User, id=request.user.id)
-        userprofile_instance = get_object_or_404(UserProfile,user_id=user_instance)
-        get_services = SupplierServices.objects.filter(user_id=user_instance)
+        get_services = SupplierServices.objects.filter(user_id=request.user).order_by('-id')
+        get_system_settings = System_settings.objects.all()
+        return render(request, self.template_name,
+                      {'get_system_settings':get_system_settings,'get_services': get_services,})
+
+
+  
+@method_decorator(login_required(login_url='/account/login'), name="dispatch")
+class PostServices(generic.TemplateView):
+    template_name = 'services/post-services.html' 
+    form = SupplierServicesForm  
+    def get(self, request,  *args, **kwargs): 
         get_system_settings = System_settings.objects.all()
         get_tailor_spec=TailorSpecification.objects.filter(status=True)
+        userprofile_instance = get_object_or_404(UserProfile,user_id=request.user)
         return render(request, self.template_name,
-                      {'flag':flag,'get_tailor_spec':get_tailor_spec,'get_system_settings':get_system_settings,'form': self.form, 'get_services': get_services, 'userprofile': userprofile_instance})
+                      {'get_system_settings':get_system_settings,'form': self.form,'get_tailor_spec':get_tailor_spec,'userprofile':userprofile_instance})
+    
 
     def post(self, request,  *args, **kwargs):
-       
         phone = request.POST['phone']
         tailor_spec = request.POST['tailor_spec']
         get_tailor_spec_instance=get_object_or_404(TailorSpecification,id=tailor_spec)
         user_instance = get_object_or_404(User,id=request.user.id)
         userprofile_instance = get_object_or_404(UserProfile,user_id=user_instance)
         if UserProfile.objects.filter(phone=phone).filter(~Q(user_id=user_instance)).exists():
-            flag='post_services'
             messages.error(request, phone + ' Phone number already exists', )
         elif SupplierServices.objects.filter(tailor_speci_id=get_tailor_spec_instance).filter(Q(user_id=user_instance)).exists():
-            flag='post_services'
             messages.error(request, 'Dear '+userprofile_instance.full_name+',you already have added '+ get_tailor_spec_instance.tailor_speci, )
         else:
-            
+            num = ""
+            for c in request.POST['tel_code']:
+                if c.isdigit():
+                    num = num + c
+            userprofile_instance.tel_code = num
             userprofile_instance.phone = phone
             userprofile_instance.save()
             get_supplierservices_form = self.form(request.POST)
           
             if get_supplierservices_form.is_valid():
-                flag='post_services'
                 saveservices_data = get_supplierservices_form.save(commit=False)
-
                 if 'yes' == request.POST['flexRadioDefault']:
                     saveservices_data.ship_outside_country = "True"
                 else:
@@ -71,14 +73,11 @@ class Services(generic.TemplateView):
                 saveservices_data.tailor_speci_id=get_tailor_spec_instance
                 saveservices_data.save()
                 get_supplierservices_form.save_m2m()
-                messages.success(request, 'Services Successfully added')
+                messages.success(request, 'Service is added Successfully ')
             else:
-                flag='post_services'
-                messages.error(request, ' Services can not be add', )
+                messages.error(request, ' Services can not be added', )
        
-        # return HttpResponseRedirect(reverse('services:Services'))
-        return redirect(BASE_URL+'my-services/?flag='+flag)
-    
+        return HttpResponseRedirect(reverse('services:PostServices'))
 
 @method_decorator(login_required(login_url='/account/login'), name="dispatch")
 class EditService(generic.TemplateView):

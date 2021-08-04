@@ -1,0 +1,33 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}<!----------------COntent start-------------->
+<section id="content-wrapper">
+  <div class="container-fluid">
+    <div class="row p-t-b-20">
+      <div class="col-md-12">
+        <div class="form-card no-b">
+          <div class="login-form-card">
+            <h3 class="add_name">Add Washing Method</h3>
+            
+            <form method="POST" enctype="multipart/form-data" >
+              {% csrf_token %}
+              <div class="form-group">
+                <label>Method Name</label>
+                <input type="text" name="method_name" class="form-control" placeholder="Enter Name" >
+                
+              </div>
+              <div class="form-group">
+                <label>Method Image (Size : 80*80)</label>
+                <input type="file"  name="method_img" accept="image/*"class="form-control "/>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

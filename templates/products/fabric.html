@@ -10,7 +10,12 @@
         {% if get_countries %}
           <option class="active"></option>
           {% for data in get_countries %}
+          {% if data.id == 117 %}
+             <option value="{{data.id}}" selected="">{{data.country_name}}</option>
+          {% else %}
             <option value="{{data.id}}">{{data.country_name}}</option>
+          {% endif %}
+          
             
           {% endfor %}
         {% endif %}
@@ -20,7 +25,7 @@
       <label for="" class="bold-font">Fabric Type</label>
       <select class="form-control" name="fabric_type" required="">
         {% if get_fabric_type %}
-          <option class="active"></option>
+       
           {% for data in get_fabric_type%}
             <option value="{{data.id}}">{{data.name}}</option>
           {% endfor %}
@@ -32,15 +37,17 @@
     <div class="form-group">
       <label for="" class="bold-font">Fabric Price</label>
       <div class="row">
-        <div class="col-md-2 pr-2">
-          <select class="form-control"  name="currency" required="">
-            <option class="active"></option>
+        <div class="col-md-2 ">
+          <select class="form-control "  name="currency" required="">
+            
                         {% if get_currency %}
                            {% for data in get_currency %}
+
+                           {% if data.currency == 'KWD' %}
+
+                           <option value="{{data.currency}}" selected="">{{data.currency}}</option>
                            
-                           <!-- {% if data.symbol %}
-                            <option value="{{data.id}}">{{data.symbol}}</option>
-                            {% else %} -->
+                            {% else %}
                               <option value="{{data.currency}}">{{data.currency}}</option>
                               {% endif %}
                           {% endfor %}
@@ -48,15 +55,15 @@
                           </select>
           <!-- <input type="text" class="form-control set_number_only" maxlength="12" name="price" id="" required=""> -->
         </div>
-        <div class="col-md-10 pl-1">
-      <input type="text" class="form-control set_number_only" maxlength="12" name="price" id="" required="">
+        <div class="col-md-10 ">
+      <input type="text" class="form-control set_number_only " maxlength="12" name="price" id="" required="" placeholder="enter price">
       </div>
     </div>
     </div>
     
     <div class="form-group">
       <label for="" class="bold-font">Fabric Available Quantity</label>
-      <input type="text" class="form-control set_number_only" maxlength="12" name="quantity" id="" required="">
+      <input type="text" class="form-control set_number_only" maxlength="12" name="quantity" id="" required="" placeholder="enter quantity">
     </div>
     <div class="form-group">
       <label for="formControlRange" class="bold-font">Size Width</label>
@@ -89,7 +96,7 @@
             <li class="checkss">
               <input type="checkbox" id="myCheckbox{{data.id}}" name="washing" value="{{data.id}}"  />
               <label class="pull" for="myCheckbox{{data.id}}">
-                <img src="{{data.image.url}}" />
+                <img src="{{data.image.url}}"/>
               </label>
             </li>
           {% endfor %}
@@ -105,9 +112,7 @@
           {% for data in get_season %}
             
             <option value="{{data.id}}">{{data.season_name}}</option>
-            <!--  <option value="javascript">Hotel</option>
-            <option value="java">Home Stay</option>
-            <option value="sql">Event Organizer</option> -->
+
           {% endfor %}
         {% endif %}
       </select>
@@ -115,11 +120,11 @@
     
     <div class="form-group">
       <label for="" class="bold-font">Other Description</label>
-      <textarea class="form-control"  rows="10" name="description" required=""></textarea>
+      <textarea class="form-control"  rows="10" name="description" required="" placeholder="enter description"></textarea>
     </div>
     <h4 class="bold-font">Upload Image</h4>
     <div class="row">
-      <div class="col-md-6" style="text-align: -webkit-center;position: relative;left: 22px;">
+      <div class="col-md-6 style" style="text-align: -webkit-center;position: relative;left: 22px;">
         
           <div class="dropzone-wrapper" >
             <div class="dropzone-desc"> <i class="glyphicon glyphicon-download-alt"></i>
@@ -133,7 +138,7 @@
       </div>
       
       
-       <div class="col-md-6" style="text-align: -webkit-center;position: relative;right:22px;">
+       <div class="col-md-6 style" style="text-align: -webkit-center;position: relative;right:22px;">
         
         
           <div class="dropzone-wrapper">

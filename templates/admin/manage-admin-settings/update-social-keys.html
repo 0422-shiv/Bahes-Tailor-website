@@ -1,0 +1,70 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="main-dive">
+<div class="container">
+	 <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                                {% else %}
+            
+                                <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+	<div class="row">
+		<div class="col-md-12">
+      <div class="form-card no-b">
+	
+ <form action="#" method="POST" >
+            {% csrf_token %}
+             <h3 class="add_name" style="position: relative;bottom: 12px;">Email Setting</h3>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Type</label>
+                    <input type="text" name="social_type" class="form-control" value="" readonly="">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Key</label>
+                    <input type="text" name="key" class="form-control" value="" >
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Secret Key</label>
+                     <input type="text" name="secret_key" class="form-control" value="">
+                  </div>
+                </div>
+                
+                </div>
+              <div class="row space-center">
+                <div class="col-md-2">
+                  <button type="submit" class="buttons-action">Update</button>
+
+                </div>
+              </div>
+            </form>
+		</div>
+	</div>
+</div>
+
+</div>
+
+{% endblock %}

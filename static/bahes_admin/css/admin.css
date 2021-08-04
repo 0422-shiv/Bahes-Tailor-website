@@ -15,6 +15,14 @@
     font-weight: bold;
     display: flex;
 }
+.form-set-pading {
+    margin-top: 22px;
+    padding: 20px;
+}
+i.fa.fa-power-off.error {
+    position: relative;
+    top: 3px;
+}
 
   .chat-2 {
     float: right;
@@ -212,6 +220,14 @@ a.customer:active{
 .table-img {
     width: 100px;
 }
+button.btn.btn-primary.changestatus {
+    margin: 16px 0;
+}
+.dropdown-menu.show.headerr {
+    width: 163px;
+    height: 60px;
+    right: 0px!important;
+}
 #wrapper {
   padding-left: 0;
   transition: all 0.5s ease;
@@ -329,6 +345,8 @@ a.dropdown-item:hover {
 }
 i.fa.fa-bars {
     color: #2088CA;
+    position: relative;
+    left: 20px;
 }
 i.fa.fa-power-off {
     color: #2088CA;
@@ -361,7 +379,7 @@ i.fa.fa-power-off {
   }
 
   #sidebar-wrapper {
-    width: 255px;
+    width: 280px;
   }
   
   #wrapper.toggled #sidebar-wrapper {
@@ -477,7 +495,7 @@ button.btn.badge.badge-gradient-warning {
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    width: 250px;
+    width: 280px;
   }
   #wrapper.toggled #navbar-wrapper {
     position: absolute;
@@ -512,6 +530,8 @@ button.btn.badge.badge-gradient-warning {
 
 .header-cont {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 .header-cont .dropdown-toggle::after{
   content: none;
@@ -2168,8 +2188,8 @@ output#list video {
   width: 100%;
 }
 img.mobile-logo {
-  display: none;
-    width: 160px;
+    width: 100%;
+    display: none;
     height: 40px;
 }
 img.desktop-logo{
@@ -2187,10 +2207,115 @@ img.desktop-logo{
   justify-content: space-between;
 }
 /*----------------------responsive-----------*/
-@media screen and (max-width: 480px) and (min-width: 320px) {
+@media screen and (max-width: 700px) and (min-width: 320px) {
   .wd-100{
     width: 100%;
   }
+  a.add-btn.sett-btne {
+    margin-top: 43px;
+}
+.head-right {
+    position: relative;
+    top: 14px;
+}
+table.dataTable tbody th, table.dataTable tbody td{
+  text-align: center!important;
+}
+a.add-btn.social {
+    margin-top: 40px;
+}
+img.card-img-absolute {
+    height: 166px;
+    width: 100%;
+    object-fit: cover;
+}
+i.fa.fa-bars {
+    color: #2088CA;
+    position: relative;
+     left: 0px; 
+}
+
+ .list-box.textlimit {
+    margin: 12px 0;
+    padding: 3px 0px;
+    text-align: center;
+}
+.dropdown-menu.show.headerr {
+    width: 163px;
+    height: 60px;
+    right: 0px!important;
+}
+span.cntry {
+    position: relative;
+    top: 8px;
+}
+h3.add_name.emaels {
+    padding: 12px 0;
+}
+.form-set-pading {
+    margin-top: 84px;
+    padding: 20px 0;
+}
+img.img-style {
+    width: 100%!important;
+}
+.card.bg-gradient-danger.card-img-holder.text-white {
+    background: linear-gradient(to right, #ffbf96, #fe7096) !important;
+    margin: 16px 0;
+}
+.card.bg-gradient-info.card-img-holder.text-white {
+    background: linear-gradient(to right, #90caf9, #047edf 99%) !important;
+    margin: 16px 0;
+}
+.card.ovrflow {
+    overflow: scroll;
+    margin: 16px 0;
+}
+button.btn.badge.badge-gradient-warning {
+    background: linear-gradient(to right, #f6e384, #ffd500);
+    color: #ffffff;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.sidebar-nav {
+    position: absolute;
+    top: 100px;
+    width: 276px;
+  }
+.add_name{
+  position: relative;
+  bottom: 0;
+  font-size: 24px;
+}
+img.double-arow {
+    width: 100%;
+}
+button.btn.btn-primary.changestatus {
+    margin: 16px 0;
+}
+img.img-crrop {
+    width: 100%!important;
+    object-fit: contain;
+}
+.add-btn, .add-btn:hover{
+  z-index: 0;
+}
+.note-editor.note-frame.card {
+    z-index: 0;
+}
+button.btn.btn-danger.update {
+    margin: 16px 0;
+  }
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter{
+  text-align: left!important;
+}
+
+  img.mobile-logo {
+    width: 100%;
+  display: initial;
+    height: 40px;
+}
   .mt-20{
     margin-top: 10px;
   }
@@ -2333,6 +2458,7 @@ div#map {
 .form-card{
   padding: 10px 10px;
   font-size: 13px!important;
+  margin-top: 40px;
 }
 #content-wrapper .table-responsive{
   overflow-x: scroll!important;
@@ -2356,9 +2482,10 @@ div#map {
     width: 100%;
 }*/
 img.mobile-logo {
-  display: inline-block;
-    width: 150px;
-    height: 40px;
+   width: 60px;
+    position: relative;
+    left: 12px;
+    height: 60px;
 }
 img.desktop-logo {
   display: none;
@@ -2409,7 +2536,7 @@ img.desktop-logo {
  
 /* Handle */
 .table-responsive::-webkit-scrollbar-thumb {
-  background: #01319f;
+  background: #2088ca;
 }
 
 /* Handle on hover */

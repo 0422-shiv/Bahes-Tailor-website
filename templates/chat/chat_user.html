@@ -1,0 +1,143 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+  div#get_no_users {
+    color: red;
+    text-align: center;
+    width: 100%;
+    font-weight: 600;
+}
+</style>
+ {% if request.user.userx.user_type.type_name == 'supplier' %}
+  <div class="banner-profile" style="background: url({{'supplierdashboard'|get_banner_img}}) no-repeat center top;">
+    {% else %}
+     <div class="banner-profile" style="background: url({{'customerdashboard'|get_banner_img}}) no-repeat center top;">
+ {% endif %}
+  <div class="profile-overlay">
+    <div class="container">
+      <div class="heading-title supplies text-center">
+        <h1>
+        <div class="left-cricle"></div>
+        <div class="right-cricle"></div>
+        <span>Chat User</span></h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="breadcr4eam">
+  <div class="container">
+    <nav class="breadcrumb-new">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Chat User</a></li>
+        
+      </ol>
+    </nav>
+    
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    {% include 'dashboard_base_sidebar.html' %}
+      <div class="main-roww">
+        <div class="row">
+          <div class="Dashboardd">
+            <h3>Chat</h3>
+          </div>
+          <div class="col-md-12 padding-li" id="get_no_of_user">  
+         
+              </div>
+             <div id="get_no_users"></div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+window.onload = function () {
+    // var userid = "{{id_of_user}}";
+
+    // mychatFunction(userid);
+
+    // if ("{{user_name.id}}") {
+    //     $("#get_no_of_user").append('<a href="javascript:void(0)" class="nav-link product_cate" onclick="mychatFunction({{user_name.id}})">{{user_name.full_name}}</a>');
+    // }
+
+    var array1 = [];
+
+    {% for data in get_chat %}
+    array1.push("{{data.sender_id.userx.full_name}}{{data.sender_id.userx.id}}", "{{data.receiver_id.userx.full_name}}{{data.receiver_id.userx.id}}");
+
+    {% endfor %}
+
+    // Defining function to get unique values from an array
+    function getUnique(array) {
+        var uniqueArray = [];
+
+        for (i = 0; i < array.length; i++) {
+            if (uniqueArray.indexOf(array[i]) === -1) {
+                uniqueArray.push(array[i]);
+            }
+        }
+
+        return uniqueArray;
+    }
+
+    var names = array1;
+    var uniqueNames = getUnique(names);
+    console.log(uniqueNames.length)
+    if(uniqueNames.length == 0)
+    {
+       $("#get_no_users").append('No records found')
+    }
+  else{
+    for (i = 0; i < uniqueNames.length; i++) {
+        var whole_string = uniqueNames[i];
+
+        split_string = whole_string.split(/(\d+)/);
+
+        chat_user = split_string[0];
+        chat_user_id = split_string[1];
+        console.log(chat_user);
+        id = "{{request.user}}";
+
+        if (chat_user_id != "{{request.user.userx.id}}") {
+            var n = parseInt(chat_user_id);
+
+            if ("{{user_name.id}}" == chat_user_id) {
+            } else {
+               
+                $("#get_no_of_user").append(` <a href="{% url 'chat:room' %}?id=${n}"><div class="flexe"> <h4 class="user_1 new"><span>${chat_user.charAt(0)}</span> </h4>
+                <p class="chat-neme">${chat_user}</p><span class="countre-chat get_message_count add_content_${n}" data-user_id="${n}" id="bahes${n}></span></div></a>`)
+            }
+        }
+    }
+}
+    $(".get_message_count").each(function () {
+        var user_id = $(this).data("user_id");
+
+        $.ajax({
+            method: "GET",
+            url: "/chat/user/get_message_count/" + user_id,
+            dataType: "json",
+            success: function (data) {
+                var x = data.get_message_counter;
+
+                var y = x.toString();
+
+                if (y == 0) {
+                    $("#bahes" + user_id + "").hide();
+                }
+                {
+                    // console.log(user_id);
+                    $(".add_content_" + user_id).text(y);
+                }
+            },
+        });
+    });
+};
+</script>
+{% endblock %}

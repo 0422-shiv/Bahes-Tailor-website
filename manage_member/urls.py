@@ -14,6 +14,7 @@ path('view-products/<int:id>', views.ViewProducts.as_view(), name="ViewProducts"
 path('view-product-details/<int:id>', views.ViewProductDetails.as_view(), name="ViewProductDetails"),
 path('view-answers/<int:id>', views.ViewAnswers.as_view(), name="ViewAnswers"),
 path('change-status', views.ChangeStatus, name="ChangeStatus"),
+path('change-paid-status', views.ChangePaidStatus, name="ChangePaidStatus"),
 path('delete-member/<int:id>', views.MemberDelete.as_view(), name="MemberDelete"),
 path('delete-multiple-member/', views.MemberMultipleDelete.as_view(), name="MemberMultipleDelete"),
 

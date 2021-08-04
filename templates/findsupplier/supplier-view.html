@@ -1,6 +1,9 @@
 {% extends 'base_template.html' %}
 {% load static %}
 {% block content %}
+<div class="page-loader" style="display: none;">
+ <div class="status">&nbsp;</div>
+</div>
 	<div class="banner-profile">
 		<div class="profile-overlay">
 			<div class="container">
@@ -28,8 +31,8 @@
 	<section class="bg-lightshow">
 		
 			<div class="container">
-				<h3 style="text-align: right;">
-				 <a href="{% url 'findsupplier:FindSupplier'%}" style="font-size:12px ;" ><i class="fa fa-arrow-circle-left fa-2x"></i></a></h3>
+				<h3 style="text-align: right;" class="back-arrow">
+				 <a href="{% url 'findsupplier:FindSupplier'%}" style="font-size:14px ;" ><div> <i class="fa fa-arrow-circle-left aro"></i></div></a></h3>
 			</div>
 		
 		<div class="container">
@@ -46,7 +49,7 @@
 					
 								{% if get_payment.payment_status == True %}
 								
-								<!-- <a href="{% url 'chat:Chat'%}?chatbahesroom=chatbahesroom{% if get_profile.user_id.id == request.user.id %}{% else %}&id={{get_profile.id}}{% endif %}" class="btn btn-primary btn-block"><i class="fa fa-comments-o" ></i> Ask Question</a> -->
+							
 								{% if not get_profile.user_id.id == request.user.id %}
 								<a href="" data-toggle="modal" data-target="#chatmodal" class="btn btn-primary btn-block" onclick="mychatFunction('{{get_profile.id}}')"><i class="fa fa-comments-o" ></i> Ask Question</a>
 								{% endif %}
@@ -61,8 +64,9 @@
 					</div>
 				</div>
 				<div class="col-md-9">
-					<div class="heading_raza">
-						<p class="color_p">{{get_profile.full_name}}
+					<div class="heading_raza blocke">
+						
+							 <p class="supplier_names color_p new">Supplier : <span style="color: #707070;">{{get_profile.full_name}}</span>
 							{% if get_profile.online_status %}
 								<span class="online_span">Online</span>
 							{% else %}
@@ -134,7 +138,7 @@
 						{% for data in get_product|slice:':4' %}
 							{% if forloop.counter == 4 %}
 
-								<div class="col-md-3 hide">
+								<div class="col-md-4 hide">
 									
 									<div class="productboxl" >
 										
@@ -150,15 +154,15 @@
 									</div>
 								</div>
 							{% else %}
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<div class="product-box textlimit" style="margin-bottom: 15px;">
 									<a  href="{% url 'findproducts:ProductDetail' data.id %}">
 									 {% if data.image_1 %}
-										      <img src="{{data.image_1.url}}">
+										      <img src="{{data.image_1.url}}" class="img-set-prdct">
 										      {% elif data.image_2%}
-										      <img src="{{data.image_2.url}}">
+										      <img src="{{data.image_2.url}}" class="img-set-prdct">
 										      {% else %}
-										      <img src="{% static 'images/no-image.jpg' %}">
+										      <img src="{% static 'images/no-image.jpg' %}" class="img-set-prdct">
 										      {% endif %}
 
 									<!-- <h4 data-maxlength="15"><span>{{data.}</span></h4> -->
@@ -178,22 +182,22 @@
 						
 					{% endfor %}
 				{% else %}
-					<h4 style="padding-left: 321px;">No products to display</h4>
+					<h4 style="padding-left: 321px;" class="display-product">No products to display</h4>
 				{% endif %}
 				
 				{% if get_product %}
 					{% for data in get_product|slice:'3:' %}
 						{% if forloop.counter == 3 %}
-							<div class=" showMe col-md-3" style="display:none">
+							<div class=" showMe col-md-4" style="display:none">
 							
 								<div class=" product-box textlimit" style="margin-bottom: 15px;">
 									<a  href="{% url 'findproducts:ProductDetail' data.id %}">
 									 {% if data.image_1 %}
-										      <img src="{{data.image_1.url}}">
+										      <img src="{{data.image_1.url}}" class="img-set-prdct">
 										      {% elif data.image_2%}
-										      <img src="{{data.image_2.url}}">
+										      <img src="{{data.image_2.url}}" class="img-set-prdct">
 										      {% else %}
-										      <img src="{% static 'images/no-image.jpg' %}">
+										      <img src="{% static 'images/no-image.jpg' %}" class="img-set-prdct">
 										      {% endif %}
 									<!-- <h4 data-maxlength="15"><span>{{data.}</span></h4> -->
 									{% if data.Product_subcategory %}
@@ -209,16 +213,16 @@
 								</div>
 							</div>
 						{% else %}
-							<div class=" showMe col-md-3" style="display:none">
+							<div class=" showMe col-md-4" style="display:none">
 						
 								<div class="product-box textlimit" style="margin-bottom: 15px;">
 									<a  href="{% url 'findproducts:ProductDetail' data.id %}">
 									 {% if data.image_1 %}
-										      <img src="{{data.image_1.url}}">
+										      <img src="{{data.image_1.url}}" class="img-set-prdct">
 										      {% elif data.image_2%}
-										      <img src="{{data.image_2.url}}">
+										      <img src="{{data.image_2.url}}" class="img-set-prdct">
 										      {% else %}
-										      <img src="{% static 'images/no-image.jpg' %}">
+										      <img src="{% static 'images/no-image.jpg' %}" class="img-set-prdct">
 										      {% endif %}
 									<!-- <h4 data-maxlength="15"><span>{{data.}</span></h4> -->
 									{% if data.Product_subcategory %}
@@ -374,7 +378,7 @@ $('.hide').hide();
 //--------- Customer Payment start----------------
 $(document).on("click",".customer_payment",function(){
 // var id = $(this).data("id");
-
+$('.page-loader').show();
 $.ajax({
   method:"GET",
   url :"/find-supplier/customer-payment/",
@@ -383,6 +387,7 @@ $.ajax({
   success:function(data)
   {
   // console.log(data)	
+  $('.page-loader').hide();
   if(data == 'login'){
   	 swal({
 			          title: 'Please Login or Register first',
@@ -400,12 +405,16 @@ $.ajax({
 			         },
 			           function(isConfirm){ });
   }
+  else if(data == 'usertype'){
+  			window.location.href="{% url 'account:UserType' %}"
+  }
   	else{
- $("#exampleModal .modal-body").html(data);
+ 			$("#exampleModal .modal-body").html(data);
      $("#exampleModal").modal("show");
+  }
 		
   }
-}
+
 });
 });
 //--------Customer Payment end----------------

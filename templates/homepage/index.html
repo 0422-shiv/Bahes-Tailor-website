@@ -25,7 +25,7 @@
 									</div>
 									<div class="col-md-5 mb-3">
 										{% if data.supplier_icon %}
-											<a href="{% url 'findsupplier:FindSupplier' %}" style="text-decoration: none;color: white;"><div class="banner-services "><img src="{{data.header_supplier_icon.url}}"/>
+											<a href="{% url 'findsupplier:FindSupplier' %}" style="text-decoration: none;color: white;" ><div class="banner-services "><img src="{{data.header_supplier_icon.url}}"/>
 												{% if get_supplier_count %}
 													
 													<h5>{{get_supplier_count}}+</h5>
@@ -52,13 +52,13 @@
 						{% if get_product_subcat %}
 							{% for data in get_product_subcat %}
 							
-								<a href="{% url 'findproducts:FindProducts'%}?{% if data.slug == 'threads' %}&product=Threads{% endif %}{% if data.slug == 'buttons-and-closures' %}&product=&product=Buttons and Closures{% endif %}{% if data.slug == 'zipperstapetrim-and-elastic' %}&product=&product=Zippers,Tape,Trim and Elastic{% endif %}" style="text-decoration: none;color: white;outline: none;" ><div class="{% if data.slug == 'threads' %} red {% endif %}{% if data.slug == 'buttons-and-closures' %} green {% endif %}{% if data.slug == 'zipperstapetrim-and-elastic' %}paple {% endif %} padding-30 rmoutline"> <img src="{{data.image.url}}" alt="" style="width: auto;height: 75px;"/>
+								<a href="{% url 'findproducts:FindProducts'%}?{% if data.slug == 'threads' %}&product=Threads{% endif %}{% if data.slug == 'buttons-and-closures' %}&product=&product=Buttons and Closures{% endif %}{% if data.slug == 'zipperstapetrim-and-elastic' %}&product=&product=Zippers,Tape,Trim and Elastic{% endif %}{% if data.slug == 'equipment' %} &product=Equipment {% endif %}" style="text-decoration: none;color: white;outline: none;"><div class="{% if data.slug == 'threads' %} red {% endif %}{% if data.slug == 'buttons-and-closures' %} green {% endif %}{% if data.slug == 'zipperstapetrim-and-elastic' %}paple {% endif %}{% if data.slug == 'equipment' %} black {% endif %} padding-30 rmoutline"> <img src="{{data.image.url}}" alt="" style="width: auto;height: 75px;"/>
 								<h4>{{data.subcategory_name}}</h4>
 							</div></a>
 						{% endfor %}
 					{% endif %}
 					{% if get_product_cat %}
-						<a href="{% url 'findproducts:FindProducts'%}?&product=Fabrics" style="text-decoration: none;color: white;outline: none;"><div class="orange padding-30 rmoutline"> <img src="{{get_product_cat.image.url}}" alt="" style="width: auto;height: 75px;"/>
+						<a href="{% url 'findproducts:FindProducts'%}?&product=Fabrics" style="text-decoration: none;color: white;outline: none;" ><div class="orange padding-30 rmoutline"> <img src="{{get_product_cat.image.url}}" alt="" style="width: auto;height: 75px;"/>
 							<h4>{{get_product_cat.category_name}}</h4>
 						
 					<!--  </div>
@@ -93,7 +93,7 @@
 					{% if get_tailor_service %}
 						{% for data in get_tailor_service %}
 						{% if item == data.service_count %}
-						<a href="{% url 'findservices:FindServices'%}?&service={{data.tailor_speci}}" style="text-decoration: none;color: white;">
+						<a href="{% url 'findservices:FindServices'%}?&service={{data.tailor_speci}}" style="text-decoration: none;color: white;" >
 							<div class="borderbox hoverdiv">
 								<div class="services-box">
 									{% if data.img %}
@@ -136,7 +136,7 @@
 			<div class="container">
 				<div class="row">
 					
-					<div class="col-md-4">
+					<div class="col-6 col-md-4">
 						<a href="{% url 'findsupplier:FindSupplier'%}" style="text-decoration: none;">
 						<div class="counter-box">
 							{% if data.supplier_icon %}
@@ -150,8 +150,8 @@
 						</div></a>
 					</div>
 					
-					<div class="col-md-4">
-						<a href="{% url  'findservices:FindServices' %}" style="text-decoration: none;">
+					<div class="col-6  col-md-4">
+						<a href="{% url  'findservices:FindServices' %}" style="text-decoration: none;" >
 						<div class="counter-box">
 							{% if data.service_icon %}
 								<img src="{{data.service_icon.url}}"/>
@@ -163,7 +163,7 @@
 						</div></a>
 					</div>
 					<div class="col-md-4">
-						<a href="{% url 'findproducts:FindProducts' %}" style="text-decoration: none;">
+						<a href="{% url 'findproducts:FindProducts' %}" style="text-decoration: none;" >
 						<div class="counter-box">
 							<img src="{% static 'images/icon/icon-6.png' %}" alt=""/>
 							<div class="counter" data-count="{{get_products|length}}">0</div>
@@ -190,7 +190,7 @@
 				<div class="suppliers-slider">
 					{% if get_supplier %}
 						{% for data in get_supplier %}
-							<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" style="text-decoration: none;" target="blank">
+							<a href="{% url 'findsupplier:SupplierView' data.user_id.id %}" style="text-decoration: none;">
 								{% if data.user_id.userx.image %}
 								
 								<div class="suppliers-box-slider" style="background-image:url({{data.user_id.userx.image.url}})">
@@ -273,7 +273,7 @@
 				<div class="product-slider">
 					{% if get_products %}
 					{% for data in get_products %}
-					<a  href="{% url 'findproducts:ProductDetail' data.id %}" target="blank">
+					<a  href="{% url 'findproducts:ProductDetail' data.id %}">
 						<div class="product-box" data-maxlength="15">
 						 {% if data.image_1 %}
 					      <img src="{{data.image_1.url}}">
@@ -352,4 +352,16 @@
 		</div>
 	</div>
 </section>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+	{% if paymentdone %}
+			        
+alert('Payment successfully done');
+Updateurl();
+	{% endif %}		       
+	 function Updateurl(){
+	 location.href = '{{BASE_URL}}';
+  }
+</script>
 {% endblock %}

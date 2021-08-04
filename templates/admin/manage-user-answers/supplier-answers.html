@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 <!----------------COntent start-------------->
+
 <section id="content-wrapper">
   <div class="container-fluid">
     <div class="row p-t-b-20">
@@ -13,26 +14,67 @@
               <div class="row">
 
               
-                <div class="col-md-7">
+                <div class="col-md-5">
                 <div class="form-group">
                   
-                  <input type="text" value="{{question|default:''}}" class="form-control" name="question" placeholder="Enter Supplier Question" required="">
+                <!--   <input type="text" value="{{question|default:''}}" class="form-control" name="question" placeholder="Enter Supplier Question" required=""> -->
+                  <div class="dropdown">
+              
+              <select class="form-control" id="short_by" style="font-size:13px;" name="question" required="">
+                <option value="">select question</option>
+                {% for data in get_question %}
+               {% if data.question == question %}
+                    <option  value="{{data.question}}" selected="">{{data.question}}</option>
+                    
+                    
+                {% else %}
+                    <option value="{{data.question}}">{{data.question}}</option>
+                    {% endif %}
+                 {% endfor %}
+              </select>
+            </div>
                 </div>
               </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                 <div class="form-group">
                   
-                  <input type="text" value="{{option|default:''}}" class="form-control" name="option" placeholder="Enter Answer Option" required="">
+                 <!--  <input type="text" value="{{option|default:''}}" class="form-control" name="option" placeholder="Enter Answer Option" required=""> -->
+                   <div class="dropdown">
+              
+              <select class="form-control" id="short_by" style="font-size:13px;" name="option" required="">
+                <option value="">select option</option>
+                {% for data in option_list %}
+               {% if data == option %}
+                    <option  value="{{data}}" selected="">{{data}}</option>
+                    
+                    
+                {% else %}
+                    <option value="{{data}}">{{data}}</option>
+                    {% endif %}
+                 {% endfor %}
+              </select>
+            </div>
                 </div>
               </div>
               <div class="col-md-2">
               <div class="form-group">
-                 <button type="submit" class="btn btn-primary" >search</button>
+                 <button type="submit" class="btn btn-primary " >search</button>
               </div>
             </div>
-              </div>
-             
+           
+             </div>
               </form>
+               <div class="row">
+             <div class="col-md-6">
+             {% if correct_Option and correct_answer  %}
+                <label>Correct Option :</label>
+                <label style="font-weight: bold;color: #2088CA;">{{correct_Option}}</label>
+                <label>({{correct_answer}})</label>
+               {% endif %}
+             
+            </div>
+           
+              </div>
            <!--  <form style="padding: 15px 0;position: relative;top: 8px;left: 71%;">
               <label class="searchh">Search:<input type="search" class="form-control" placeholder="" aria-controls="example"></label>
             </form> -->
@@ -53,6 +95,8 @@
                 <tbody>
                   {% if get_answer %}
                   {% for data in get_answer %}
+                     {% if data.user.is_superuser %}
+                  {% else %}
                   <tr>
                     
                    
@@ -62,22 +106,22 @@
 
                      {% if data.answer|lower == item.option_a|lower %}
                     
-                    <td>A </td>
+                    <td><label style="font-weight: bold;color: #2088CA;">A</label> ({{data.answer}}) </td>
                     {% elif data.answer|lower == item.option_b|lower %}
                     
-                    <td>B </td>
+                    <td><label style="font-weight: bold;color: #2088CA;">B</label> ({{data.answer}}) </td>
                      {% elif data.answer|lower == item.option_c|lower %}
                     
-                    <td>C </td>
+                    <td><label style="font-weight: bold;color: #2088CA;">C</label> ({{data.answer}}) </td>
                      {% elif data.answer|lower == item.option_d|lower %}
                     
-                    <td>D </td>
+                    <td><label style="font-weight: bold;color: #2088CA;">D</label> ({{data.answer}}) </td>
                      
 
                     {% endif %}
                     {% endfor %}
                   </tr>
-                 
+                 {% endif %}
                   {% endfor %}
                   {% endif %}
                 </tbody>

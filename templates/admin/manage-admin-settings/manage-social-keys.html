@@ -1,0 +1,85 @@
+{% extends 'admin/admin_base_template.html' %}
+{% load static %}
+{% block content %}
+<!----------------COntent start-------------->
+<section id="content-wrapper">
+   <div>        
+                        {% if messages %}
+                            {% for message in messages %}
+        
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+            
+                                {% else %}
+            
+                                <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                                    <strong>{{message}}</strong>
+                                </div>
+                                {% endif %}
+        
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+   <div class="container-fluid">
+      <div class="row p-t-b-20">
+         <div class="col-md-12">
+            <div class="form-card no-b">
+               <div class="login-form-card">
+                  <h3 class="add_name">Manage Social Keys</h3>
+                       
+                  <div class="table-responsive">
+                     <table id="example" class="table table-striped " style="width:100%">
+                        <thead>
+                           <tr>
+                             <th ><div class="checkbox "><input type="checkbox" class="dt-checkboxes enquiries"><label></label></div></th>
+                            
+                              <th>Social Type</th>
+                              <th>Key</th>
+                              <th>Secret Key</th>
+            
+                              <th>Action</th>
+                        
+                           </tr>
+                        </thead>
+                        <tbody>
+                          {% if get_social_keys %}
+                          {% for data in get_social_keys %}
+                           <tr>
+                               <td><div class="checkbox" ><input type="checkbox" class="dt-checkboxes enquiries" 
+                            value="{{data.id}}"><label></label></div></td>
+                              
+                              <td>{{data.social_type}}</td>
+                              <td>{{data.key}}</td>
+                              <td>{{data.secret_key}}</td> 
+                    
+                               <td >
+                          <table class="act-button">
+                            <tr>
+                              <td ><a href="#" title="Edit" class="btn-edit"><span class="fa fa-pencil"></span></a></td>
+                            
+                            </tr>
+                          </table>
+                        </td>
+                           </tr>
+                             {% endfor %}
+                             {% endif %}
+                        </tbody>
+                     </table>
+                  </div>
+                
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+
+</section>
+{% endblock %}
+
+ 

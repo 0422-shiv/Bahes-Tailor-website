@@ -1,0 +1,124 @@
+
+<div class="col-md-3">
+ 
+  <div class="height-fix">
+    <div class="profile-pic-wrapper">
+      <div class="pic-holder">
+    
+      {% if request.user.userx.image %}
+       <img  class="pic" src="{{request.user.userx.image.url}}">
+       {% else %}
+      <img  class="pic" src="https://www.thebahes.com/media/logo_images/logo.png">
+      {% endif %}
+     
+      <div class="iconcemara">
+        <label for="user_Image" class="upload-file-block">
+          
+              <i class="fa fa-camera fa-2x"></i>
+           
+            
+            
+        </label>
+        <Input class="uploadProfileInput" type="file" name="profile_pic" id="user_Image" accept="image/*" style="display: none;" />
+</div>
+      </div>
+    </div>
+    <span class="menubar-toggle show-toggle-side"><i class="fa fa-bars "></i></span>
+
+     <!-- <input type="file"  id="user_Image"  accept="image/*" /> -->
+    <ul class="borders-nav nonee one">
+      {% if request.user.userx.user_type.type_name == 'supplier' %}
+      <li class="black-li">  <a href="{% url 'dashboard:Dashboard' %}" class="side-nav  {% if 'dashboard' in request.build_absolute_uri and 'profile' not in request.build_absolute_uri and 'update-password' not in request.build_absolute_uri %}active{% endif %}">My Dashboard</a></li>
+      {% endif %}
+<!--       <li class="black-li"><div class="dropdown show">
+        <a class="dropdown-toggle side-nav  {% if 'profile' in request.build_absolute_uri or 'update-password' in request.build_absolute_uri %}active{% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample" data-toggle="collapse" aria-haspopup="true" aria-expanded="true">
+        Profile
+      </a>
+      <div class="collapse hide  {% if 'profile' in request.build_absolute_uri or 'update-password' in request.build_absolute_uri %}show{% endif %}" id="collapseExample" style="">
+      <a class=" dropdown-item sidee {% if 'profile' in request.build_absolute_uri  %}active_nav{% endif %}" href="{% url 'dashboard:EditProfile' %}">Update Profile</a>
+    
+      <a class="dropdown-item sidee-1 {% if 'update-password' in request.build_absolute_uri %}active_nav{% endif %}" href="{% url 'dashboard:Updatepassword' %}">Update Password</a>
+     
+    </div>
+  </div></li> -->
+  <li class="black-li">  <a class=" dropdown-item sidee {% if 'profile' in request.build_absolute_uri  %}active{% endif %}" href="{% url 'dashboard:EditProfile' %}">My Profile</a></li>
+  <li class="black-li">   <a class="dropdown-item sidee-1 {% if 'update-password' in request.build_absolute_uri %}active{% endif %}" href="{% url 'dashboard:Updatepassword' %}">Change Password</a></li>
+  <li class="black-li">  <a href="{% url 'chat:ChatUser' %}" class="side-nav {% if 'chat' in request.build_absolute_uri %}active{% endif %}">Chat Log<div class="three"><span style="color: red;">0</span></div></a></li>
+  {% if request.user.userx.user_type.type_name == 'supplier' %}
+ <!--  <li class="black-li"><div class="dropdown show">
+    <a class="dropdown-toggle side-nav  {% if 'my-services' in request.build_absolute_uri %}active{% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-1" data-toggle="collapse" aria-haspopup="true" aria-expanded="true">
+    My Services
+  </a>
+  <div class="collapse hide  {% if 'my-services' in request.build_absolute_uri %}show{% endif %}" id="collapseExample-1" style="">
+  <a class="dropdown-item sidee  {% if 'my-services' in request.build_absolute_uri and 'post-services' not in request.build_absolute_uri %}active_nav{% endif %}" href="{% url 'services:Services' %}">My Services <div class="three">{{request.user|get_service_counter}}</div></a>
+  <a class="dropdown-item sidee-1  {% if 'post-services' in request.build_absolute_uri %}active_nav{% endif %}" href="{% url 'services:PostServices' %}">Post Services</a>
+</div>
+</div></li> -->
+
+<li class="black-li">  <a class="dropdown-item sidee  {% if 'my-services' in request.build_absolute_uri and 'post-services' not in request.build_absolute_uri %}active{% endif %}" href="{% url 'services:Services' %}">My Services <div class="three">{{request.user|get_service_counter}}</div></a></li>
+
+<li class="black-li">  <a class="dropdown-item sidee-1  {% if 'post-services' in request.build_absolute_uri %}active{% endif %}" href="{% url 'services:PostServices' %}">Post New Services <div class="left-click"><span class="teste2"><i class="fa fa-hand-o-left" aria-hidden="true"></i> Click </span></div></a></li>
+
+<!-- <li class="black-li">
+<div class="dropdown show">
+  <a class="dropdown-toggle side-nav  {% if 'my-products' in request.build_absolute_uri %}active{% endif %}" href="#" role="button" id="dropdownMenuLink" data-target="#collapseExample-2" data-toggle="collapse" aria-haspopup="true" aria-expanded="true">
+  My Products
+
+</a>
+<div class="collapse hide  {% if 'my-products' in request.build_absolute_uri %}show{% endif %}" id="collapseExample-2" style="">
+<a class="dropdown-item sidee  {% if 'my-products' in request.build_absolute_uri and 'post-products' not in request.build_absolute_uri %}active_nav{% endif %}" href="{% url 'products:product' %}">My Products <div class="three">{{request.user|get_product_counter}}</div></a>
+<a class="dropdown-item sidee-1  {% if 'post-products' in request.build_absolute_uri %}active_nav{% endif %}" href="{% url 'products:PostProduct' %}">Post Products</a>
+</div>
+</div>
+</li> -->
+
+<li class="black-li"> <a class="dropdown-item sidee  {% if 'my-products' in request.build_absolute_uri and 'post-products' not in request.build_absolute_uri %}active{% endif %}" href="{% url 'products:product' %}">My Products <div class="three">{{request.user|get_product_counter}}</div></a></li>
+
+<li class="black-li">  <a class="dropdown-item sidee-1  {% if 'post-products' in request.build_absolute_uri %}active{% endif %}" href="{% url 'products:PostProduct' %}">Post New Products  <div class="left-click"><span class="teste2"><i class="fa fa-hand-o-left" aria-hidden="true"></i> Click </span></div></a></li>
+
+{% endif %}
+</ul>
+</div>
+</div>
+<div class="col-md-9 border-fixx">
+<div class="bg-lightgray">
+  <div class="buttons_left">
+    <h1>{% if request.user.is_authenticated %}{{request.user.userx.full_name}}{% endif %}</h1>
+  </div>
+  <div class="custom-control custom-switch">
+    <!--     <input type="checkbox" class="custom-control-input" id="customSwitches">
+    <label class="custom-control-label" for="customSwitches">Online</label> -->
+    {% if request.user.is_authenticated %}
+      {% if request.user.userx.online_status %}
+        <input type="checkbox" class="custom-control-input online_status" onlinestatus="{{request.user.userx.online_status}}" userid="{{request.user.userx.id}}" id="customSwitches" checked=""
+        >
+        <label class="custom-control-label" for="customSwitches">Online</label>
+      {% else %}
+        <input type="checkbox" class="custom-control-input online_status" onlinestatus="{{request.user.userx.online_status}}" userid="{{request.user.userx.id}}" id="customSwitches" >
+        <label class="custom-control-label" for="customSwitches">Offline</label>
+      {% endif %}
+    {% endif %}
+  </div>
+  <div class="padding-tops">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="display_flex"> <i class="fa fa-calendar" style="font-size:24px"></i>
+          <p class="joineds">Last login {% if request.user.is_authenticated %}{{request.user.last_login}}{% endif %}</p>
+        </div>
+      </div>
+      {% if request.user.userx.phone %}
+      <div class="col-md-4">
+        <div class="display_flex"> <i class="fa fa-phone" style="font-size:24px"></i>
+          <p class="joineds">{% if request.user.is_authenticated %}{% if request.user.userx.tel_code %}+{{request.user.userx.tel_code}}  {% endif %}{{request.user.userx.phone}}{% endif %}</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="display_flex"> <i class="fa fa-envelope" style="font-size:24px"></i>
+          <p class="joineds">{% if request.user.is_authenticated %}{{request.user.email}}{% endif %}</p>
+        </div>
+      </div>
+            {% endif %}
+    </div>
+  </div>
+</div>

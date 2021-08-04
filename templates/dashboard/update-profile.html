@@ -1,0 +1,144 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+ {% if request.user.userx.user_type.type_name == 'supplier' %}
+  <div class="banner-profile" style="background: url({{'supplierdashboard'|get_banner_img}}) no-repeat center top;">
+    {% else %}
+     <div class="banner-profile" style="background: url({{'customerdashboard'|get_banner_img}}) no-repeat center top;">
+ {% endif %}
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>My Profile</span></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">My Profile</a></li>
+          
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+  
+  <div class="container-fluid">
+    <div class="row">
+      <!-- <div class="col-md-9 border-fixx"> -->
+      {% include 'dashboard_base_sidebar.html' %}
+       <div>
+              {% if messages %}
+                {% for message in messages %}
+                  
+                  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                  {% endif %}
+                  {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    
+                    <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                  {% endif %}
+                  
+                {% endfor %}
+              {% endif %}
+            </div>
+      <div class="main-roww">
+        <div class="row">
+          <div class="Dashboardd">
+            <h3>Update Profile</h3>
+            <a href="{% url 'chat:ChatUser' %}" class="btn btn-primary chate"><i class="fa fa-comments" aria-hidden="true"></i> Chat Now </a>
+          </div>
+          
+          <div class="col-md-12">
+            <form method="POST">
+              {% csrf_token %}
+              <div class="form-size">
+                
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="bold-font">Full Name</label>
+                      <input type="text" class="form-control"  value="{{userprofile.full_name}}" name="full_name"required="">
+                    </div>
+                  </div>
+                  
+                  
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="bold-font">Country</label>
+                      <!-- <input type="text" class="form-control" value="{{userprofile.country.country_name}}" name="country" required=""> -->
+                      <select class="form-control country" id="id_country" name="country" >
+                        {% if get_countries %}
+                          {% for data in get_countries %}
+                            {% if data.country_name == userprofile.country.country_name %}
+                              
+                              <option  value="{{data.id}}" selected="">{{data.country_name}}</option>
+                              {% elif data.id == 117 %}
+                              <option  value="{{data.id}}" selected="">{{data.country_name}}</option>
+                            {% else %}
+                              <option value="{{data.id}}">{{data.country_name}}</option>
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="bold-font">Mobile Number</label>
+                       <div class="col-md-12 " style="padding: 0;">
+                        {% if userprofile.tel_code and userprofile.phone %}
+                          <input class="set_number_only" id="phone" type="tel" name="phone" value="+{{userprofile.tel_code|default:''}} {{userprofile.phone|default:''}}" placeholder="mob." required="" maxlength="11">
+                          {% else %}
+                           <input class="set_number_only" id="phone" type="tel" name="phone" placeholder="mob." required="" maxlength="11">
+                        {% endif %}
+                        </div>
+                     <!--  <div class="row">
+
+                          <div class="col-md-3 pr-1">
+                          <input type="text" class="form-control" id="tel" value="{{userprofile.country.country_tel_code}}" name="tel_code" required="">
+                        </div>
+                        <div class="col-md-9 pl-0 hass">
+                          <input type="text" class="form-control set_number_only" value="{{userprofile.phone}}" name="phone" required="" maxlength="12">
+                        </div>
+                      </div> -->
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="bold-font">Email</label>
+                      <input type="email" class="form-control" disabled="" value="{{userprofile.user_id.email}}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <input type="hidden" name="tel_code" id="tel_code">
+                  <button type="submit" class="btn btn-primary Register">UPDATE</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

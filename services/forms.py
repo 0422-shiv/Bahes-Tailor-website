@@ -6,7 +6,7 @@ from .models import *
 
 
 class SupplierServicesForm(forms.ModelForm):
-    country_id = forms.ModelChoiceField(required=True, empty_label="Please select country",
+    country_id = forms.ModelChoiceField(required=True, empty_label="select country",
                                         queryset=Countries.objects.all(),
                                         widget=forms.Select(attrs={"class": "form-control", 'name': 'country_id'}))
 
@@ -15,7 +15,7 @@ class SupplierServicesForm(forms.ModelForm):
             attrs={"type":"text",'maxlength':'12',"class": "form-control", 'name': 'tailor_experience', 'placeholder': 'enter tailor experience'}))
 
     address = forms.CharField(widget=forms.Textarea(
-        attrs={"class": "form-control",'id':"exampleFormControlTextarea1" ,'name': 'address' ,'rows':'4'}))
+        attrs={"class": "form-control",'id':"exampleFormControlTextarea1" ,'name': 'address' ,'rows':'4','placeholder':'enter address'}))
 
     class Meta:
         model = SupplierServices

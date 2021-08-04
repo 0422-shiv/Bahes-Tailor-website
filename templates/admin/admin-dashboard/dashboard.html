@@ -18,7 +18,7 @@
             <div class="row">
               <div class="col-md-3 stretch-card grid-margin">
                 <div class="card bg-gradient-danger card-img-holder text-white">
-                  <div class="card-body">
+                  <div class="card-body bg">
                     <img src="https://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
                      <h5 class="total-member">Total Customers</h5>
                     <h2 class="mb-5">{{get_customer|length}}</h2>
@@ -29,7 +29,7 @@
           
               <div class="col-md-3 stretch-card grid-margin">
                 <div class="card bg-gradient-info card-img-holder text-white">
-                  <div class="card-body">
+                  <div class="card-body bg">
                      <img src="https://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
                    <h5 class="total-member">Total Suppliers</h5>
                     <h2 class="mb-5">{{get_supplier|length}}</h2>
@@ -39,7 +39,7 @@
               </div>
                <div class="col-md-3 stretch-card grid-margin">
                 <div class="card bg-gradient-danger card-img-holder text-white">
-                  <div class="card-body">
+                  <div class="card-body bg">
                     <img src="https://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
                     <h5 class="total-member">Total Services</h5>
                     <h2 class="mb-5">{{get_services|length}}</h2>
@@ -48,7 +48,7 @@
               </div>
                <div class="col-md-3 stretch-card grid-margin">
                 <div class="card bg-gradient-info card-img-holder text-white">
-                  <div class="card-body">
+                  <div class="card-body bg">
                      <img src="https://www.bootstrapdash.com/demo/purple/jquery/template/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
                    <h5 class="total-member">Total Products</h5>
                     <h2 class="mb-5">{{get_products|length}}</h2>
@@ -60,7 +60,7 @@
             <div class="main-row">
             <div class="row">
               <div class="col-lg-6 grid-margin stretch-card">
-                <div class="card">
+                <div class="card ovrflow">
                   <div class="card-body">
                     <h4 class="card-title Registered-s">Newly Registered Customer</h4>
                     <table class="table">
@@ -74,13 +74,16 @@
                       </thead>
                       <tbody>
                         {% if get_customer %}
-                        {% for data in get_customer|slice:':2'  %}
+                        {% for data in get_customer|slice:':5'  %}
+                        {% if data.user_id.is_superuser %}
+                        {% else %}
                         <tr>
                             <td> {{data.created_date|date:'d/m/y'}}</td>
                               <td>{{data.full_name}}</td>
                               <td>{{data.user_id.email}}</td>
                           
                         </tr>
+                        {% endif %}
                        {% endfor %}
                        {% endif %}
                   
@@ -96,7 +99,7 @@
 
               </div>
               <div class="col-lg-6 grid-margin stretch-card">
-                <div class="card">
+                <div class="card ovrflow">
                   <div class="card-body">
                     <h4 class="card-title Registered-s">Newly Registered Supplier</h4>
                     <table class="table">
@@ -110,13 +113,16 @@
                       </thead>
                       <tbody>
                         {% if get_supplier %}
-                        {% for data in get_supplier|slice:':2' %}
+                        {% for data in get_supplier|slice:':5' %}
+                         {% if data.user_id.is_superuser %}
+                        {% else %}
                         <tr>
                             <td> {{data.created_date|date:'d/m/y'}}</td>
                               <td>{{data.full_name}}</td>
                               <td>{{data.user_id.email}}</td>
                           
                         </tr>
+                        {% endif %}
                        {% endfor %}
                        {% endif %}
                       </tbody>

@@ -1,0 +1,73 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+   {% if request.user.userx.user_type.type_name == 'supplier' %}
+  <div class="banner-profile" style="background: url({{'supplierdashboard'|get_banner_img}}) no-repeat center top;">
+    {% else %}
+     <div class="banner-profile" style="background: url({{'customerdashboard'|get_banner_img}}) no-repeat center top;">
+ {% endif %}
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>My Profile</span></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">My Profile</a></li>
+          
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      
+      {% include 'dashboard_base_sidebar.html' %}
+      <div class="main-roww">
+        <div class="row">
+          <div class="main-dive">
+            <h4 class="user_1"><span>{{userprofile_instance.full_name|slice:':1'}}</span>{{userprofile_instance.full_name}}<br><p class="Online">{% if userprofile_instance.online_status == True %}online{% else %}offline{% endif %}</p>
+            </h4>
+            <div class="set-scroll">
+              {% for data in get_chat %}
+                
+                {% if data.sender_id.id == request.user.id %}
+                  
+                  
+                  <div class="main-dive"><div class="col-md-12"><div class="chat-2"><p class="text_lorem">{{data.message_text}}</p></div></div></div>
+                  
+                {% else %}
+                  <div class="main-dive"><div class="col-md-12"><div class="chat_1"><p class="text_lorem">{{data.message_text}}</p></div></div></div>
+                {% endif %}
+              {% endfor %}
+               <div id="chat_saved_data">
+              
+              
+            </div>
+              
+            </div>
+           
+          </div>
+        </div>
+        <div class="round-input_1 texta" >
+          <input type="text" class="form-control round-input"  placeholder="Write your message" id="chat-message-input">
+          
+          <button id="chat-message-submit" type="button" class="fa fa-telegram chatmessagesubmit chatsubmitbutton" style="font-size:24px; color: #2088CA;margin-left: -53px;margin-top: -9px;"></button>
+          
+        </div>
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,10 +1,19 @@
  <form action="/admin/manage-payments/update-cost/{{get_registration_fee_instance.id}}" method="POST">
  	 {% csrf_token %} 
+
          <label>Content</label>
          <input type="text" name="content" class="form-control" placeholder="Write Content" value="{{get_registration_fee_instance.content}}">
          <br>
+         <div class="row">
+         	<div class="col-md-3">
+         		<label>Currency Type</label>
+         		 <input type="text" name="currency_type" class="form-control" placeholder="Enter currency type" value="{{get_registration_fee_instance.currency_type}}">
+         	</div>
+         	<div class="col-md-9">
           <label>Price</label>
          <input type="text" name="amount" class="form-control" placeholder="Enter Price" value="{{get_registration_fee_instance.amount}}">
+         </div>
+         </div>
   <br>
        <button class="btn btn-primary">Update</button>
        </form>

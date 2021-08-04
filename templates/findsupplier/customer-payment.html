@@ -1,11 +1,14 @@
+<div class="page-loader" style="display: none;">
+ <div class="status">&nbsp;</div>
+</div>
 <div class="ksd-pay bg-colorform">
 
 	{% if get_registration_fee %}
 	{% for data in get_registration_fee %}
 	<p>{{data.content}}</p>
-	<h2>{{data.amount}}</h2>
+	<h2>{{data.amount}} {{data.currency_type}}</h2>
 	
-	<a href="javascript:void(0)" data-amount="{{data.amount}}" class="pay-now customer_payment_done">Pay Now</a>
+	<a href="javascript:void(0)" data-amount="{{data.amount}}" data-currency_type="{{data.currency_type}}" class="pay-now customer_payment_done">Pay Now</a>
 {% endfor %}
 	{% endif %}
 </div>
@@ -14,35 +17,25 @@
 <script type="text/javascript">
 //--------- Customer Payment Done start----------------
 $(document).on("click",".customer_payment_done",function(){
-
+	$('.page-loader').show();
+ $(".customer_payment_done").prop('disabled', true);
     	var amount = $(this).data("amount");
-    	console.log(amount);
+    	var currency_type = $(this).data("currency_type");
+    	console.log(amount,currency_type);
          // var token = '{{csrf_token}}';
             $.ajax({
                 // headers: { "X-CSRFToken": token },
-                url: "/find-supplier/customer-payment-done",
+                url: "/find-supplier/customer-payment-process",
                 type: "GET",
                 dataType:"json",
-                data:{ amount :amount},
+                data:{ amount :amount,currency_type:currency_type},
                 success: function (data) {
                 	// console.log(data);
+                	// console.log(data['url']);
+                	$('.page-loader').hide();
                 	$("#exampleModal").modal("hide");
-                   
-                    swal({
-			          title: 'Payment successfully done',
-			          
-			         
-			          buttons: {
-			           
-			            confirm: {
-			              text: "OK",
-			              value: true,
-			              visible: true,
-			              closeModal: true
-			            },
-			          }
-			         },
-			           function(isConfirm){ location.reload();});
+                   location.href = data['url']
+           
                         
                 }
             });

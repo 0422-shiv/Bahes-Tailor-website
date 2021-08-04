@@ -46,33 +46,41 @@ class CreateUserView(generic.TemplateView):
     def post(self, request, *args, **kwargs):
         usertype = request.POST['usertype']
         form1 = self.form1(request.POST)
-        # print(form1)
-        password = request.POST['password1']
-        # print(password)
         form2 = self.form2(request.POST)
+        password = request.POST['password1']
+        usern = request.POST['username']
+        usern=usern.lower()
+        if not User.objects.filter(username=usern).exists():
+        
+            if form1.is_valid():
+                if form2.is_valid():
+                        get_usertype_obj = get_object_or_404(UserType, type_name=usertype)
 
-        if form1.is_valid():
-            if form2.is_valid():
-                get_usertype_obj = get_object_or_404(UserType, type_name=usertype)
+                        saveuser = form1.save(commit=False)
+                        
+                        saveuser.username = (saveuser.username).lower()
+                        saveuser.email = (saveuser.username).lower()
+                    # saveuser.email = email
+                        saveuser.save()
+                        saveprofile = form2.save(commit=False)
+                        num = ""
+                        for c in request.POST['tel_code']:
+                            if c.isdigit():
+                                num = num + c
+                        saveprofile.tel_code = num
+                        saveprofile.user_id = saveuser
+                        saveprofile.passward=password
+                        saveprofile.user_type = get_usertype_obj
+                        saveprofile.created_by = saveuser
+                        saveprofile.save()
 
-                saveuser = form1.save(commit=False)
-                saveuser.email = saveuser.username
-                # saveuser.email = email
-                saveuser.save()
-                saveprofile = form2.save(commit=False)
-                saveprofile.user_id = saveuser
-                saveprofile.passward=password
-                saveprofile.user_type = get_usertype_obj
-                saveprofile.created_by = saveuser
-                saveprofile.save()
-
-                id = str(saveprofile.id)
-                return redirect(BASE_URL + 'account/verify/' + id)
+                        id = str(saveprofile.id)
+                        return redirect(BASE_URL + 'account/verify/' + id)
 
         # else:
         #         messages.error(request, form2.errors)
-        # else:
-        #     messages.error(request, form1.errors)
+        else:
+            messages.error(request, "Can not be registered,Check Email")
         return render(request, "account/registration.html", {'get_country':self.get_country,'form1': form1, 'form2': form2, 'usertype': usertype,'get_system_settings':self.get_system_settings})
 
 
@@ -80,9 +88,14 @@ class UserTypes(generic.TemplateView):
     template_name = "account/customer.html"
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if not UserProfile.objects.filter(user_id=request.user).exists():
+                userprofile_obj=UserProfile(user_id=request.user,full_name=(request.user.first_name)+' '+(request.user.last_name),verify_status=True,created_by=request.user)
+                userprofile_obj.save()
+        print(BASE_URL)
         get_usertypes = UserType.objects.all()
         get_system_settings = System_settings.objects.all()
-        return render(request, self.template_name, {'get_usertypes': get_usertypes,'get_system_settings':get_system_settings})
+        return render(request, self.template_name, {'get_usertypes': get_usertypes,'get_system_settings':get_system_settings,'BASE_URL':BASE_URL})
 
 
 class OtpViewPage(generic.TemplateView):
@@ -133,28 +146,28 @@ class OtpViewPage(generic.TemplateView):
         if userprofile_instance.otp == otp:
             userprofile_instance.verify_status = True
             userprofile_instance.save()
-            if User.objects.filter(email=userprofile_instance.user_id.email).exists():
-                    login_url=BASE_URL+'account/login'
-                    data_content = {"username": userprofile_instance.full_name,"login_url":login_url,}
-                    email_content = 'email_template/registration.html'
+            # if User.objects.filter(email=userprofile_instance.user_id.email).exists():
+            #         login_url=BASE_URL+'account/login'
+            #         data_content = {"username": userprofile_instance.full_name,"login_url":login_url,}
+            #         email_content = 'email_template/registration.html'
                     
 
-                    email_template = get_template(email_content).render(data_content)
-                    reciver_email = 'shiveshbhardwaj149@gmail.com'
+            #         email_template = get_template(email_content).render(data_content)
+            #         reciver_email = 'shiveshbhardwaj149@gmail.com'
 
-                    Subject = userprofile_instance.full_name+' Has Been Registered, Congratulations!'
+            #         Subject = userprofile_instance.full_name+' Has Been Registered, Congratulations!'
 
-                    if Email_Setting.objects.filter(status=True).exists():
-                        email_data = Email_Setting.objects.filter(status=True)
-                        for data in email_data:
-                            EMAIL_HOST = data.smtp_host
-                            EMAIL_PORT = data.smtp_port
-                            EMAIL_HOST_USER = data.smtp_username
-                            EMAIL_HOST_PASSWORD = data.smtp_password
-                    email_msg = EmailMessage(Subject, email_template, EMAIL_HOST_USER, [reciver_email],
-                                             reply_to=[EMAIL_HOST_USER])
-                    email_msg.content_subtype = 'html'
-                    email_msg.send(fail_silently=False)
+            #         if Email_Setting.objects.filter(status=True).exists():
+            #             email_data = Email_Setting.objects.filter(status=True)
+            #             for data in email_data:
+            #                 EMAIL_HOST = data.smtp_host
+            #                 EMAIL_PORT = data.smtp_port
+            #                 EMAIL_HOST_USER = data.smtp_username
+            #                 EMAIL_HOST_PASSWORD = data.smtp_password
+            #         email_msg = EmailMessage(Subject, email_template, EMAIL_HOST_USER, [reciver_email],
+            #                                  reply_to=[EMAIL_HOST_USER])
+            #         email_msg.content_subtype = 'html'
+            #         email_msg.send(fail_silently=False)
                   
             messages.success(request, 'Your account successfully verified')
             return redirect(BASE_URL + 'survey/' + id+'?q=1')
@@ -173,7 +186,7 @@ class login_user(generic.TemplateView):
 
     def post(self, request, *args, **kwargs):
         if request.method == "POST":
-            email = request.POST["email"]
+            email = (request.POST["email"]).lower()
             password = request.POST["password"]
 
             if User.objects.filter(email=email).exists():
@@ -184,7 +197,10 @@ class login_user(generic.TemplateView):
                     user = auth.authenticate(username=email, password=password)
                     if user is not None:
                         auth.login(request, user)
-                        return redirect(BASE_URL+'dashboard/profile/')
+                        if request.user.userx.user_type.type_name == 'supplier':
+                            return redirect(BASE_URL+'dashboard/')
+                        else:
+                            return redirect(BASE_URL+'dashboard/profile/')
                     else:
                         messages.error(request, 'Entered email or password was wrong ')
                 else:
@@ -209,7 +225,7 @@ class ForgotPasswordOtp(generic.TemplateView):
     template_name = "account/forgot-password-otp.html"
 
     def get(self, request,email, *args, **kwargs):
-      
+        email=email.lower()
         if User.objects.filter(email=email).exists():
             otp=""
             for i in range(4):
@@ -251,7 +267,7 @@ class PasswordReset(generic.TemplateView):
     template_name = "account/password-reset.html"
 
     def get(self, request,otp,email ,*args, **kwargs):
-     
+        email=email.lower()
         user = get_object_or_404(User, email=email)
         userprofile_instance=get_object_or_404(UserProfile,user_id=user)
         if userprofile_instance.otp == otp:
@@ -266,7 +282,7 @@ class NewPasswordDone(generic.TemplateView):
       
             password1 = request.POST["pw1"]
             password2 = request.POST["pw2"]
-            email = request.POST["email"]
+            email = (request.POST["email"]).lower()
             
             if password1 == password2:
                 user_instance=get_object_or_404(User, email=email)

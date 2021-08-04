@@ -5,3 +5,4 @@ from .models import *
 
 admin.site.register(Email_Setting)
 
+admin.site.register(SocialKeys)

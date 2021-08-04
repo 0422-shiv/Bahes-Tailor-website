@@ -16,6 +16,10 @@
     height: 289px;
     width: 289px;
 }
+div#sub ul.nav.nav-tabs.centers li.nav-item {
+    width: 25%!important;
+    text-align: -webkit-center!important;
+}
 .dropzone-desc {
     position: absolute;
     margin: 0 auto;
@@ -63,6 +67,13 @@ li.nav-item {
 .btn-group {
     width: 100%;
 }
+div#sub ul.nav.nav-tabs.centers li.nav-item a.nav-link {
+    font-size: 14px;
+    min-height: 72px;
+    padding-top: 19px;
+    width: 160px;
+    margin-top: 6px;
+}
 ul.checkboxes {
     list-style-type: none;
     display: inline-flex;
@@ -106,10 +117,12 @@ label.pull:after {
 }
 div#sub ul.nav.nav-tabs.centers li.nav-item {
     width: 33.333%;
+    text-align: -webkit-center;
 }
 
 div#sub ul.nav.nav-tabs.centers li.nav-item a.nav-link {
     font-size: 14px;
+
 }
 a.nav-link.btn.btn-primary.primarys-1 {
     padding: 13px 1px -15px 65px;
@@ -149,10 +162,12 @@ a.nav-link.btn.btn-primary.primarys-1 {
    <div class="container-fluid">
       <div class="row p-t-b-20">
          <div class="col-md-12">
+           <h3 style="text-align: right;">
+               <a href="{% url 'manage_member:ManageSupplier'%}" style="font-size:12px ;color:#2088CA; ;" ><i class="fa fa-arrow-circle-left fa-2x"></i></a></h3>
             <div class="form-card no-b">
                <div class="login-form-card">
                   <h3 class="add_name">{{get_supplier_instance.full_name}}'s Products</h3>
-                   <a href="add-operator.php" class="add-btn " data-toggle="modal" data-target="#AddexampleModal" style="position: absolute;top: 10px;right: 4%;"><i class="fa fa-plus mr-5"></i>Add</a>
+                   <a href="add-operator.php" class="add-btn " data-toggle="modal" data-target="#AddexampleModal" style="position: absolute;top: 52px;right: 4%;"><i class="fa fa-plus mr-5"></i>Add</a>
                       
              <div style="position: relative;bottom: 36px;">
                  <div class="div-table">

@@ -12,6 +12,7 @@ from django.template.defaulttags import register
 from bahes import settings
 from django.db.models import Q
 from django.template.loader import render_to_string
+from bahes.settings import BASE_URL
 
 # Create your views here.
 # @method_decorator(login_required, name="dispatch")
@@ -19,6 +20,10 @@ class HomePage(generic.TemplateView):
     template_name = 'homepage/index.html'
 
     def get(self, request, *args, **kwargs):
+        if 'paymentdone' in request.GET:
+            paymentdone=request.GET['paymentdone']
+        else:
+            paymentdone=''
         get_how_it_works = How_it_works.objects.all()
         get_system_settings = System_settings.objects.all()
         get_tailor_services=TailorSpecification.objects.filter(status=True)
@@ -36,7 +41,7 @@ class HomePage(generic.TemplateView):
         get_product_cat=get_object_or_404(Product_category,slug='fabrics')
         get_product_subcat=Product_subcategory.objects.all()
         get_products=SupplierProduct.objects.filter(status=True)
-        return render(request, self.template_name,{'get_tailor_service':get_tailor_service,'get_tailor_service_list':get_tailor_service_list,'get_products':get_products,'get_product_subcat':get_product_subcat,'get_product_cat':get_product_cat,'get_tailor_services':get_tailor_services,'get_supplier_count':get_supplier_count,'get_how_it_works':get_how_it_works,'get_system_settings':get_system_settings,'get_supplier':get_supplier})
+        return render(request, self.template_name,{'BASE_URL':BASE_URL,'paymentdone':paymentdone,'get_tailor_service':get_tailor_service,'get_tailor_service_list':get_tailor_service_list,'get_products':get_products,'get_product_subcat':get_product_subcat,'get_product_cat':get_product_cat,'get_tailor_services':get_tailor_services,'get_supplier_count':get_supplier_count,'get_how_it_works':get_how_it_works,'get_system_settings':get_system_settings,'get_supplier':get_supplier})
 
 
 

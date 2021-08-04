@@ -12,7 +12,6 @@
         <label for="" class="bold-font">Thread Type</label>
         <select class="form-control" name="thread_type" required="">
           {% if get_thread_type %}
-            <option class="active"></option>
             {% for data in get_thread_type %}
               
               <option value="{{data.id}}">{{data.name}}</option>
@@ -23,15 +22,16 @@
       <div class="form-group">
         <label for="" class="bold-font">Thread Price</label>
            <div class="row">
-        <div class="col-md-2 pr-2">
-          <select class="form-control"  name="currency" required="">
-            <option class="active"></option>
+        <div class="col-md-2 ">
+          <select class="form-control price"  name="currency" required="">
                         {% if get_currency %}
                            {% for data in get_currency %}
                            
-                           <!-- {% if data.symbol %}
-                            <option value="{{data.id}}">{{data.symbol}}</option>
-                            {% else %} -->
+                             {% if data.currency == 'KWD' %}
+
+                           <option value="{{data.currency}}" selected="">{{data.currency}}</option>
+                           
+                            {% else %}
                               <option value="{{data.currency}}">{{data.currency}}</option>
                               {% endif %}
                           {% endfor %}
@@ -39,14 +39,14 @@
                           </select>
           <!-- <input type="text" class="form-control set_number_only" maxlength="12" name="price" id="" required=""> -->
         </div>
-        <div class="col-md-10 pl-1">
-        <input type="text" class="form-control set_number_only" maxlength="12" name="price" required="">
+        <div class="col-md-10">
+        <input type="text" class="form-control set_number_only pricee" maxlength="12" name="price" required="" placeholder="enter price">
         </div>
     </div>
       </div>
       <div class="form-group">
         <label for="" class="bold-font">Thread Available Quantity</label>
-        <input type="text" class="form-control set_number_only" maxlength="12" name="quantity" required="">
+        <input type="text" class="form-control set_number_only option-clss" maxlength="12" name="quantity" required="" placeholder="enter quantity">
       </div>
       
       
@@ -68,11 +68,11 @@
     
     <div class="form-group">
       <label for="" class="bold-font">Other Description</label>
-      <textarea class="form-control"  rows="10" name="description" required=""></textarea>
+      <textarea class="form-control"  rows="10" name="description" required="" placeholder="enter description"></textarea>
     </div>
     <h4 class="bold-font">Upload Image</h4>
     <div class="row">
-     <div class="col-md-6" style="text-align: -webkit-center;position: relative;left: 22px;">
+     <div class="col-md-6 upload-imgaee" style="text-align: -webkit-center;position: relative;left: 22px;">
         
           <div class="dropzone-wrapper">
             <div class="dropzone-desc"> <i class="glyphicon glyphicon-download-alt"></i>
@@ -86,7 +86,7 @@
       </div>
       
       
-      <div class="col-md-6" style="text-align: -webkit-center;position: relative;right: 22px;">
+      <div class="col-md-6 upload-pic" style="text-align: -webkit-center;position: relative;right: 22px;">
         
        
           <div class="dropzone-wrapper">

@@ -27,6 +27,8 @@ class Questions(generic.TemplateView):
 	def get(self, request, id, *args, **kwargs):
 		get_system_settings = System_settings.objects.all()
 		ques=request.GET['q']
+		if 'type' in request.GET:
+			UserProfile.objects.filter(id=id).update(user_type=get_object_or_404(UserType,type_name=request.GET['type']))
 		user_instance = get_object_or_404(UserProfile, id=id)
 	   
 
@@ -67,15 +69,47 @@ class Questions(generic.TemplateView):
 			if 'next' in request.POST:
 				return redirect(BASE_URL + 'survey/' + id+'?q='+ques_in_str)
 			else:
-				
+				if not request.user.is_authenticated:
+					username=user_instance.email
+					password=userprofile_instance.passward
+					if User.objects.filter(email=username).exists():
+						login_url=BASE_URL+'account/login'
+						data_content = {"username": userprofile_instance.full_name,"login_url":login_url,}
+						email_content = 'email_template/registration.html'
+						
+
+						email_template = get_template(email_content).render(data_content)
+						reciver_email = username
+
+						Subject = userprofile_instance.full_name+' Has Been Registered, Congratulations!'
+
+						if Email_Setting.objects.filter(status=True).exists():
+							email_data = Email_Setting.objects.filter(status=True)
+							for data in email_data:
+								EMAIL_HOST = data.smtp_host
+								EMAIL_PORT = data.smtp_port
+								EMAIL_HOST_USER = data.smtp_username
+								EMAIL_HOST_PASSWORD = data.smtp_password
+						email_msg = EmailMessage(Subject, email_template, EMAIL_HOST_USER, [reciver_email],
+												 reply_to=[EMAIL_HOST_USER])
+						email_msg.content_subtype = 'html'
+						email_msg.send(fail_silently=False)
 					
-				username=user_instance.email
-				password=userprofile_instance.passward
-				
-				# return HttpResponseRedirect(reverse('dashboard:EditProfile'))
-				user = auth.authenticate(username=username, password=password)
-				
-				if user is not None:
-						auth.login(request, user)
-						return HttpResponseRedirect(reverse('dashboard:EditProfile'))
-						# return redirect(BASE_URL+'dashboard/profile/')
+					
+					# return HttpResponseRedirect(reverse('dashboard:EditProfile'))
+					
+
+						user = auth.authenticate(username=username, password=password)
+						
+						if user is not None:
+								auth.login(request, user)
+								# return HttpResponseRedirect(reverse('dashboard:EditProfile'))
+								if request.user.userx.user_type.type_name == 'supplier':
+									return redirect(BASE_URL+'dashboard/')
+								else:
+									return redirect(BASE_URL+'dashboard/profile/')
+				else:
+					if request.user.userx.user_type.type_name == 'supplier':
+						return redirect(BASE_URL+'dashboard/')
+					else:
+						return redirect(BASE_URL+'dashboard/profile/')

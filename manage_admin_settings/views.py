@@ -93,6 +93,43 @@ class EmailSettings(generic.TemplateView):
 			messages.error(request,"Please enter valid username and password")
 			return HttpResponseRedirect(reverse('admin_login'))
 
+
+@method_decorator(login_required, name="dispatch")
+class SocialKeySettings(generic.TemplateView):
+	template_name = 'admin/manage-admin-settings/manage-social-keys.html'
+
+
+	def get(self, request,*args, **kwargs):
+		if request.user.is_superuser:
+			
+			get_social_keys=SocialKeys.objects.all()
+			return render(request, self.template_name,{'get_social_keys':get_social_keys})
+		else:
+			messages.error(request,"Please enter valid username and password")
+			return HttpResponseRedirect(reverse('admin_login'))
+
+	# def post(self, request):
+	# 	if request.user.is_superuser:
+	# 		# Post function for add or update email setting.
+	# 		if EmailSettingForm(request.POST):
+	# 			email_setting_form = EmailSettingForm(request.POST)
+	# 			# Check email setting already exist or not.
+	# 			if Email_Setting.objects.filter(status=True).exists():
+	# 				email_value = get_object_or_404(Email_Setting, status=True)
+	# 				email_setting_form = EmailSettingForm(request.POST, instance=email_value)
+
+	# 			if email_setting_form.is_valid():
+	# 				data = email_setting_form.save(commit=False)
+	# 				data.updated_dt = datetime.now()
+	# 				data.save()
+	# 			messages.success(request,'Email succesfully updated')
+	# 		else:
+	# 			messages.error(request,'Email can not be updated')
+	# 		return HttpResponseRedirect(reverse('manage_admin_settings:EmailSettings'))
+	# 	else:
+	# 		messages.error(request,"Please enter valid username and password")
+	# 		return HttpResponseRedirect(reverse('admin_login'))
+
 		
 @method_decorator(login_required, name="dispatch")
 class ManageEnquiries(generic.TemplateView):

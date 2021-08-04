@@ -1,0 +1,21 @@
+
+  
+<form method="POST" action="/admin/manage-products/edit-washing-method/{{washing_ins.id}}"  enctype="multipart/form-data" >
+  {% csrf_token %}
+  <div class="form-group">
+   <label>Method Name</label>
+    <input type="text" name="method_name" class="form-control" value="{{washing_ins.name}}">
+  </div>
+  <div class="form-group">
+    
+    <label>Method Image</label>
+    
+    <input type="file"  name="method_img" accept="image/*"class="form-control "/>
+    <span>Current Image :</span><a href="{{washing_ins.image.url}}" target="blank" style="color: #2088ca;">{{washing_ins.image.url}}</a>
+  </div>
+
+  <div class="form-group">
+    
+    <button type="submit" class="btn btn-primary">Edit</button>
+  </div>
+</form>

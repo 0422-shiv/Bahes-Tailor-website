@@ -1,0 +1,124 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="page-loader" style="display: none;">
+ <div class="status">&nbsp;</div>
+</div>
+
+  {% if request.user.userx.user_type.type_name == 'supplier' %}
+  <div class="banner-profile" style="background: url({{'supplierdashboard'|get_banner_img}}) no-repeat center top;">
+    {% else %}
+     <div class="banner-profile" style="background: url({{'customerdashboard'|get_banner_img}}) no-repeat center top;">
+ {% endif %}
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>My Profile</span></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">My Profile</a></li>
+          
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+
+  
+  <div class="container-fluid">
+    <div class="row">
+      {% include 'dashboard_base_sidebar.html' %}
+      <div class="main-roww">
+        <div class="row">
+          <div class="Dashboardd">
+            <h3>Dashboard</h3>
+            <a href="{% url 'chat:ChatUser' %}" class="btn btn-primary chate"><i class="fa fa-comments" aria-hidden="true"></i> Chat Now</a>
+          </div>
+          <div class="col-md-6">
+            <div class="card-boxx">
+              <h5>Total Services</h5>
+              <div class="counter-numberes">
+                <span class="nine-five">{{get_services|length}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card-boxx">
+              <h5>Total Products</h5>
+              <div class="counter-numberes">
+                <span class="nine-five">{{get_supplier_product|length}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="newly">
+            <h3>Newly Added Products </h3>
+          </div>
+          {% if get_supplier_product %}
+          {% for data in get_supplier_product|slice:'0:6' %}
+            <div class="col-md-4">
+              
+              <a  href="{% url 'findproducts:ProductDetail' data.id %}" style="text-decoration: none">
+                <div class="product-boxe newds">
+                  {% if data.image_1 %}
+                    <img src="{{data.image_1.url}}" class="imgg-1">
+                    {% elif data.image_2%}
+                    <img src="{{data.image_2.url}}">
+                  {% else %}
+                    <img src="{% static 'images/no-image.jpg' %}" class="imgg-1">
+                  {% endif %}
+                  {% if data.Product_subcategory %}
+                    <h3 class="sewing">{{data.Product_subcategory.subcategory_name}}{% if data.threadtype %}({{data.threadtype}}){% endif %}</h3>
+                  {% else %}
+                    <h3 class="sewing">{{data.product_category.category_name}}{% if data.fabrictype %}({{data.fabrictype}}){% endif %}</h3>
+                  {% endif %}
+                  <p class="kw text-right mb-0"><a href="#">{{data.price}} {{data.currency}}</a>
+                </p>
+                <ul class="inlines" >
+                  <li class="inline-list"><i class="fa fa-edit"></i>
+                    <a href="javascript:void(0)" data-id="{{data.id}}"  class="font-sizes edit_product">Edit</a>
+                  </li>
+                  <li class="inline-list"><i class="fa fa-trash"></i>
+                    <a href="javascript:void(0)" data-id="{{data.id}}" class="font-sizes delete_product">Delete</a>
+                  </li>
+                  <li class="inline-list">
+                 
+                    {% if data.status %}
+                      <div class="custom-control custom-switch font-sizes">
+                        <input type="checkbox" class="custom-control-input approve_product" checked="true" id="{{data.id}}" productstatus="{{data.status}}">
+                        <label class="custom-control-label" for="{{data.id}}"><span style="position: relative;top: 1px;">Active</span></label>
+                      </div>
+                    {% else %}
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input approve_product" id="{{data.id}}" productstatus="{{data.status}}">
+                        <label class="custom-control-label" for="{{data.id}}"><span style="position: relative;top: 1px;">Deactive</span></label>
+                      </div>
+                    {% endif %}
+                  </li>
+                </ul>
+              </div>
+            </a>
+            
+          </div>
+        {% endfor %}
+        {% else %}
+            <h3 class="noavailable">No product Posted to show </h3>
+
+        {% endif %}
+      </div>
+      
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

@@ -55,8 +55,7 @@
                       {% endif %}
                     {% endfor %}
                   {% endif %}
-                  <!-- {% if messages %}
-                    
+                  
                     {% if messages %}
                       {% for message in messages %}
                         
@@ -75,8 +74,8 @@
                         {% endif %}
                         
                       {% endfor %}
-                    {% endif %}
-                  {% endif %} -->
+          
+                  {% endif %}
                 </div>
                 <div class="form-title mb-4 mt-4">
                   Registration
@@ -89,15 +88,13 @@
                   <div class="form-group">
                     {{form2.country}}
                   </div>
-                  <div class="form-group">
+                   <div class="form-group">
                     <div class="numberinput">
-                      <span>
-                        {{form2.tel_code}}
-                        <!-- <input type="tel" placeholder="XXX" class="input-style"/> -->
-                      </span>
-                      {{form2.phone}}
-                    </div>
+                  <!-- <input id="phone" type="hidden"> -->
+                    {{form2.phone}}
                   </div>
+                </div>
+              
                   <div class="form-group">
                     
                     <!-- {{form1.email}} -->
@@ -119,10 +116,12 @@
                     </div>
                   </div>
                   <input type="hidden"  name="usertype" value="{{usertype}}" />
+                  <input type="hidden" name="tel_code" id="tel_code">
                   <div class="form-group text-right">
+
                     <!-- <button type="button" class="btn btn-secondary">Back</button> -->
-                    <a href="{% url 'account:UserType' %}" class="btn btn-secondary" onclick="goBack()">Back</a>
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <a href="{% url 'account:UserType' %}" class="btn btn-secondary btnss " onclick="goBack()">Back</a>
+                    <button type="submit" class="btn btn-primary Register">Register</button>
                   </form>
                 </div>
               </div>
@@ -159,6 +158,8 @@
   });
   
   </script>
+  
+ 
   <script type="text/javascript">
   $(document).on("click",".country",function(){
   var country_id = $("#id_country").val();

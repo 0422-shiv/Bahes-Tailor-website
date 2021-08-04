@@ -1,0 +1,121 @@
+{% extends 'base_template.html' %}
+{% load static %}
+{% block content %}
+<div class="page-loader" style="display: none;">
+ <div class="status">&nbsp;</div>
+</div>
+  {% if request.user.userx.user_type.type_name == 'supplier' %}
+  <div class="banner-profile" style="background: url({{'supplierdashboard'|get_banner_img}}) no-repeat center top;">
+    {% else %}
+     <div class="banner-profile" style="background: url({{'customerdashboard'|get_banner_img}}) no-repeat center top;">
+ {% endif %}
+    <div class="profile-overlay">
+      <div class="container">
+        <div class="heading-title supplies text-center">
+          <h1>
+          <div class="left-cricle"></div>
+          <div class="right-cricle"></div>
+          <span>My Profile</span></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="breadcr4eam">
+    <div class="container">
+      <nav class="breadcrumb-new">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">My Profile</a></li>
+          
+        </ol>
+      </nav>
+      
+    </div>
+  </div>
+  
+  <div class="container-fluid">
+    <div class="row">
+      {% include 'dashboard_base_sidebar.html' %}
+      <div>
+        {% if messages %}
+          {% for message in messages %}
+            
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+              <div class="alert alert-danger alert-dismissible" style="text-align: left;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                <strong>{{message}}</strong>
+              </div>
+              
+            {% else %}
+              
+              <div class="alert alert-success alert-dismissible" style="text-align: left;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                <strong>{{message}}</strong>
+              </div>
+            {% endif %}
+            
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="main-roww">
+        <div class="row">
+          <div class="Dashboardd">
+            <h3>Post Products</h3>
+            <a href="{% url 'chat:ChatUser' %}" class="btn btn-primary"><i class="fa fa-comments" aria-hidden="true"></i> Chat Now</a>
+          </div>
+          <div class="col-md-12">
+            <ul id="tabs" class="nav nav-tabs tabsss">
+              {% if get_product_cate %}
+                {% for data in get_product_cate %}
+                  <li class="nav-item "><a href="javascript:void(0)" class="nav-link small text-uppercase blues cate active" data-id="{{data.id}}" onclick="localStorage.clear()">{{data.category_name}}</a>
+                </li>
+             
+              {% endfor %}
+            {% endif %}
+            
+          </ul>
+          <br>
+          <div id="tabsContent" class="tab-content">
+            <div id="sub"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+  </div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}
+{% block script %}
+
+<script type="text/javascript">
+    $(document).on("click", ".cate", function () {
+        $(".cate").each(function () {
+            if ($(this).hasClass("product_cate")) {
+                $(this).removeClass("product_cate");
+            }
+        });
+        $(this).addClass("product_cate");
+    });
+
+    $(document).on("click", ".cate", function () {
+       $('.page-loader').show();
+        var id = $(this).data("id");
+        $("input").empty();
+        $.ajax({
+
+            method: "GET",
+            url: "/my-products/category/" + id,
+            dataType: "html",
+            success: function (data) {
+              $('.page-loader').hide();
+                $("#sub").html(data);
+            },
+        });
+    });
+</script>
+{% endblock %}

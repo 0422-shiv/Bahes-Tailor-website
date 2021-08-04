@@ -65,7 +65,7 @@ def answer_status(data):
 def paid_status(data):
 	
 	get_paid_status = 'Unpaid'
-	if BahesPayment.objects.filter(user_id=data.user_id).exists():
+	if BahesPayment.objects.filter(user_id=data.user_id).filter(payment_status=True).exists():
 		get_paid_status='Paid'
 	
 	return get_paid_status
@@ -298,7 +298,31 @@ def ChangeStatus(request):
 		messages.error(request,"Please enter valid username and password")
 		return HttpResponseRedirect(reverse('admin_login'))
 
+@login_required
+def ChangePaidStatus(request):
+	if request.user.is_superuser:
 
+		userid = request.GET["userid"]
+		paidstatus = request.GET["paidstatus"]
+
+		if paidstatus == "Paid":
+			status = False
+		else:
+			status = True
+
+		user_ins=get_object_or_404(UserProfile ,id=userid)
+		
+		if BahesPayment.objects.filter(user_id=user_ins.user_id).exists():
+			
+			BahesPayment.objects.filter(user_id=user_ins.user_id).update(payment_status=status)
+			return JsonResponse({'message': 'Payment1 Status Changed successfully.'})
+		else:
+			payment_obj=BahesPayment(user_id=user_ins.user_id,payment_status=True)
+			payment_obj.save()
+			return JsonResponse({'message': 'Payment2 Status Changed successfully.'})
+	else:
+		messages.error(request,"Please enter valid username and password")
+		return HttpResponseRedirect(reverse('admin_login'))
 
 @method_decorator(login_required, name="dispatch")
 class MemberDelete(generic.TemplateView):

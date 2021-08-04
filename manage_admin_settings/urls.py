@@ -12,6 +12,7 @@ urlpatterns = [
                                               success_url=reverse_lazy('manage_admin_settings:ChangePassword')),
          name="ChangePassword"),
 path('email-settings', views.EmailSettings.as_view(), name="EmailSettings"),
+path('social-key-settings', views.SocialKeySettings.as_view(), name="SocialKeySettings"),
 path('enquiries', views.ManageEnquiries.as_view(), name="ManageEnquiries"),
 path('reply/<int:id>', views.EnquiryReply.as_view(), name="EnquiryReply"),
 path('delete-enquiries/', views.DeleteMultiEnquiries.as_view(), name="DeleteMultiEnquiries"),
